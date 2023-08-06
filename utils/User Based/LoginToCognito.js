@@ -41,7 +41,7 @@ async function loginToCognito() {
     const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
     
     cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: function (result) {
+        onsuccess: function (result) {
             const jwt = result.getIdToken().getJwtToken();
             // store jwt in Cache
             Cache.set("jwt", jwt);
