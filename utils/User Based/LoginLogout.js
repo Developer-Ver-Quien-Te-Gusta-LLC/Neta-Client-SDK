@@ -10,7 +10,12 @@ const crypto = require('crypto');
 
 const LoginToCognito = require("./LoginToCognito")
 
+var endpoints;
+async function fetchEndpoints() {
+    endpoints = Endpoints.fetch();
+} 
 
+fetchEndpoints();
 
 //// used to decrypt all Alby data
 function decryptAES256(encryptedText, key) {
@@ -63,6 +68,9 @@ async function logout() {
     onboardingScreenIndex = 0;
     Cache.set("isOnboarding", isOnboarding)
     Cache.set("onboardingScreenIndex", onboardingScreenIndex)
+    const jwt = Cache.getString("jwt");
+    await AxiosSigned.post(endpoints["/logout"],jwt,null,null);
+    Alby.removeListener();
 }
 
 /// invoked when login is clicked from splash
