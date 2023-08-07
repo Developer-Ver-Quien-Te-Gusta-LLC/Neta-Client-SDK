@@ -1,4 +1,4 @@
-import { SendAnalytics } from "./utils/User Based/Analytics";
+import { SendAnalytics } from "./utils/userBased/analytics";
 import {
     inviteUser,
     OnPollReveal,
@@ -7,7 +7,7 @@ import {
     RegisterPolls,
     FetchPollsNow,
     fetchInvite
-} from "./utils/User Based/AuthenticatedUserActions";
+} from "./utils/userBased/authenticatedUserActions";
 import {
     OnFriendRequest,
     AcceptFriendRequest,
@@ -19,15 +19,15 @@ import {
     DisableDeletion,
     RequestDeletion
 
-} from "./utils/User Based/FriendSystem"; // Removed the duplicate ResetBlockList
+} from "./utils/userBased/friendSystem";
 import {
     login as loginUtil,
     logout,
     logoutAndDelete,
     addRealtimeListener,
     removeRealtimeListener,
-} from "./utils/User Based/LoginLogout";
-import { loginToCognito } from "./utils/User Based/LoginToCognito";
+} from "./utils/userBased/loginLogout";
+import { loginToCognito } from "./utils/userBased/loginToCognito";
 import {
     fetchCache,
     isOnboarding,
@@ -51,8 +51,8 @@ import {
     login as loginRegistration,
     uploadEmojiContacts,
     uploadUserContacts,
-} from "./utils/User Based/RegistrationFlow";
-import { fetch } from "./utils/User Based/Refresh";
+} from "./utils/userBased/registrationFlow";
+import { fetch } from "./utils/userBased/refresh";
 
 export {
     SendAnalytics,
@@ -99,4 +99,22 @@ export {
     uploadUserContacts,
     fetch,
     fetchInvite
+};
+
+import {
+    setupInAppNotifications,
+    tearDownInAppNotifications,
+    removeListener,
+    inboxReceivedListener,
+    friendEventReceivedListener,
+    modalReceivedListener
+} from "./utils/notifications/inApp/inAppNotifsHandler";
+
+export {
+    setupInAppNotifications,
+    tearDownInAppNotifications,
+    removeListener,
+    inboxReceivedListener,
+    friendEventReceivedListener,
+    modalReceivedListener
 };

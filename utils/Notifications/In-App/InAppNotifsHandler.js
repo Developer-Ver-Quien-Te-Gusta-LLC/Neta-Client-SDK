@@ -18,6 +18,8 @@ const decryption = require("../../Decryption.js");
 // Keep track of subscribed channels
 const subscribedChannels = new Set();
 
+let inboxReceivedListener, friendEventReceievedListener, modalReceievedListener;
+
 function setupInAppNotifications(transactionID, encryptionKey) {
     // Cancel any pending disconnection
     if (timer) clearTimeout(timer);
@@ -46,16 +48,23 @@ function setupInAppNotifications(transactionID, encryptionKey) {
                       
                       // Store the sorted data back in cache
                       Cache.set("inboxData", inboxData);
+                    
+                      var unreadCount;
+                      Cache.set("unreadCount", unreadCount = (parseInt(cache.getString("unreadCount") + 1).toString())) /// another line of code from a paranoid react native programmer
 
-                      Cache.set("unreadCount", (parseInt(cache.getString("unreadCount") + 1).toString())) /// another line of code from a paranoid react native programmer
+                      inboxReceivedListener(unreadCount, inboxData)
                     } else if (parsedData.friends != undefined) {
                         /// case: event from friends for this user
                         var event = parsedData.friends.event; /// add, request, remove, accept
                         var friend = parsedData.friends.friend
                         var message = parsedData.friends.message // display this msg
 
+                        friendEventReceievedListener(event, friend, message)
+
+                    } else if (parsedData.uri != undefined) {
+                        /// case: modal is pushed to this user in RT
+                        modalReceievedListener(uri)
                     }
-                    console.log("Received: ", parsedData);
                     // Do something with the data
                   } catch (error) {
                     console.error("Error parsing the received data:", error);
@@ -85,4 +94,4 @@ function tearDownInAppNotifications() {
     }, 60000);
 }
 
-module.exports = {setupInAppNotifications,tearDownInAppNotifications,removeListener};
+module.exports = {setupInAppNotifications,tearDownInAppNotifications,removeListener, inboxReceivedListener, friendEventReceievedListener, modalReceievedListener};
