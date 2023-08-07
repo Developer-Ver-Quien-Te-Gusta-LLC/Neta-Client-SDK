@@ -95,7 +95,7 @@ async function fetchInvite(UID) {
     }
 }
 async function OnPollReveal(messageUID,answerFirstLetter) {
-    const QueryString = { messageUID: messageUID, answerFirstLetter: answerFirstLetter };
+    const QueryString = { messageUID: messageUID, firstLetter: answerFirstLetter };
     const endpoint = endpoints["/OnPollRevealed"];
     const jwt = Cache.getString("jwt");
     const res = await AxiosSigned.get(endpoint, jwt, QueryString, null);
