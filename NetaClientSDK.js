@@ -122,7 +122,7 @@ export {
 import {fetch} from "./utils/KV"
 export {fetch as fetchFromKV}
 
-import MixpanelLib from 'react-native-mixpanel';
+import MixpanelLib from './react-native-mixpanel';
 
 const mixpanelInstance = new MixpanelLib.MixpanelInstance();
 
