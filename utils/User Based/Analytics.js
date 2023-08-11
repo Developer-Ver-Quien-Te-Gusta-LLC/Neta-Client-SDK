@@ -69,4 +69,4 @@ async function SendAnalyticsAPI(events) {
 
 //#endregion
 
-module.exports = {SendAnalytics, forceDispatch};
+export {SendAnalytics, forceDispatch};

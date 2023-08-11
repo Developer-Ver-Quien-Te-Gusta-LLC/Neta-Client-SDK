@@ -1,5 +1,4 @@
 const AxiosSigned = require("../AxiosSigned.js");
-import jwt from "jsonwebtoken";
 const Cache = require("../Cache.js");
 const Endpoints = require("../Endpoints.js");
 var endpoints;
@@ -87,7 +86,7 @@ async function ResetHideList() {
 
 // #endregion
 
-module.exports = {
+export {
   OnFriendRequest,
   AcceptFriendRequest,
   HideFriendRequestfriendPN,
@@ -95,5 +94,5 @@ module.exports = {
   RemoveFriend,
   BlockFriend,
   ResetBlockList,
-  ResetBlockList
+  ResetHideList
 };

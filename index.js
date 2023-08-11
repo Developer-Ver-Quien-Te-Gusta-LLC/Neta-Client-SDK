@@ -1,13 +1,14 @@
-import { SendAnalytics } from "./utils/userBased/analytics";
+import { SendAnalytics } from "./utils/User Based/Analytics.js";
 import {
     inviteUser,
     OnPollReveal,
-    OnPollRevealedPartial,
     ReadInbox,
-    RegisterPolls,
+    DispatchVote,
     FetchPollsNow,
-    fetchInvite
-} from "./utils/userBased/authenticatedUserActions";
+    fetchInvite,
+    DisableDeletion,
+    RequestDeletion
+} from "./utils/User Based/authenticatedUserActions.js";
 import {
     OnFriendRequest,
     AcceptFriendRequest,
@@ -16,20 +17,18 @@ import {
     RemoveFriend,
     BlockFriend,
     ResetBlockList,
-    DisableDeletion,
-    RequestDeletion
+    
 
-} from "./utils/userBased/friendSystem";
+} from "./utils/User Based/friendSystem.js";
 import {
     login as loginUtil,
     logout,
     logoutAndDelete,
     addRealtimeListener,
     removeRealtimeListener,
-} from "./utils/userBased/loginLogout";
-import { loginToCognito } from "./utils/userBased/loginToCognito";
+} from "./utils/User Based/loginLogout.js";
+import { loginToCognito } from "./utils/User Based/LoginToCognito.js";
 import {
-    fetchCache,
     isOnboarding,
     submitPFP,
     fetchAddFriendsOnboarding,
@@ -46,21 +45,17 @@ import {
     submitUsername,
     submitGender,
     checkSubmitProfile,
-    handleSubmittalSuccess,
     back,
-    login as loginRegistration,
-    uploadEmojiContacts,
     uploadUserContacts,
-} from "./utils/userBased/registrationFlow";
-import { fetch } from "./utils/userBased/refresh";
+} from "./utils/User Based/registrationFlow.js";
+import { fetch } from "./utils/User Based/refresh.js";
 
 export {
     SendAnalytics,
     inviteUser,
     OnPollReveal,
-    OnPollRevealedPartial,
     ReadInbox,
-    RegisterPolls,
+    DispatchVote,
     FetchPollsNow,
     OnFriendRequest,
     AcceptFriendRequest,
@@ -74,8 +69,6 @@ export {
     logoutAndDelete,
     addRealtimeListener,
     removeRealtimeListener,
-    loginToCognito,
-    fetchCache,
     isOnboarding,
     submitPFP,
     fetchAddFriendsOnboarding,
@@ -92,10 +85,7 @@ export {
     submitUsername,
     submitGender,
     checkSubmitProfile,
-    handleSubmittalSuccess,
     back,
-    loginRegistration,
-    uploadEmojiContacts,
     uploadUserContacts,
     fetch,
     fetchInvite
@@ -105,24 +95,19 @@ import {
     setupInAppNotifications,
     tearDownInAppNotifications,
     removeListener,
-    inboxReceivedListener,
-    friendEventReceivedListener,
-    modalReceivedListener
-} from "./utils/notifications/inApp/inAppNotifsHandler";
+} from "./utils/Notifications/In-App/InAppNotifsHandler.js"
 
 export {
     setupInAppNotifications,
     tearDownInAppNotifications,
     removeListener,
-    inboxReceivedListener,
-    friendEventReceivedListener,
-    modalReceivedListener
+    
 };
 
-import {fetch} from "./utils/KV"
-export {fetch as fetchFromKV}
+import {_fetch} from "./utils/KV.js"
+export {_fetch as fetchFromKV}
 
-import MixpanelLib from './react-native-mixpanel';
+import MixpanelLib from './react-native-mixpanel/index.js';
 
 const mixpanelInstance = new MixpanelLib.MixpanelInstance();
 

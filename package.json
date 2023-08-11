@@ -17,9 +17,13 @@
   },
   "homepage": "https://github.com/Daxxboii/FileAutoUpdater#readme",
   "dependencies": {
+    "@react-native-community/geolocation": "^3.0.6",
+    "amazon-cognito-identity-js": "^6.3.2",
     "aws4": "^1.12.0",
     "axios": "^1.4.0",
     "form-data": "^4.0.0",
+    "latlon-geohash": "^2.0.0",
     "path": "^0.12.7"
-  }
+  },
+  "type": "module"
 }

@@ -53,4 +53,4 @@ async function loginToCognito() {
     });
 }
 
-module.exports = loginToCognito;
+export {loginToCognito};

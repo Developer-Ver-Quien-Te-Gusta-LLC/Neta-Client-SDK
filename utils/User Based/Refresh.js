@@ -2,7 +2,6 @@ const Cache = require("../Cache.js");
 const Endpoints = require("../Endpoints.js");
 const Alby = require("./Notifications/In-App/60Sec Workaround/Ably.js");
 const AxiosSigned = require("../AxiosSigned.js");
-import jwt from "jsonwebtoken";
 
 const LoginToCognito = require("./LoginToCognito")
 
@@ -99,4 +98,4 @@ async function fetch(screen = "home") {
   }
 }
 
-exports.module = {fetch}
+export {fetch}

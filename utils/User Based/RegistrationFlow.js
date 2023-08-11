@@ -2,8 +2,6 @@ const Cache = require("../Cache.js");
 const Endpoints = require("../Endpoints.js");
 const Alby = require("./Notifications/In-App/60Sec Workaround/Ably.js");
 const AxiosSigned = require("../AxiosSigned.js");
-import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
-import jwt from 'jsonwebtoken';
 import Geolocation from '@react-native-community/geolocation';
 import geohash from 'latlon-geohash';
 const path = require('path');
@@ -257,12 +255,12 @@ async function fetchAllAddFriendsOnboardingPages() {
     return data;
 }
 
-async function uploadUserContacts(username, contactsList) {
+/*async function uploadUserContacts(username, contactsList) {
     const url = endpoints["/uploadUserContacts"];
     const qstring = { username, contactsList };
     const response = await AxiosSigned.put(url, Cache.get('jwt'), qstring);
     return response.data;
-}
+}*/
 //Example
 //const contactsList = [{ Fname: 'John', Lname: 'Doe', favorite: true, pfp: 'C:/Users/Daxx/Downloads/mummy.png', }];
 async function uploadUserContacts(username, contactsList) {
@@ -297,8 +295,7 @@ async function uploadUserContacts(username, contactsList) {
 
 
 
-module.exports = {
-    fetchCache,
+export {
     isOnboarding,
     submitPFP,
     fetchAddFriendsOnboarding,
@@ -314,9 +311,6 @@ module.exports = {
     submitUsername,
     submitGender,
     checkSubmitProfile,
-    handleSubmittalSuccess,
     back,
-    login,
-    uploadEmojiContacts,
     uploadUserContacts
 };
