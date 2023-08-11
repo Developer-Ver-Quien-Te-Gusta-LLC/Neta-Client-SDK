@@ -69,6 +69,7 @@ export {
     logoutAndDelete,
     addRealtimeListener,
     removeRealtimeListener,
+    loginToCognito,
     isOnboarding,
     submitPFP,
     fetchAddFriendsOnboarding,

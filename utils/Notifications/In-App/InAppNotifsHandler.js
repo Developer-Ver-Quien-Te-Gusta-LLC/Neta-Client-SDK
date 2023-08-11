@@ -94,4 +94,4 @@ function tearDownInAppNotifications() {
     }, 60000);
 }
 
-export {setupInAppNotifications,tearDownInAppNotifications,removeListener, inboxReceivedListener, friendEventReceievedListener, modalReceievedListener};
+export {setupInAppNotifications,tearDownInAppNotifications,removeListener};
