@@ -2,8 +2,8 @@ const Cache = require("../Cache.js");
 const Endpoints = require("../Endpoints.js");
 const Alby = require("./Notifications/In-App/60Sec Workaround/Ably.js");
 const AxiosSigned = require("../AxiosSigned.js");
-import Geolocation from '@react-native-community/geolocation';
-import geohash from 'latlon-geohash';
+const Geolocation = require('@react-native-community/geolocation');
+const geohash = require('latlon-geohash');
 const path = require('path');
 const mime = require('mime-types');
 
@@ -295,7 +295,7 @@ async function uploadUserContacts(username, contactsList) {
 
 
 
-export {
+module.exports= {
     isOnboarding,
     submitPFP,
     fetchAddFriendsOnboarding,

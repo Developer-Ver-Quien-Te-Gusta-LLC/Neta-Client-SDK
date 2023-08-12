@@ -2,9 +2,6 @@ const Cache = require("../Cache.js");
 const Endpoints = require("../Endpoints.js");
 const Alby = require("./Notifications/In-App/60Sec Workaround/Ably.js");
 const AxiosSigned = require("../AxiosSigned.js");
-import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
-
-
 
 const crypto = require('crypto');
 
@@ -117,4 +114,4 @@ async function handleAlbyData(data) {
     data = decryptAES256(data, Cache.getString("albyDecryptionKey"))
     for (listener in listeners) listener(data)
 }
-export {login, logout, logoutAndDelete, addRealtimeListener, removeRealtimeListener}
+module.exports= {login, logout, logoutAndDelete, addRealtimeListener, removeRealtimeListener}

@@ -98,4 +98,4 @@ async function fetch(screen = "home") {
   }
 }
 
-export {fetch}
+module.exports= {fetch}
