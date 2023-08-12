@@ -1,8 +1,8 @@
 //const AxiosSigned = require("../AxiosSigned.js");
-import {Cache} from "../Cache.js";
+var Cache = require("../Cache.js");
 const Endpoints = require("../Endpoints.js");
 var endpoints;
-import {get} from "../AxiosSigned.js";
+const AxiosSigned = require("../AxiosSigned.js");
 
 // Fetching the endpoints
 async function fetchEndpoints() {
@@ -64,10 +64,10 @@ async function SendAnalyticsAPI(events) {
     const jwt = Cache.getString("jwt");
 
     // Send a get request to the endpoint with events as body and get the response
-    const res = await get(endpoint, jwt, null, JSON.stringify(events)); /// last param is body
+    const res = await AxiosSigned.get(endpoint, jwt, null, JSON.stringify(events)); /// last param is body
     return res;
 }
 
 //#endregion
 
-export {SendAnalytics, forceDispatch};
+module.exports= {SendAnalytics, forceDispatch};

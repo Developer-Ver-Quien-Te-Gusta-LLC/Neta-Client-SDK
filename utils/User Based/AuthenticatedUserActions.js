@@ -2,7 +2,6 @@ const Cache = require("../Cache.js");
 const Endpoints = require("../Endpoints.js");
 const Alby = require("./Notifications/In-App/60Sec Workaround/Ably.js");
 const AxiosSigned = require("../AxiosSigned.js");
-import { CognitoUser, AuthenticationDetails } from 'amazon-cognito-identity-js';
 
 
 const crypto = require('crypto');
@@ -144,7 +143,7 @@ async function FetchPollsNow() {
     const res = await AxiosSigned.post(endpoint, jwt, null, null);
     return res;
 }
-export{inviteUser,
+module.exports={inviteUser,
     OnPollReveal,
     ReadInbox,
     DispatchVote,

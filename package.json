@@ -23,8 +23,8 @@
     "axios": "^1.4.0",
     "form-data": "^4.0.0",
     "latlon-geohash": "^2.0.0",
+    "mixpanel": "^0.17.0",
     "path": "^0.12.7",
     "react-native-mmkv": "^2.10.1"
-  },
-  "type": "module"
+  }
 }

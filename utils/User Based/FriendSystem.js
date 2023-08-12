@@ -86,7 +86,7 @@ async function ResetHideList() {
 
 // #endregion
 
-export {
+module.exports= {
   OnFriendRequest,
   AcceptFriendRequest,
   HideFriendRequestfriendPN,
