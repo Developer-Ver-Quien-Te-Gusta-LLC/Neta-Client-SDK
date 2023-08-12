@@ -1,13 +1,13 @@
-import { MMKV } from 'react-native-mmkv'
+const MMKV = require('react-native-mmkv');
 
 const Cache = new MMKV({
   id: `user-${userId}-storage`,
   path: `${USER_DIRECTORY}/storage`,
   encryptionKey: 'hunter2'
 })
-export{Cache}
+module.exports={Cache}
 
-exports.module = storage
+//exports.module = storage
 
 /// storage.getString("")
 /// storage.set("key", val)
