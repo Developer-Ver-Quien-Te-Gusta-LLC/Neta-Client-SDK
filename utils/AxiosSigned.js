@@ -1,6 +1,6 @@
-import axios from 'axios';
+const axios = require('axios');
 
-async function _get(data) {
+async function get(data) {
     const {uri, jwt, body, queryString, queryStr, params} = data;
     if (queryString != undefined) {
         queryStr = queryString;
@@ -40,7 +40,7 @@ async function get(uri, jwt = null, qString = null, body = null) {
     }
 }
 
-async function _post(data) {
+async function post(data) {
     const {uri, jwt, body, queryString, queryStr, params} = data;
     if (queryString != undefined) {
         queryStr = queryString;
@@ -81,7 +81,7 @@ async function post(uri, jwt = null, qString = null, body = null) {
     }
 }
 
-async function _put(data) {
+async function put(data) {
     const {uri, jwt, body, queryString, queryStr, params} = data;
     if (queryString != undefined) {
         queryStr = queryString;
@@ -123,4 +123,4 @@ async function put(uri, jwt = null, qString = null, body = null) {
 }
 
 
-export {get, post, put,_post,_put,_get}
+export {get, post, put}

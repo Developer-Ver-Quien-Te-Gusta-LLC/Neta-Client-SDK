@@ -12,4 +12,4 @@ async function _fetch(key) {
     return await AxiosSigned.get({uri : endpoint, queryString : params})
 } 
 
-export { _fetch };
+module.exports= { _fetch };
