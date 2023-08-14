@@ -27,5 +27,5 @@
     "path": "^0.12.7",
     "react-native-mmkv": "^2.10.1"
   },
-  "type" : "module"
+  "type": "module"
 }
