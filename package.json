@@ -1,5 +1,5 @@
 {
-  "name": "fileautoupdater",
+  "name": "neta-client-sdk",
   "version": "1.0.0",
   "description": "* This folder contains all the client side code for Ver-Quien-Te-Gusta-LLC (Neta app)\r >Note : The entire SDK is  meant to be imported into the utils folder",
   "main": "index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Daxxboii/FileAutoUpdater.git"
+    "url": "git+https://github.com/Developer-Ver-Quien-Te-Gusta-LLC/Neta-Client-SDK.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Daxxboii/FileAutoUpdater/issues"
+    "url": "https://github.com/Developer-Ver-Quien-Te-Gusta-LLC/Neta-Client-SDK/issues"
   },
-  "homepage": "https://github.com/Daxxboii/FileAutoUpdater#readme",
+  "homepage": "https://github.com/Developer-Ver-Quien-Te-Gusta-LLC/Neta-Client-SDK#README",
   "dependencies": {
     "@react-native-community/geolocation": "^3.0.6",
     "amazon-cognito-identity-js": "^6.3.2",
@@ -26,5 +26,6 @@
     "mixpanel": "^0.17.0",
     "path": "^0.12.7",
     "react-native-mmkv": "^2.10.1"
-  }
+  },
+  "type" : "module"
 }
