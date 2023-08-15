@@ -1,5 +1,4 @@
 const AxiosSigned = require("./AxiosSigned.js");
-const Endpoints = require("./Endpoints.js")
 const endpoint = "https://localhost:3000/getKV"
 
 async function _fetch(key) {
@@ -12,4 +11,4 @@ async function _fetch(key) {
     return await AxiosSigned.get({uri : endpoint, queryString : params})
 } 
 
-module.exports= { _fetch };
+export{ _fetch };

@@ -10,4 +10,4 @@ async function fetch() {
 }
 
 
-module.exports = endpoints;
+export{endpoints,fetch};
