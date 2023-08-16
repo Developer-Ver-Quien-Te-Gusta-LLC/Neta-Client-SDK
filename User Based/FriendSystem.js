@@ -1,13 +1,13 @@
-const AxiosSigned = require("../AxiosSigned.js");
-const Cache = require("../Cache.js");
-const Endpoints = require("../Endpoints.js");
+import * as AxiosSigned from "../utils/AxiosSigned.js";
+import {FetchEndpointsFromKV} from "../utils/Endpoints.js";
+
 var endpoints;
-
-async function fetchEndpoints() {
-  endpoints = await Endpoints.fetch();
+// Fetching the endpoints
+async function InitializeEndpoints() {
+  endpoints = await FetchEndpointsFromKV();
 }
+InitializeEndpoints();
 
-fetchEndpoints();
 
 //#region Friend System
 async function OnFriendRequest(friendPN) {
@@ -86,7 +86,7 @@ async function ResetHideList() {
 
 // #endregion
 
-module.exports= {
+export {
   OnFriendRequest,
   AcceptFriendRequest,
   HideFriendRequestfriendPN,

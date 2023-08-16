@@ -1,13 +1,13 @@
-import {fetch} from "../Endpoints.js";
-const Alby = require("./Notifications/In-App/60Sec Workaround/Ably.js");
-const AxiosSigned = require("../AxiosSigned.js");
-const Geolocation = require("@react-native-community/geolocation");
-const geohash = require("latlon-geohash");
-const path = require("path");
-const mime = require("mime-types");
+import {FetchEndpointsFromKV} from "../utils/Endpoints.js";
+import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
+import * as AxiosSigned from "../utils/AxiosSigned.js";
+//const Geolocation = require("@react-native-community/geolocation");
+import * as geohash from "latlon-geohash";
+import * as path from 'path';
+import * as mime from 'mime-types';
 
-var isOnboarding = true;
-var onboardingScreenIndex = 0;
+/*var isOnboarding = true;
+var onboardingScreenIndex = 0;*/
 var endpoints;
 
 /*async function _fetchCache() {
@@ -17,13 +17,13 @@ var endpoints;
     if (isOnboarding == undefined) Cache.set("isOnboarding", isOnboarding)
     if (onboardingScreenIndex == undefined) Cache.set("onboardingScreenIndex", onboardingScreenIndex)
 }*/
+//_fetchCache()
 
-async function fetchEndpoints() {
-  endpoints = await fetch();
+async function InitializeEndpoints() {
+  endpoints = await FetchEndpointsFromKV();
 }
 
-//_fetchCache()
-fetchEndpoints();
+InitializeEndpoints();
 
 /*async function submitAge(age) {
   if (onboardingScreenIndex != 0) return;
@@ -41,23 +41,21 @@ async function submitGrade(grade) {
 
 /// TODO: get encoded geolocation from qparam 'clientlocation'
 /// and also support paging via param pageToken and use return val nextPageToken
-async function fetchSchools(schoolName = undefined) {
-  if (onboardingScreenIndex != 2) return;
-
+async function fetchSchools(schoolName = undefined, latitude, longitude) {
+  // if (onboardingScreenIndex != 2) return;
   // fetch the geolocation
-  Geolocation.getCurrentPosition(async (info) => {
-    const { latitude, longitude } = info.coords;
-    const geohashValue = geohash.encode(latitude, longitude);
-    Cache.set("geohash", geohashValue);
+  //const { latitude, longitude } = info.coords;
 
-    // use the geohash value to get the schools
-    const url = endpoints["/registration/fetchSchools"];
-    const qstring = { clientlocation: geohashValue };
-    if (schoolName != undefined) qString["queryname"] = schoolName;
-    const response = await AxiosSigned.get(url, undefined, qstring);
-    Cache.set("schools", JSON.stringify(response.data.rows));
-    return response.data.rows;
-  });
+  const geohashValue = geohash.encode(latitude, longitude);
+  //Cache.set("geohash", geohashValue);
+
+  // use the geohash value to get the schools
+  const url = endpoints["/registration/fetchSchools"];
+  const qstring = { clientlocation: geohashValue };
+  if (schoolName != undefined) qString["queryname"] = schoolName;
+  const response = await AxiosSigned.get(url, undefined, qstring);
+  // Cache.set("schools", JSON.stringify(response.data.rows));
+  return response.data.rows;
 }
 /*async function submitSchool(geohash) {
   if (onboardingScreenIndex != 2) return;
@@ -292,23 +290,23 @@ async function uploadUserContacts(username, contactsList) {
   }
 }
 
-module.exports = {
-  isOnboarding,
+export {
+ // isOnboarding,
   submitPFP,
   fetchAddFriendsOnboarding,
   verifyStatus,
-  submitAge,
-  submitGrade,
+  //submitAge,
+ // submitGrade,
   fetchSchools,
-  submitSchool,
+  //submitSchool,
   fetchAllAddFriendsOnboardingPages,
   submitPhoneNumber,
   submitOTP,
-  submitFirstName,
-  submitLastName,
-  submitUsername,
+  //submitFirstName,
+ // submitLastName,
+ // submitUsername,
   submitGender,
   checkSubmitProfile,
-  back,
+ // back,
   uploadUserContacts,
 };

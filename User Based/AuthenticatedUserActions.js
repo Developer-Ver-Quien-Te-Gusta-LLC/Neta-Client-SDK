@@ -1,10 +1,9 @@
-const Cache = require("../Cache.js");
-const Endpoints = require("../Endpoints.js");
-const Alby = require("./Notifications/In-App/60Sec Workaround/Ably.js");
-const AxiosSigned = require("../AxiosSigned.js");
+//const Endpoints = require("../Endpoints.js");
+//import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
+import * as AxiosSigned from "../utils/AxiosSigned.js";
 
 
-const crypto = require('crypto');
+import * as crypto from 'crypto';
 
 /// invoked to invite a user
 /// context = "add", "invite", "share"
@@ -143,7 +142,7 @@ async function FetchPollsNow() {
     const res = await AxiosSigned.post(endpoint, jwt, null, null);
     return res;
 }
-module.exports={inviteUser,
+export{inviteUser,
     OnPollReveal,
     ReadInbox,
     DispatchVote,

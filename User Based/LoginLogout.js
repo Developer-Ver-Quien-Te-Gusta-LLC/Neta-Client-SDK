@@ -1,18 +1,18 @@
-const Cache = require("../Cache.js");
-const Endpoints = require("../Endpoints.js");
-const Alby = require("./Notifications/In-App/60Sec Workaround/Ably.js");
-const AxiosSigned = require("../AxiosSigned.js");
+import {FetchEndpointsFromKV} from "../utils/Endpoints.js";
+import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
+import * as AxiosSigned from "../utils/AxiosSigned.js";
 
-const crypto = require('crypto');
+import * as crypto from 'crypto';
 
-const LoginToCognito = require("./LoginToCognito")
+import * as LoginToCognito from "./LoginToCognito.js";
 
 var endpoints;
-async function fetchEndpoints() {
-    endpoints = Endpoints.fetch();
-} 
 
-fetchEndpoints();
+async function InitializeEndpoints() {
+  endpoints = await FetchEndpointsFromKV();
+}
+
+InitializeEndpoints();
 
 //// used to decrypt all Alby data
 function decryptAES256(encryptedText, key) {
@@ -114,4 +114,4 @@ async function handleAlbyData(data) {
     data = decryptAES256(data, Cache.getString("albyDecryptionKey"))
     for (listener in listeners) listener(data)
 }
-module.exports= {login, logout, logoutAndDelete, addRealtimeListener, removeRealtimeListener}
+export {login, logout, logoutAndDelete, addRealtimeListener, removeRealtimeListener}

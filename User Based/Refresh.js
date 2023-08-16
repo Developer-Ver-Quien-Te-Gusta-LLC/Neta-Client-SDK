@@ -1,20 +1,21 @@
-const Cache = require("../Cache.js");
-const Endpoints = require("../Endpoints.js");
-const Alby = require("./Notifications/In-App/60Sec Workaround/Ably.js");
-const AxiosSigned = require("../AxiosSigned.js");
+import {FetchEndpointsFromKV} from "../utils/Endpoints.js";
+import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
+import * as AxiosSigned from "../utils/AxiosSigned.js";
+import * as LoginToCognito from "./LoginToCognito.js";
 
-const LoginToCognito = require("./LoginToCognito")
+var endpoints;
+async function InitializeEndpoints() {
+  endpoints = await FetchEndpointsFromKV();
+}
 
-
-
-fetchEndpoints();
+InitializeEndpoints();
 
 /// TODO: LoginToCognito resets inboxData.pageKey and pageKey and addPageKey 
 
 /// invoked by the user to refresh with either
 /// home, all, add, inbox, profile, invite
 /// page is for 'add' only and is stored in cache 'nextPageKey'
-async function fetch(screen = "home") {
+async function RefreshScreen(screen = "home") {
   await LoginToCognito();
   const jwt = Cache.get("jwt");
   const url = endpoints["/refresh"];
@@ -98,4 +99,4 @@ async function fetch(screen = "home") {
   }
 }
 
-module.exports= {fetch}
+export{RefreshScreen}

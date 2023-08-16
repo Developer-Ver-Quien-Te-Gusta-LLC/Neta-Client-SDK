@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+import * as crypto from 'crypto';
 const algorithm = 'aes-256-cbc';
 // Decrypt function
 async function decrypt(text, key) {
@@ -12,4 +12,4 @@ async function decrypt(text, key) {
   }
 
   
-module.exports = { decrypt };
+export { decrypt };

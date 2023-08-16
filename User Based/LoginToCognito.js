@@ -1,10 +1,9 @@
-const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
-const Cache = require('../Cache.js');
-const KV = require('../KV.js');
+import * as AmazonCognitoIdentity from 'amazon-cognito-identity-js';
+import * as KV from '../utils/KV.js';
 
 let userPoolId, clientId;
 async function fetch() {
-    var {_userPoolId, _clientId} = await KV.fetch(["UserPoolId", ["ClientId"]])
+    var {_userPoolId, _clientId} = await KV._fetch(["UserPoolId", ["ClientId"]])
     userPoolId = _userPoolId;
     clientId = _clientId;
 }
@@ -53,4 +52,4 @@ async function loginToCognito() {
     });
 }
 
-module.exports= {loginToCognito};
+export {loginToCognito};

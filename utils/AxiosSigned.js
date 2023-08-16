@@ -1,6 +1,5 @@
-const axios = require('axios');
-
-async function get(data) {
+import axios from 'axios';
+async function _get(data) {
     const {uri, jwt, body, queryString, queryStr, params} = data;
     if (queryString != undefined) {
         queryStr = queryString;
@@ -32,7 +31,7 @@ async function get(uri, jwt = null, qString = null, body = null) {
     }
 
     try {
-        const response = await axios(options);
+        const response = await axios.request(options);
         return response.data;
     } catch (error) {
         console.error(`Error in GET request: ${error}`);
@@ -40,7 +39,7 @@ async function get(uri, jwt = null, qString = null, body = null) {
     }
 }
 
-async function post(data) {
+async function _post(data) {
     const {uri, jwt, body, queryString, queryStr, params} = data;
     if (queryString != undefined) {
         queryStr = queryString;
@@ -81,7 +80,7 @@ async function post(uri, jwt = null, qString = null, body = null) {
     }
 }
 
-async function put(data) {
+async function _put(data) {
     const {uri, jwt, body, queryString, queryStr, params} = data;
     if (queryString != undefined) {
         queryStr = queryString;
@@ -123,4 +122,4 @@ async function put(uri, jwt = null, qString = null, body = null) {
 }
 
 
-export {get, post, put}
+export {get, post, put,_post,_put,_get}

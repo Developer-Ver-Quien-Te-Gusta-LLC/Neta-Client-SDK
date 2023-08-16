@@ -1,10 +1,10 @@
-const fs = require('fs');
-const axios = require('axios');
-const path = require('path');
-const crypto = require('crypto');
-const KV = require('./KV.js')
+import * as fs from 'fs';
+import * as axios from 'axios';
+import * as path from 'path';
+import * as crypto from 'crypto';
+import * as KV from './KV.js';
 
-const isTesting = false;
+const isTesting = true;
 async function fetch() {
     
     if(!isTesting)downloadAllOrMissingImages(JSON.parse(await KV.fetch("Assets").data.value), "./downloads");
@@ -68,5 +68,6 @@ async function getFileHash(path) {
         stream.on('error', (err) => reject(err));
     });
 }
-fetch()
-module.exports = fetch();
+
+
+export{fetch};

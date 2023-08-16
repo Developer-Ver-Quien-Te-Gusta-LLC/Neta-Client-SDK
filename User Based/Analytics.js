@@ -1,16 +1,13 @@
 //const AxiosSigned = require("../AxiosSigned.js");
-var Cache = require("../Cache.js");
-const Endpoints = require("../Endpoints.js");
+import {FetchEndpointsFromKV} from "../utils/Endpoints.js";
+import * as AxiosSigned from "../utils/AxiosSigned.js";
 var endpoints;
-const AxiosSigned = require("../AxiosSigned.js");
-
 // Fetching the endpoints
-async function fetchEndpoints() {
-    // Fetch and store endpoints 
-    endpoints = await Endpoints.fetch();
+async function InitializeEndpoints() {
+  endpoints = await FetchEndpointsFromKV();
 }
-// Call the function to fetch endpoints
-fetchEndpoints()
+
+InitializeEndpoints();
 
 const secondsBetweenDispatching = [5, 20]
 const pushMax = 10; // if there are more than this many than batch instantly
@@ -70,4 +67,4 @@ async function SendAnalyticsAPI(events) {
 
 //#endregion
 
-module.exports= {SendAnalytics, forceDispatch};
+export {SendAnalytics, forceDispatch};

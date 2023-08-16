@@ -1,8 +1,7 @@
-const Ably = require("ably");
+import * as Ably from "ably";
 let timer;
-const KV = require("../../KV.js");
+import * as KV from "../../KV.js";
 
-const cache = require("../../Cache.js")
 
 var realtime;
 var channel;
@@ -11,9 +10,9 @@ async function SetupAbly(){
     realtime = new Ably.Realtime(AblyKey);
 }
 
-SetupAbly();
+//SetupAbly();
 
-const decryption = require("../../Decryption.js");
+import * as decryption from "../../../utils/Decryption.js";
 
 // Keep track of subscribed channels
 const subscribedChannels = new Set();
