@@ -10,75 +10,75 @@ InitializeEndpoints();
 
 
 //#region Friend System
-async function OnFriendRequest(friendPN) {
+async function OnFriendRequest(friendPN,jwt) {
   const QueryString = { friend: friendPN };
   const endpoint = endpoints["/friends/request"];
-  const jwt = Cache.getString("jwt");
+  //const jwt = Cache.getString("jwt");
 
   const res = await AxiosSigned.post(endpoint, jwt, QueryString, null);
   return res;
 }
 
-async function AcceptFriendRequest(friendPN) {
+async function AcceptFriendRequest(friendPN,jwt) {
   const endpoint = endpoints["/friends/accept"];
   const QueryString = { friend: friendPN };
 
-  const jwt = Cache.getString("jwt");
+  //const jwt = Cache.getString("jwt");
 
   const res = await AxiosSigned.post(endpoint, jwt, QueryString, null);
   return res;
 }
 
-async function HideFriendRequestfriendPN(friendPN) {
+async function HideFriendRequestfriendPN(friendPN,jwt) {
   const endpoint = endpoints["/friends/hide"];
   const QueryString = { friend: friendPN };
 
-  const jwt = Cache.getString("jwt");
+ // const jwt = Cache.getString("jwt");
 
   const res = await AxiosSigned.post(endpoint, jwt, QueryString, null);
   return res;
 }
 
-async function AddFriend(friendPN) {
+async function AddFriend(friendPN,jwt) {
   const endpoint = endpoints["/friends/add"];
   const QueryString = { friend: friendPN };
 
-  const jwt = Cache.getString("jwt");
+  //const jwt = Cache.getString("jwt");
 
   const res = await AxiosSigned.post(endpoint, jwt, QueryString, null);
   return res;
 }
 
-async function RemoveFriend(friendPN) {
+async function RemoveFriend(friendPN,jwt) {
   const endpoint = endpoints["/friends/remove"];
   const QueryString = { friend: friendPN };
 
-  const jwt = Cache.getString("jwt");
+  //const jwt = Cache.getString("jwt");
 
   const res = await AxiosSigned.post(endpoint, jwt, QueryString, null);
   return res;
 }
-async function BlockFriend(friendPN) {
+async function BlockFriend(friendPN,jwt) {
   const endpoint = endpoints["/friends/remove"];
   const QueryString = { friend: friendPN };
 
-  const jwt = Cache.getString("jwt");
+  //const jwt = Cache.getString("jwt");
 
   const res = await AxiosSigned.post(endpoint, jwt, QueryString, null);
   return res;
 }
 
-async function ResetBlockList() {
+async function ResetBlockList(jwt) {
   const endpoint = endpoints["/friends/resetBlockList"];
-  const jwt = Cache.getString("jwt");
+ // const jwt = Cache.getString("jwt");
 
   const res = await AxiosSigned.post(endpoint, jwt, null, null);
   return res;
 }
 
-async function ResetHideList() {
+async function ResetHideList(jwt) {
   const endpoint = endpoints["/friends/resetHideList"];
-  const jwt = Cache.getString("jwt");
+  //const jwt = Cache.getString("jwt");
 
   const res = await AxiosSigned.post(endpoint, jwt, null, null);
   return res;
