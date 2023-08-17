@@ -1,4 +1,4 @@
-import * as crypto from 'crypto';
+//import * as crypto from 'crypto';
 import {FetchEndpointsFromKV} from "../utils/Endpoints.js";
 import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
 import * as AxiosSigned from "../utils/AxiosSigned.js";
@@ -16,7 +16,7 @@ async function InitializeEndpoints() {
 InitializeEndpoints();
 
 //// used to decrypt all Alby data
-function decryptAES256(encryptedText, key) {
+/*function decryptAES256(encryptedText, key) {
     const iv = encryptedText.slice(0, 16);
     const content = encryptedText.slice(16);
     const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
@@ -25,7 +25,7 @@ function decryptAES256(encryptedText, key) {
     decrypted += decipher.final('utf8');
     
     return decrypted;
-}
+}*/
 
 
 async function login(phoneNumber,otp) {
@@ -59,26 +59,16 @@ async function login(phoneNumber,otp) {
     return [response.data.polls,jwt];
   }
 
-async function logout() {
+async function logout(jwt) {
     isOnboarding = false;
     onboardingScreenIndex = 0;
-    Cache.set("isOnboarding", isOnboarding)
-    Cache.set("onboardingScreenIndex", onboardingScreenIndex)
-    const jwt = Cache.getString("jwt");
+    //Cache.set("isOnboarding", isOnboarding)
+    //Cache.set("onboardingScreenIndex", onboardingScreenIndex)
+   // const jwt = Cache.getString("jwt");
     await AxiosSigned.post(endpoints["/logout"],jwt,null,null);
     Alby.removeListener();
 }
 
-/// invoked when login is clicked from splash
-/// which basically invokes submit profile without any cached data
-async function loginFromStart() {
-    const response = await AxiosSigned.get(url, {phoneNumber : Cache.getString("phoneNumber")}, qstring);
-    if (response.data.alreadySubmitted) {
-        /// TODO: handle success by going to home screen
-    } else {
-        /// TODO: handle failure by allowing user to re-enter pn
-    }
-}
 
 async function logoutAndDelete() {
     logout();
