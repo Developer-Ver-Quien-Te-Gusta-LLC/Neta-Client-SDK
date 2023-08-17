@@ -92,11 +92,11 @@ async function submitOTP(phoneNumber,otp) {
 }
 
 /// Invoke by the user to check if their phone number is already verified
-async function verifyStatus() {
+async function verifyStatus(phoneNumber,otp) {
   if (onboardingScreenIndex != 4) return;
-  var phoneNumber = Cache.get("phoneNumber");
+  //var phoneNumber = Cache.get("phoneNumber");
   const url = endpoints["/verifypn/fetchStatus"];
-  const qString = { phoneNumber, otp: Cache.getString("jwt") };
+  const qString = { phoneNumber, otp: otp };
   const response = await AxiosSigned.get(url, null, qstring);
   if (response.data.success) {
     onboardingScreenIndex++;
