@@ -156,7 +156,7 @@ async function submitGender(gender,username,firstname,lastname,phonenumber,highs
   Alby.setupAlbyWithChannel(topicName, handleSubmitProfileResponseAlby);
 }
 
-async function checkSubmitProfile() {
+async function checkSubmitProfile(phoneNumber) {
   //if (onboardingScreenIndex != 8) return;
   const url = endpoints["/submitProfile/fetchStatus"];
   const response = await AxiosSigned.get(url);
