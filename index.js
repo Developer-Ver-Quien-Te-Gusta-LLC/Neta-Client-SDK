@@ -2,7 +2,6 @@ import * as Analytics from "./User Based/Analytics.js";
 import * as AuthenticatedUserActions from "./User Based/AuthenticatedUserActions.js";
 import * as FriendSystem from "./User Based/FriendSystem.js";
 import * as loginLogout from  "./User Based/LoginLogout.js";
-import * as LoginToCognito from "./User Based/LoginToCognito.js";
 import * as registrationFlow from "./User Based/RegistrationFlow.js";
 import * as refresh from "./User Based/Refresh.js";
 import * as InAppNotifsHandler from "./utils/Notifications/In-App/InAppNotifsHandler.js";
@@ -64,7 +63,6 @@ export {
   Analytics,
   AuthenticatedUserActions,
   FriendSystem,
-  LoginToCognito,
   loginLogout,
   registrationFlow,
   refresh,
