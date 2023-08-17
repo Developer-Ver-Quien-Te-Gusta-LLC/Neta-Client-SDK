@@ -55,7 +55,7 @@ async function login(phoneNumber,otp) {
     } else if (response.data.polls == undefined) {
         /// TODO: show screen that says "add friends" bc no polls are avail.
     }
-    return response.data.polls;
+    return [response.data.polls,jwt];
   }
 
 async function logout() {
