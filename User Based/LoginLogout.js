@@ -27,17 +27,15 @@ function decryptAES256(encryptedText, key) {
 }
 
 
-async function login() {
-    await LoginToCognito();
-    jwt = Cache.get("jwt")
-  
+async function login(phoneNumber,otp) {
+    jwt = await LoginToCognito(phoneNumber,otp);
     const url = endpoints["/login"];
     const response = await AxiosSigned.get(url, {jwt});
     loginFuncCache = JSON.stringify(response.data) /// cache login resp
-    Cache.set("loginFuncCache", loginFuncCache)
-    Cache.set("unreadCount", JSON.parse(loginFuncCache).unreadCount)
-    Cache.set("albyChannelId", response.data.albyChannelId);
-    Cache.set("albyDecryptionKey", response.data.albyDecryptionKey);
+  //  Cache.set("loginFuncCache", loginFuncCache)
+   // Cache.set("unreadCount", JSON.parse(loginFuncCache).unreadCount)
+    //Cache.set("albyChannelId", response.data.albyChannelId);
+  //  Cache.set("albyDecryptionKey", response.data.albyDecryptionKey);
     Alby.setupAlbyWithChannel(response.data.albyChannelId, handleAlbyData);
     if (response.data.deleted != undefined) {
         var deleteNow = response.data.deleted;
