@@ -100,7 +100,7 @@ async function verifyStatus(phoneNumber,otp) {
   const response = await AxiosSigned.get(url, null, qstring);
   if (response.data.success) {
     onboardingScreenIndex++;
-    Cache.set("onboardingScreenIndex", onboardingScreenIndex);
+   // Cache.set("onboardingScreenIndex", onboardingScreenIndex);
   }
   return response.data.success;
 }
@@ -157,12 +157,12 @@ async function submitGender(gender,username,firstname,lastname,phonenumber,highs
 }
 
 async function checkSubmitProfile() {
-  if (onboardingScreenIndex != 8) return;
+  //if (onboardingScreenIndex != 8) return;
   const url = endpoints["/submitProfile/fetchStatus"];
   const response = await AxiosSigned.get(url);
   if (response.data.resolved) {
-    onboardingScreenIndex++;
-    Cache.set("onboardingScreenIndex", onboardingScreenIndex);
+    //onboardingScreenIndex++;
+    //Cache.set("onboardingScreenIndex", onboardingScreenIndex);
   }
   return response.data.resolved;
 }
