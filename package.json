@@ -20,6 +20,7 @@
     "ably": "^1.2.43",
     "amazon-cognito-identity-js": "^6.3.2",
     "axios": "^1.4.0",
+    "crypto": "^1.0.1",
     "form-data": "^4.0.0",
     "latlon-geohash": "^2.0.0",
     "mixpanel": "^0.17.0",
