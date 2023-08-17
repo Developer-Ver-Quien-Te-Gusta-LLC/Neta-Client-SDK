@@ -9,14 +9,14 @@ async function fetch() {
 }
 fetch()
 
-async function loginToCognito() {
+async function loginToCognito(phoneNumber,otp) {
     /// reset pagination keys for add and inbox
-    Cache.set("pageKey", undefined);
-    Cache.set("pageKeyAdd", undefined)
-    if (Cache.getBoolean("isOnboarding") === false) return; // if onboarding do nothing
+   // Cache.set("pageKey", undefined);
+   // Cache.set("pageKeyAdd", undefined)
+ //   if (Cache.getBoolean("isOnboarding") === false) return; // if onboarding do nothing
 
-    var phoneNumber = Cache.getString("phoneNumber");
-    var otp = Cache.getString("otp");
+   // var phoneNumber = Cache.getString("phoneNumber");
+   // var otp = Cache.getString("otp");
     
     const poolData = { 
         UserPoolId: userPoolId,
@@ -42,8 +42,9 @@ async function loginToCognito() {
     cognitoUser.authenticateUser(authenticationDetails, {
         onsuccess: function (result) {
             const jwt = result.getIdToken().getJwtToken();
+            return jwt;
             // store jwt in Cache
-            Cache.set("jwt", jwt);
+           // Cache.set("jwt", jwt);
         },
 
         onFailure: function(err) {
