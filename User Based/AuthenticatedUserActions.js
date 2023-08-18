@@ -152,6 +152,7 @@ async function submitProfileChange(gender, fname, lname, username, reduceNotific
         var msgEn = res.data.error_EN; // ignore this
         
         //TODO; DISPLAY!
+    }
     return res;
 }
 
