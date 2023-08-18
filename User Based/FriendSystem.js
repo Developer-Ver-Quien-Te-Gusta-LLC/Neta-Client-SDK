@@ -38,17 +38,6 @@ async function HideFriendRequestfriendPN(friendPN,jwt) {
   const res = await AxiosSigned.post(endpoint, jwt, QueryString, null);
   return res;
 }
-
-async function AddFriend(friendPN,jwt) {
-  const endpoint = endpoints["/friends/add"];
-  const QueryString = { friend: friendPN };
-
-  //const jwt = Cache.getString("jwt");
-
-  const res = await AxiosSigned.post(endpoint, jwt, QueryString, null);
-  return res;
-}
-
 async function RemoveFriend(friendPN,jwt) {
   const endpoint = endpoints["/friends/remove"];
   const QueryString = { friend: friendPN };
@@ -90,7 +79,6 @@ export {
   OnFriendRequest,
   AcceptFriendRequest,
   HideFriendRequestfriendPN,
-  AddFriend,
   RemoveFriend,
   BlockFriend,
   ResetBlockList,
