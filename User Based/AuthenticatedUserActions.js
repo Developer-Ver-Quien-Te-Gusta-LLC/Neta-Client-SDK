@@ -156,6 +156,14 @@ async function submitProfileChange(gender, fname, lname, username, reduceNotific
     return res;
 }
 
+/// data = username, grade, username, numberOfStars
+async function queryProfile(phoneNumber) {
+    const endpoint = endpoints["/queryprofile"];
+    //const jwt = Cache.getString("jwt");
+    const res = await AxiosSigned.post(endpoint, null, {phoneNumber: phoneNumber},);
+    return res;
+}
+
 async function submitPFP(filePath) {
  // if (onboardingScreenIndex != 9) return;
   //onboardingScreenIndex++;
@@ -216,6 +224,7 @@ async function FetchPollsNow(jwt = null) {
     return res;
 }
 export{
+    queryProfile,
     inviteUser,
     submitPFP,
     submitProfileChange,
