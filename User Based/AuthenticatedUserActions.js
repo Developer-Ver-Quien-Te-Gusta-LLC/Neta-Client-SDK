@@ -2,9 +2,41 @@
 //import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
 import * as AxiosSigned from "../utils/AxiosSigned.js";
 
+async function submitPFP(filePath) {
+    // if (onboardingScreenIndex != 9) return;
+     //onboardingScreenIndex++;
+    // Cache.set("onboardingScreenIndex", onboardingScreenIndex);
+     try {
+       const file = await fs.readFile(filePath, { encoding: "base64" }); // read file as base64
+       const buffer = Buffer.from(file, "base64"); // convert base64 to buffer
+       const filename = path.basename(filePath); // get the filename with extension
+       const mimetype = mime.lookup(filePath); // get the MIME type of the file
+   
+       const data = new FormData(); // create form data
+       data.append("file", buffer, {
+         filename: filename, // provide actual file name
+         contentType: mimetype || "application/octet-stream", // provide actual file type or default to 'application/octet-stream'
+       });
+   
+       const response = await axios({
+         method: "POST",
+         url: endpoints["/uploadpfp"],
+         data: data,
+         headers: {
+           ...data.getHeaders(), // append form-data specific headers
+           Authorization: Cache.getString("jwt"), // your custom authorization header
+         },
+       });
+   
+       console.log("File uploaded successfully: ", response.data);
+     } catch (error) {
+       console.error("Error uploading file: ", error);
+     }
+   }
+
 /// invoked to invite a user
 /// context = "add", "invite", "share"
-async function inviteUser(phoneNumber, context = "add",isOnboarding,jwt) {
+async function inviteUser(phoneNumber, context = "add",isOnboarding,jwt = null) {
     try {
         // Check if onboarding is still happening
         if (isOnboarding) {
@@ -46,7 +78,7 @@ async function inviteUser(phoneNumber, context = "add",isOnboarding,jwt) {
         return { success: false, message: error.message || "An error occurred while inviting the user" };
     }
 }
-async function fetchInvite(UID,isOnboarding,jwt) {
+async function fetchInvite(UID,isOnboarding,jwt = null) {
     try {
         // Check if onboarding is still happening
         if (isOnboarding) {
@@ -88,7 +120,7 @@ async function fetchInvite(UID,isOnboarding,jwt) {
         return { success: false, message: error.message || "An error occurred while fetching the invitation" };
     }
 }
-async function OnPollReveal(messageUID,answerFirstLetter,jwt) {
+async function OnPollReveal(messageUID,answerFirstLetter,jwt = null) {
     const QueryString = { messageUID: messageUID, firstLetter: answerFirstLetter };
     const endpoint = endpoints["/OnPollRevealed"];
    // const jwt = Cache.getString("jwt");
@@ -96,7 +128,7 @@ async function OnPollReveal(messageUID,answerFirstLetter,jwt) {
     return res;
 }
 
-async function ReadInbox(separator, messages,jwt) {
+async function ReadInbox(separator, messages,jwt = null) {
     const QueryString = { messages: messages, separator: separator };
     const endpoint = endpoints["/readInbox"];
     //const jwt = Cache.getString("jwt");
@@ -104,7 +136,8 @@ async function ReadInbox(separator, messages,jwt) {
     return res;
 }
 
-async function DispatchVote(polls,jwt) {
+/// TODO: impl
+async function DispatchVote(polls,jwt = null) {
     const endpoint = endpoints["/registerPolls"];
     //const jwt = Cache.getString("jwt");
     const QueryString = { polls: polls };
@@ -112,7 +145,44 @@ async function DispatchVote(polls,jwt) {
     return res;
 }
 
-async function RequestDeletion(jwt) {
+async function submitProfileChange(gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode) {
+    const res = await AxiosSigned.post(endpoints["/submitProifleChange"], null, null, {gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode});
+    return res;
+}
+
+async function submitPFP(filePath) {
+ // if (onboardingScreenIndex != 9) return;
+  //onboardingScreenIndex++;
+ // Cache.set("onboardingScreenIndex", onboardingScreenIndex);
+  try {
+    const file = await fs.readFile(filePath, { encoding: "base64" }); // read file as base64
+    const buffer = Buffer.from(file, "base64"); // convert base64 to buffer
+    const filename = path.basename(filePath); // get the filename with extension
+    const mimetype = mime.lookup(filePath); // get the MIME type of the file
+
+    const data = new FormData(); // create form data
+    data.append("file", buffer, {
+      filename: filename, // provide actual file name
+      contentType: mimetype || "application/octet-stream", // provide actual file type or default to 'application/octet-stream'
+    });
+
+    const response = await axios({
+      method: "POST",
+      url: endpoints["/uploadpfp"],
+      data: data,
+      headers: {
+        ...data.getHeaders(), // append form-data specific headers
+        Authorization: Cache.getString("jwt"), // your custom authorization header
+      },
+    });
+
+    console.log("File uploaded successfully: ", response.data);
+  } catch (error) {
+    console.error("Error uploading file: ", error);
+  }
+}
+
+async function RequestDeletion(jwt = null) {
    // const jwt = Cache.getString("jwt");
     if (!jwt) {
         console.error("No jwt in the cache");
@@ -122,7 +192,7 @@ async function RequestDeletion(jwt) {
     const res = await AxiosSigned.post(url, jwt, null, null);
     return res;
 }
-async function DisableDeletion(jwt) {
+async function DisableDeletion(jwt = null) {
    // const jwt = Cache.getString("jwt");
     if (!jwt) {
         console.error("No jwt in the cache");
@@ -132,13 +202,17 @@ async function DisableDeletion(jwt) {
     const res = await AxiosSigned.post(url, jwt, null, null);
     return res;
 }
-async function FetchPollsNow(jwt) {
+
+async function FetchPollsNow(jwt = null) {
     const endpoint = endpoints["/fetchPollsNow"];
    // const jwt = Cache.getString("jwt");
     const res = await AxiosSigned.post(endpoint, jwt, null, null);
     return res;
 }
-export{inviteUser,
+export{
+    inviteUser,
+    submitPFP,
+    submitProfileChange,
     OnPollReveal,
     ReadInbox,
     DispatchVote,
