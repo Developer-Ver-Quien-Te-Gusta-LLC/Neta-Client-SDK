@@ -140,7 +140,7 @@ async function submitGender(gender,username,firstname,lastname,phonenumber,highs
     lastName: lastname,
     phoneNumber: phonenumber,
     highschool: highschool,
-    gender: Cache.get("gender"),
+    gender: gender,
     age: age,
     //school: Cache.get("school"),
     otp: otp,
