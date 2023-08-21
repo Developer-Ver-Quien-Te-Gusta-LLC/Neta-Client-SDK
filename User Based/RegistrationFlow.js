@@ -306,6 +306,7 @@ export {
   submitPFP,
   fetchAddFriendsOnboarding,
   verifyStatus,
+  isGeofenced,
   //submitAge,
  // submitGrade,
   fetchSchools,
