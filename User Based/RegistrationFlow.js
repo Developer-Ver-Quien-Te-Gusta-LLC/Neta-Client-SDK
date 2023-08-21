@@ -57,6 +57,17 @@ async function fetchSchools(schoolName = undefined, latitude, longitude) {
   // Cache.set("schools", JSON.stringify(response.data.rows));
   return response.data.rows;
 }
+
+async function isGeofenced() {
+  const geohashValue = geohash.encode(latitude, longitude);
+  //Cache.set("geohash", geohashValue);
+
+  // use the geohash value to get the schools
+  const url = endpoints["checkLocationStatus"];
+  const qstring = { clientlocation: geohashValue };
+  const response = await AxiosSigned.get(url, undefined, qstring);
+  return response.data.geofenced
+}
 /*async function submitSchool(geohash) {
   if (onboardingScreenIndex != 2) return;
   Cache.set("school", geohash);
