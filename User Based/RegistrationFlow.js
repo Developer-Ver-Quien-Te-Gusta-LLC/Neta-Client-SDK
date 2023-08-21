@@ -5,6 +5,7 @@ import * as AxiosSigned from "../utils/AxiosSigned.js";
 import * as geohash from "latlon-geohash";
 import * as path from 'path';
 import * as mime from 'mime-types';
+import { setStorage, getStorage } from "../utils/AsyncStorage.js";
 
 /*var isOnboarding = true;
 var onboardingScreenIndex = 0;*/
@@ -182,8 +183,8 @@ async function handleSubmitProfileResponseAlby(data) {
   if (onboardingScreenIndex != 8) return;
   if (data.success) {
     onboardingScreenIndex++;
-    Cache.set("onboardingScreenIndex", onboardingScreenIndex);
-    login(Cache.get("username"), Cache.get("otp"));
+    setStorage("onboardingScreenIndex", onboardingScreenIndex);
+    login(await getStorage("username"), await getStorage("otp"));
   }
 }
 
@@ -218,7 +219,7 @@ async function submitPFP(filePath) {
       data: data,
       headers: {
         ...data.getHeaders(), // append form-data specific headers
-        Authorization: Cache.getString("jwt"), // your custom authorization header
+        Authorization: await getStorage("jwt"), // your custom authorization header
       },
     });
 
@@ -231,14 +232,14 @@ async function submitPFP(filePath) {
 async function fetchAddFriendsOnboarding(pagenumber = 1) {
   if (onboardingScreenIndex != 10) return;
   onboardingScreenIndex++;
-  Cache.set("onboardingScreenIndex", onboardingScreenIndex);
+  setStorage("onboardingScreenIndex", onboardingScreenIndex);
 
-  const jwt = Cache.get("jwt");
+  const jwt = await getStorage("jwt");
   const url = endpoints["/onboarding/addfriends"];
   const response = await AxiosSigned.get(url, jwt, { pagenumber });
   if (response.success) {
-    Cache.set("addFriendsOnboarding", JSON.stringify(response.data));
-    Cache.set("addFriendsOnboardingNextPage", response.nextPage);
+    setStorage("addFriendsOnboarding", JSON.stringify(response.data));
+    setStorage("addFriendsOnboardingNextPage", response.nextPage);
     return response.data;
   }
 }
@@ -256,7 +257,7 @@ async function fetchAllAddFriendsOnboardingPages() {
     }
 
     data = data.concat(pageData);
-    pagenumber = Cache.get("addFriendsOnboardingNextPage");
+    pagenumber = await getStorage("addFriendsOnboardingNextPage");
   }
   return data;
 }

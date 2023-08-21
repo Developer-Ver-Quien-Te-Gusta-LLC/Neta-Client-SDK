@@ -2,6 +2,7 @@ import {FetchEndpointsFromKV} from "../utils/Endpoints.js";
 import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
 import * as AxiosSigned from "../utils/AxiosSigned.js";
 import * as LoginToCognito from "./LoginToCognito.js";
+import { setStorage, getStorage } from "../utils/AsyncStorage.js";
 
 var endpoints;
 async function InitializeEndpoints() {
@@ -17,22 +18,22 @@ InitializeEndpoints();
 /// page is for 'add' only and is stored in cache 'nextPageKey'
 async function RefreshScreen(screen = "home") {
   await LoginToCognito();
-  const jwt = Cache.get("jwt");
+  const jwt = await getStorage("jwt");
   const url = endpoints["/refresh"];
   var qStrng = {
     jwt,
     requestedScreen: screen,
   }
-  if (screen == "inbox" && Cache.getString("pageKey") != undefined) {
-    qStrng.page = Cache.getString("pageKey")
-  } else if (screen == "add" && Cache.get("addPageKey") != undefined) {
-    qStrng.page = Cache.getString("addPageKey")
+  if (screen == "inbox" && await getStorage("pageKey") != undefined) {
+    qStrng.page = await getStorage("pageKey")
+  } else if (screen == "add" && await getStorage("addPageKey") != undefined) {
+    qStrng.page = await getStorage("addPageKey")
   }
   const response = await AxiosSigned.get(url, qStrng);;
 
   // Cache and setup Alby
-  Cache.set("albyChannelId", response.data.albyChannelId);
-  Cache.set("albyDecryptionKey", response.data.albyDecryptionKey);
+  setStorage("albyChannelId", response.data.albyChannelId);
+  setStorage("albyDecryptionKey", response.data.albyDecryptionKey);
   Alby.setupAlbyWithChannel(response.data.albyChannelId, handleAlbyData);
 
   // Return the data based on the requested screen
@@ -47,12 +48,12 @@ async function RefreshScreen(screen = "home") {
       albyDecryptionKey,
     } = response.data;
     // Cache data
-    Cache.set("homeData", home);
-    Cache.set("addData", add);
-    Cache.set("inboxData", inbox);
-    Cache.set("profileData", { [response.requestedProfile]: profile });
-    Cache.set("inviteData", invite);
-    Cache.set("FriendRequests", response.data.profile.friendRequests.count);
+   setStorage("homeData", home);
+   setStorage("addData", add);
+   setStorage("inboxData", inbox);
+   setStorage("profileData", { [response.requestedProfile]: profile });
+   setStorage("inviteData", invite);
+   setStorage("FriendRequests", response.data.profile.friendRequests.count);
     return {
       home,
       add,
@@ -65,36 +66,36 @@ async function RefreshScreen(screen = "home") {
     };
   } else if (screen === "home") {
     // Cache data
-    Cache.set("homeData", response.data.data);
+   setStorage("homeData", response.data.data);
     return response.data.data;
   } else if (screen === "add") {
     // Cache data
     const addData = response.data.data;
-    Cache.set("addData", addData);
-    if (response.data.nextPage) Cache.set("addPageKey", response.data.nextPage);
+   setStorage("addData", addData);
+    if (response.data.nextPage)setStorage("addPageKey", response.data.nextPage);
     return addData;
 } else if (screen === "inbox") {
     // Cache data
-    Cache.set("inboxData", response.data.data);
-    if (response.data.nextPageKey) Cache.set("pageKey", response.data.nextPageKey);
-    Cache.set("unreadCount", response.data.unreadCount)
+   setStorage("inboxData", response.data.data);
+    if (response.data.nextPageKey)setStorage("pageKey", response.data.nextPageKey);
+   setStorage("unreadCount", response.data.unreadCount)
     return {inboxData: response.data.inbox, unreadCount: response.data.unreadCount};
   } else if (screen === "profile") {
     if (req.query.requestedProfile == undefined) {
       // Cache data
-      Cache.set("profileData", {
+     setStorage("profileData", {
         [response.requestedProfile]: response.data.userData,
       });
       return response.data.userData;
     }
     // Cache data
-    Cache.set("profileData", {
+   setStorage("profileData", {
       [response.requestedProfile]: response.data.data,
     });
     return response.data.data;
   } else if (screen === "invite") {
     // Cache data
-    Cache.set("inviteData", response.data.data);
+   setStorage("inviteData", response.data.data);
     return response.data.data;
   }
 }

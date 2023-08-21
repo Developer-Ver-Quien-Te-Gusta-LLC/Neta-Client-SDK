@@ -1,10 +1,12 @@
 import * as Ably from "ably";
-let timer;
 import * as KV from "../../KV.js";
+import { setStorage, getStorage } from "../../AsyncStorage.js";
 
+let timer;
 
 var realtime;
 var channel;
+
 async function SetupAbly(){
     const AblyKey = await KV.fetch("AblyAPIClientKey");
     realtime = new Ably.Realtime(AblyKey);
@@ -19,7 +21,7 @@ const subscribedChannels = new Set();
 
 let inboxReceivedListener, friendEventReceievedListener, modalReceievedListener;
 
-function setupInAppNotifications(transactionID, encryptionKey) {
+async function setupInAppNotifications(transactionID, encryptionKey) {
     // Cancel any pending disconnection
     if (timer) clearTimeout(timer);
 
@@ -37,7 +39,7 @@ function setupInAppNotifications(transactionID, encryptionKey) {
                     if (parsedData.inbox != null) {
                         /// CASE: poll sent to this user
                       // Get current cache data
-                      let inboxData = Cache.get("inboxData") || [];
+                      let inboxData = await getStorage("inboxData") || [];
                       
                       // Combine the old data with the new data
                       inboxData = inboxData.concat(parsedData.inbox);
@@ -46,10 +48,10 @@ function setupInAppNotifications(transactionID, encryptionKey) {
                       inboxData.sort((a, b) => b.pushedTime - a.pushedTime);
                       
                       // Store the sorted data back in cache
-                      Cache.set("inboxData", inboxData);
+                     setStorage("inboxData", inboxData);
                     
                       var unreadCount;
-                      Cache.set("unreadCount", unreadCount = (parseInt(cache.getString("unreadCount") + 1).toString())) /// another line of code from a paranoid react native programmer
+                     setStorage("unreadCount", unreadCount = (parseInt(await getStorage("unreadCount") + 1).toString())) /// another line of code from a paranoid react native programmer
 
                       inboxReceivedListener(unreadCount, inboxData)
                     } else if (parsedData.friends != undefined) {
@@ -81,11 +83,11 @@ function setupInAppNotifications(transactionID, encryptionKey) {
 }
 
 
-function removeListener(){
+async function removeListener(){
     channel.unsubscribe();
 }
 
-function tearDownInAppNotifications() {
+async function tearDownInAppNotifications() {
     // Set up a timer to disconnect from Ably after 60 seconds
     timer = setTimeout(() => {
         // Close the connection

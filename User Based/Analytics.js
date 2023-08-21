@@ -1,6 +1,7 @@
 //const AxiosSigned = require("../AxiosSigned.js");
 import {FetchEndpointsFromKV} from "../utils/Endpoints.js";
 import * as AxiosSigned from "../utils/AxiosSigned.js";
+import { getStorage } from "../utils/AsyncStorage.js";
 var endpoints;
 // Fetching the endpoints
 async function InitializeEndpoints() {
@@ -58,7 +59,7 @@ async function SendAnalyticsAPI(events) {
     if (!events.isArray()) throw ('SendAnalytics events take the form of: events = [{ event: "Ni", phoneNumber: "734873487348", value: "ahshshs" }, ... ]')
     // Get endpoint and jwt
     const endpoint = endpoints["/RecordEvent"];
-    const jwt = Cache.getString("jwt");
+    const jwt = await getStorage("jwt");
 
     // Send a get request to the endpoint with events as body and get the response
     const res = await AxiosSigned.get(endpoint, jwt, null, JSON.stringify(events)); /// last param is body

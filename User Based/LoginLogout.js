@@ -7,6 +7,8 @@ import * as AxiosSigned from "../utils/AxiosSigned.js";
 
 import * as LoginToCognito from "./LoginToCognito.js";
 
+import { getStorage, setStorage } from "../utils/AsyncStorage.js";
+
 var endpoints;
 
 async function InitializeEndpoints() {
@@ -76,18 +78,18 @@ async function logoutAndDelete() {
     /// as well as jwt, otp and anything else set in cache
     isOnboarding = false;
     onboardingScreenIndex = 0;
-    Cache.set("isOnboarding", isOnboarding)
-    Cache.set("onboardingScreenIndex", onboardingScreenIndex)
-    Cache.set("otp", undefined)
-    Cache.set("phoneNumber", undefined)
-    Cache.set("firstName", undefined)
-    Cache.set("lastName", undefined)
-    Cache.set("jwt", undefined)
-    Cache.set("loginFuncCache", undefined);
-    Cache.set("schools", undefined)
-    Cache.set("requestPolls", undefined)
-    Cache.set("pageKey", undefined)
-    Cache.set("addPageKey", undefined)
+    setStorage("isOnboarding", isOnboarding)
+    setStorage("onboardingScreenIndex", onboardingScreenIndex)
+    setStorage("otp", undefined)
+    setStorage("phoneNumber", undefined)
+    setStorage("firstName", undefined)
+    setStorage("lastName", undefined)
+    setStorage("jwt", undefined)
+    setStorage("loginFuncCache", undefined);
+    setStorage("schools", undefined)
+    setStorage("requestPolls", undefined)
+    setStorage("pageKey", undefined)
+    setStorage("addPageKey", undefined)
 }
 
 const listeners = []
@@ -100,7 +102,7 @@ function removeRealtimeListener(listener) {
 }
 
 async function handleAlbyData(data) {
-    data = decryptAES256(data, Cache.getString("albyDecryptionKey"))
+    data = decryptAES256(data, await getStorage("albyDecryptionKey"))
     for (listener in listeners) listener(data)
 }
 export {login, logout, logoutAndDelete, addRealtimeListener, removeRealtimeListener}

@@ -1,5 +1,6 @@
 //const Endpoints = require("../Endpoints.js");
 //import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
+import { getStorage } from "../utils/AsyncStorage.js";
 import * as AxiosSigned from "../utils/AxiosSigned.js";
 
 async function submitPFP(filePath) {
@@ -24,7 +25,7 @@ async function submitPFP(filePath) {
          data: data,
          headers: {
            ...data.getHeaders(), // append form-data specific headers
-           Authorization: Cache.getString("jwt"), // your custom authorization header
+           Authorization: await getStorage("jwt"), // your custom authorization header
          },
        });
    
@@ -186,7 +187,7 @@ async function submitPFP(filePath) {
       data: data,
       headers: {
         ...data.getHeaders(), // append form-data specific headers
-        Authorization: Cache.getString("jwt"), // your custom authorization header
+        Authorization: await getStorage("jwt"), // your custom authorization header
       },
     });
 

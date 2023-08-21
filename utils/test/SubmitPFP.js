@@ -3,6 +3,7 @@ const mime = require('mime-types');
 const fs = require('fs').promises; // Use promises with fs
 const axios = require('axios');
 const FormData = require('form-data');
+const { getStorage } = require('../AsyncStorage');
 
 async function submitPFP(filePath) {
     try {
@@ -23,7 +24,7 @@ async function submitPFP(filePath) {
             data: data,
             headers: {
                 ...data.getHeaders(), // append form-data specific headers
-                'Authorization': Cache.getString("jwt") // your custom authorization header
+                'Authorization': await getStorage("jwt") // your custom authorization header
             },
         });
 
