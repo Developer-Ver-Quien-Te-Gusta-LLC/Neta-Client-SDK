@@ -158,9 +158,9 @@ async function submitProfileChange(gender, fname, lname, username, reduceNotific
 
 /// data = username, grade, username, numberOfStars
 async function queryProfile(phoneNumber) {
-    const endpoint = endpoints["/queryprofile"];
+    const endpoint = endpoints["/refresh"];
     //const jwt = Cache.getString("jwt");
-    const res = await AxiosSigned.post(endpoint, null, {phoneNumber: phoneNumber},);
+    const res = await AxiosSigned.post(endpoint, null, {requestedProfile: phoneNumber},);
     return res;
 }
 
