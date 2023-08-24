@@ -1,43 +1,21 @@
 import {FetchEndpointsFromKV} from "../utils/Endpoints.js";
 import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
 import * as AxiosSigned from "../utils/AxiosSigned.js";
+import * as KV from "../utils/KV.js";
 //const Geolocation = require("@react-native-community/geolocation");
 import * as geohash from "latlon-geohash";
 import * as path from 'path';
 import * as mime from 'mime-types';
 
-/*var isOnboarding = true;
-var onboardingScreenIndex = 0;*/
 var endpoints;
 
-/*async function _fetchCache() {
-    isOnboarding = Cache.getBoolean("isOnboarding")
-    onboardingScreenIndex = Cache.getInt("onboardingScreenIndex")
 
-    if (isOnboarding == undefined) Cache.set("isOnboarding", isOnboarding)
-    if (onboardingScreenIndex == undefined) Cache.set("onboardingScreenIndex", onboardingScreenIndex)
-}*/
-//_fetchCache()
 
 async function InitializeEndpoints() {
   endpoints = await FetchEndpointsFromKV();
 }
 
 InitializeEndpoints();
-
-/*async function submitAge(age) {
-  if (onboardingScreenIndex != 0) return;
-  Cache.set("age", age);
-  onboardingScreenIndex++;
-  Cache.set("onboardingScreenIndex", onboardingScreenIndex);
-}
-
-async function submitGrade(grade) {
-  if (onboardingScreenIndex != 1) return;
-  Cache.set("grade", grade);
-  onboardingScreenIndex++;
-  Cache.set("onboardingScreenIndex", onboardingScreenIndex);
-}*/
 
 /// TODO: get encoded geolocation from qparam 'clientlocation'
 /// and also support paging via param pageToken and use return val nextPageToken
@@ -58,22 +36,26 @@ async function fetchSchools(schoolName = undefined, latitude, longitude) {
   return response.data.rows;
 }
 
-async function isGeofenced() {
-  const geohashValue = geohash.encode(latitude, longitude);
-  //Cache.set("geohash", geohashValue);
+async function isGeofenced(latitude, longitude) {
+  var geohashPolygon = await KV._fetch("geohashPolygon");
+  geohashPolygon = parseStringToArray(geohashPolygon);
 
-  // use the geohash value to get the schools
-  const url = endpoints["checkLocationStatus"];
-  const qstring = { clientlocation: geohashValue };
-  const response = await AxiosSigned.get(url, undefined, qstring);
-  return response.data.geofenced
+  const point = turf.point([longitude, latitude]);
+  // Decode geohashes of the polygon to latitude/longitude
+  const coordinates = geohashPolygon.map((gh) => {
+    const decodedCoord = ngeohash.decode(gh);
+    return [decodedCoord.longitude, decodedCoord.latitude];
+  });
+
+  // Close the polygon by adding the first point at the end
+  coordinates.push(coordinates[0]);
+
+  const polygon = turf.polygon([coordinates]);
+
+  // Check if the point is inside the polygon
+  return turf.booleanPointInPolygon(point, polygon);
 }
-/*async function submitSchool(geohash) {
-  if (onboardingScreenIndex != 2) return;
-  Cache.set("school", geohash);
-  onboardingScreenIndex++;
-  Cache.set("onboardingScreenIndex", onboardingScreenIndex);
-}*/
+
 
 /// Sends an OTP to the given phoneNumber
 async function submitPhoneNumber(phoneNumber) {
@@ -116,26 +98,6 @@ async function verifyStatus(phoneNumber,otp) {
   return response.data.success;
 }
 
-/*async function submitFirstName(firstName) {
-  if (onboardingScreenIndex != 5) return;
-  Cache.set("firstName", firstName);
-  onboardingScreenIndex++;
-  Cache.set("onboardingScreenIndex", onboardingScreenIndex);
-}
-
-async function submitLastName(lastName) {
-  if (onboardingScreenIndex != 6) return;
-  Cache.set("lastName", lastName);
-  onboardingScreenIndex++;
-  Cache.set("onboardingScreenIndex", onboardingScreenIndex);
-}
-
-async function submitUsername(username) {
-  if (onboardingScreenIndex != 7) return;
-  Cache.set("username", username);
-  onboardingScreenIndex++;
-  Cache.set("onboardingScreenIndex", onboardingScreenIndex);
-}*/
 
 async function submitGender(gender,username,firstname,lastname,phonenumber,highschool,age,otp) {
   //if (onboardingScreenIndex != 8) return;
@@ -186,13 +148,6 @@ async function handleSubmitProfileResponseAlby(data) {
     login(Cache.get("username"), Cache.get("otp"));
   }
 }
-
-/*async function back() {
-  if (onboardingScreenIndex > 0) {
-    onboardingScreenIndex--;
-    Cache.set("onboardingScreenIndex", onboardingScreenIndex);
-  }
-}*/
 
 
 /// invoked by the client to submit his pfp given local path to an img
@@ -261,12 +216,6 @@ async function fetchAllAddFriendsOnboardingPages() {
   return data;
 }
 
-/*async function uploadUserContacts(username, contactsList) {
-    const url = endpoints["/uploadUserContacts"];
-    const qstring = { username, contactsList };
-    const response = await AxiosSigned.put(url, Cache.get('jwt'), qstring);
-    return response.data;
-}*/
 //Example
 //const contactsList = [{ Fname: 'John', Lname: 'Doe', favorite: true, pfp: 'C:/Users/Daxx/Downloads/mummy.png', }];
 async function uploadUserContacts(username, contactsList) {
@@ -307,18 +256,11 @@ export {
   fetchAddFriendsOnboarding,
   verifyStatus,
   isGeofenced,
-  //submitAge,
- // submitGrade,
   fetchSchools,
-  //submitSchool,
   fetchAllAddFriendsOnboardingPages,
   submitPhoneNumber,
   submitOTP,
-  //submitFirstName,
- // submitLastName,
- // submitUsername,
   submitGender,
   checkSubmitProfile,
- // back,
   uploadUserContacts,
 };
