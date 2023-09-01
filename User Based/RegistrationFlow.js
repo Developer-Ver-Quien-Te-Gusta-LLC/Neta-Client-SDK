@@ -134,6 +134,8 @@ async function checkSubmitProfile(phoneNumber) {
   const url = endpoints["/submitProfile/fetchStatus"];
   const response = await AxiosSigned.get(url);
   if (response.data.resolved) {
+    const uid = response.data.uid
+    /// TODO: cache so we can log in 
     //onboardingScreenIndex++;
     //Cache.set("onboardingScreenIndex", onboardingScreenIndex);
   }

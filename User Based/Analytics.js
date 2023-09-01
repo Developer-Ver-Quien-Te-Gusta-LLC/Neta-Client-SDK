@@ -53,9 +53,9 @@ async function forceDispatch() {
 
 //#region Analytics 
 // Function to send analytics to API
-// events = [{ event: "Ni", phoneNumber: "734873487348", value: "ahshshs" }, ... ]
+// events = [{ event: "Ni", uid: "734873487348", value: "ahshshs" }, ... ]
 async function SendAnalyticsAPI(events) {
-    if (!events.isArray()) throw ('SendAnalytics events take the form of: events = [{ event: "Ni", phoneNumber: "734873487348", value: "ahshshs" }, ... ]')
+    if (!events.isArray()) throw ('SendAnalytics events take the form of: events = [{ event: "Ni", uid: "734873487348", value: "ahshshs" }, ... ]')
     // Get endpoint and jwt
     const endpoint = endpoints["/RecordEvent"];
     const jwt = Cache.getString("jwt");

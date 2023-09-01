@@ -36,7 +36,7 @@ async function submitPFP(filePath) {
 
 /// invoked to invite a user
 /// context = "add", "invite", "share"
-async function inviteUser(phoneNumber, context = "add",isOnboarding,jwt = null) {
+async function inviteUser(uid, context = "add",isOnboarding,jwt = null) {
     try {
         // Check if onboarding is still happening
         if (isOnboarding) {
@@ -59,7 +59,7 @@ async function inviteUser(phoneNumber, context = "add",isOnboarding,jwt = null) 
                 Authorization: 'Bearer ' + jwt
             },
             params: {
-                invitee : phoneNumber,
+                invitee : uid,
                 context
             }
         };
@@ -157,10 +157,10 @@ async function submitProfileChange(gender, fname, lname, username, reduceNotific
 }
 
 /// data = username, grade, username, numberOfStars
-async function queryProfile(phoneNumber) {
+async function queryProfile(uid) {
     const endpoint = endpoints["/refresh"];
     //const jwt = Cache.getString("jwt");
-    const res = await AxiosSigned.post(endpoint, null, {requestedProfile: phoneNumber},);
+    const res = await AxiosSigned.post(endpoint, null, {requestedProfile: uid},);
     return res;
 }
 

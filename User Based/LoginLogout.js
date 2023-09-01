@@ -5,7 +5,7 @@ import * as AxiosSigned from "../utils/AxiosSigned.js";
 
 
 
-import * as LoginToCognito from "./LoginToCognito.js";
+import * as LoginToFirebase from "./LoginToFirebase.js";
 
 var endpoints;
 
@@ -28,8 +28,8 @@ InitializeEndpoints();
 }*/
 
 
-async function login(phoneNumber,otp) {
-    jwt = await LoginToCognito(phoneNumber,otp);
+async function login(uid,otp) {
+    jwt = await LoginToCognito(uid,otp);
     const url = endpoints["/login"];
     const response = await AxiosSigned.get(url, {jwt});
     loginFuncCache = JSON.stringify(response.data) /// cache login resp
@@ -76,18 +76,19 @@ async function logoutAndDelete() {
     /// as well as jwt, otp and anything else set in cache
     isOnboarding = false;
     onboardingScreenIndex = 0;
-    Cache.set("isOnboarding", isOnboarding)
-    Cache.set("onboardingScreenIndex", onboardingScreenIndex)
-    Cache.set("otp", undefined)
-    Cache.set("phoneNumber", undefined)
-    Cache.set("firstName", undefined)
-    Cache.set("lastName", undefined)
-    Cache.set("jwt", undefined)
-    Cache.set("loginFuncCache", undefined);
-    Cache.set("schools", undefined)
-    Cache.set("requestPolls", undefined)
-    Cache.set("pageKey", undefined)
-    Cache.set("addPageKey", undefined)
+    ///Cache.set("isOnboarding", isOnboarding)
+    ///Cache.set("onboardingScreenIndex", onboardingScreenIndex)
+    ///Cache.set("otp", undefined)
+    ///Cache.set("phoneNumber", undefined)
+    ///Cache.set("firstName", undefined)
+    //Cache.set("lastName", undefined)
+    ///Cache.set("jwt", undefined)
+    ///Cache.set("loginFuncCache", undefined);
+   ////Cache.set("schools", undefined)
+    //Cache.set("requestPolls", undefined)
+    ///Cache.set("pageKey", undefined)
+    ///Cache.set("uid", undefined)
+    ///Cache.set("addPageKey", undefined)
 }
 
 const listeners = []
