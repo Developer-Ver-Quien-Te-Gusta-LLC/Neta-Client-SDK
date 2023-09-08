@@ -70,8 +70,8 @@ async function submitOTP(phoneNumber,otp) {
   //if (onboardingScreenIndex != 3) return;
   //if (!phoneNumber) phoneNumber = Cache.getString("phoneNumber");
   const url = endpoints["/verifypn/verifyotp"];
-  const qstring = { otp, phoneNumber };
-  const response = await AxiosSigned.get(url, null, qstring);
+  const qstring = { otp:otp, phoneNumber:phoneNumber };
+  const response = await AxiosSigned._post({uri:url,queryString:qstring});
   if (response.data.success || response.data.verified) {
    // Cache.set("otp", otp);
    // onboardingScreenIndex++;
