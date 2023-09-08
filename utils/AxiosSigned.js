@@ -40,29 +40,31 @@ async function get(uri, jwt = null, qString = null, body = null) {
 }
 
 async function _post(data) {
-    const {uri, jwt, body, queryString, queryStr, params} = data;
+    var {uri, jwt, body, queryString, params} = data;
     if (queryString != undefined) {
-        queryStr = queryString;
         params = queryString;
     }
-    if (queryStr != undefined) {
-        queryString = queryStr;
-        params = queryStr;
-    }
+  
     if (params != undefined) {
-        queryStr = params;
         queryString = params;
     }
-    return await post(uri, jwt, queryStr, body)
+    console.log(queryString);
+    return await post(uri, jwt, queryString, body)
 }
 
 async function post(uri, jwt = null, qString = null, body = null) {
+    // If qString is provided, append it to the uri
+    if (qString) {
+        const queryString = Object.keys(qString).map(key => key + '=' + qString[key]).join('&');
+        uri += '?' + queryString;
+    }
+
     let options = {
         method: 'POST',
         url: uri,
-        params: qString,  // query string
         data: body,  // body data
     };
+    console.log(uri);
 
     // Add authorization header if jwt token is provided
     if (jwt) {

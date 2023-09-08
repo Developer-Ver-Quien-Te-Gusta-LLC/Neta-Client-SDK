@@ -1,9 +1,9 @@
-import { get } from "./AxiosSigned.js";
+import { _post } from "./AxiosSigned.js";
 import config from "../config.json" assert { type: "json" };
 const { TitleMicroservice: endpoint } = config;
 
 async function _fetch(key) {
-    let params = undefined
+    let params = {}
     if (!Array.isArray(key)) {
         params = {"key":key}
     } else {
@@ -11,7 +11,7 @@ async function _fetch(key) {
     }
 
     try{
-        const res = await get({uri : endpoint, qString : params});
+        const res = await _post({uri : endpoint, queryString : params});
         return res
     }
     catch(err){
@@ -20,4 +20,4 @@ async function _fetch(key) {
     }
 } 
 
-export default { _fetch };
+export  { _fetch };

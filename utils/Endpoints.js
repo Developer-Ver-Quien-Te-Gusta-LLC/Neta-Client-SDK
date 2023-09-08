@@ -1,14 +1,16 @@
-import * as  KV from "./KV.js";
+import { _fetch } from "./KV.js";
 
-async function FetchEndpointsFromKV() { 
-    try{
-    const endpoints = JSON.parse(await KV._fetch("endpoints").data.value);
-    return  endpoints;
-    }
-    catch(err){
-        return []
-    }
+async function FetchEndpointsFromKV() {
+  try {
+    const response = await _fetch("endpoints");
+    console.log(response);
+    const endpoints = JSON.parse(response);
+    return endpoints;
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
 }
 
-
-export{FetchEndpointsFromKV };
+FetchEndpointsFromKV();
+export { FetchEndpointsFromKV };
