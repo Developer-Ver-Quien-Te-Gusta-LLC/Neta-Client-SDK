@@ -84,7 +84,6 @@ async function submitOTP(phoneNumber,otp) {
 
 /// Invoke by the user to check if their phone number is already verified
 async function verifyStatus(phoneNumber,otp) {
-  if (onboardingScreenIndex != 4) return;
   //var phoneNumber = Cache.get("phoneNumber");
   const url = endpoints["/verifypn/fetchStatus"];
   const qString = { phoneNumber, otp: otp };
@@ -191,7 +190,6 @@ async function fetchAllAddFriendsOnboardingPages(jwt) {
     }
 
     data = data.concat(pageData);
-    pagenumber = Cache.get("addFriendsOnboardingNextPage");
   }
   return data;
 }
