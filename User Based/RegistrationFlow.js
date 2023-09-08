@@ -167,18 +167,14 @@ async function submitPFP(filePath,jwt) {
   }
 }
 
-async function fetchAddFriendsOnboarding(pagenumber = 1) {
-  if (onboardingScreenIndex != 10) return;
-  onboardingScreenIndex++;
-  Cache.set("onboardingScreenIndex", onboardingScreenIndex);
-
-  const jwt = Cache.get("jwt");
+async function fetchAddFriendsOnboarding(pagenumber = 1,jwt) {
   const url = endpoints["/onboarding/addfriends"];
-  const response = await AxiosSigned.get(url, jwt, { pagenumber });
+  const response = await AxiosSigned.post(url,jwt,{pagenumber},null);
   if (response.success) {
-    Cache.set("addFriendsOnboarding", JSON.stringify(response.data));
-    Cache.set("addFriendsOnboardingNextPage", response.nextPage);
     return response.data;
+  }
+  else{
+    return null;
   }
 }
 
