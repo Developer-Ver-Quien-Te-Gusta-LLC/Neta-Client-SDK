@@ -93,7 +93,7 @@ async function verifyStatus(phoneNumber,otp) {
 }
 
 
-async function submitGender(gender,username,firstname,lastname,phonenumber,highschool,age,otp) {
+async function SubmitProfile(gender,username,firstname,lastname,phonenumber,highschool,age,otp,grade) {
   const url = endpoints["/submitProfile"];
   const qstring = {
     username: username,
@@ -106,12 +106,11 @@ async function submitGender(gender,username,firstname,lastname,phonenumber,highs
     //school: Cache.get("school"),
     otp: otp,
     platform: Platform.OS,
+    grade:grade
   };
-  const response = await AxiosSigned.get(url, null, qstring);
+  const response = await AxiosSigned._post({uri:url,queryString:qstring});
   if (response.data.alreadySubmitted) {
-    /// skip submittal
-    //onboardingScreenIndex++;
-    //Cache.set("onboardingScreenIndex", onboardingScreenIndex);
+    
   }
   const topicName = response.data.transactionId;
   Alby.setupAlbyWithChannel(topicName, handleSubmitProfileResponseAlby);
@@ -120,12 +119,10 @@ async function submitGender(gender,username,firstname,lastname,phonenumber,highs
 async function checkSubmitProfile(phoneNumber) {
   //if (onboardingScreenIndex != 8) return;
   const url = endpoints["/submitProfile/fetchStatus"];
-  const response = await AxiosSigned.get(url);
+  const qstring = {phoneNumber:phoneNumber};
+  const response = await AxiosSigned._post({uri:url,queryString:qstring});
   if (response.data.resolved) {
     const uid = response.data.uid
-    /// TODO: cache so we can log in 
-    //onboardingScreenIndex++;
-    //Cache.set("onboardingScreenIndex", onboardingScreenIndex);
   }
   return response.data.resolved;
 }
@@ -141,10 +138,7 @@ async function handleSubmitProfileResponseAlby(data) {
 
 
 /// invoked by the client to submit his pfp given local path to an img
-async function submitPFP(filePath) {
- // if (onboardingScreenIndex != 9) return;
-  //onboardingScreenIndex++;
- // Cache.set("onboardingScreenIndex", onboardingScreenIndex);
+async function submitPFP(filePath,jwt) {
   try {
     const file = await fs.readFile(filePath, { encoding: "base64" }); // read file as base64
     const buffer = Buffer.from(file, "base64"); // convert base64 to buffer
@@ -163,7 +157,7 @@ async function submitPFP(filePath) {
       data: data,
       headers: {
         ...data.getHeaders(), // append form-data specific headers
-        Authorization: Cache.getString("jwt"), // your custom authorization header
+        Authorization: jwt
       },
     });
 
@@ -250,7 +244,7 @@ export {
   fetchAllAddFriendsOnboardingPages,
   submitPhoneNumber,
   submitOTP,
-  submitGender,
+  SubmitProfile,
   checkSubmitProfile,
   uploadUserContacts,
 };
