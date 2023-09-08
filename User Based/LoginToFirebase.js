@@ -1,4 +1,4 @@
-import * as firebase from 'react-native-firebase';
+import * as firebase from 'firebase';
 
 async function loginToFirebase(uid) {
     try {

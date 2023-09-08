@@ -1,7 +1,7 @@
 import {FetchEndpointsFromKV} from "../utils/Endpoints.js";
 import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
 import * as AxiosSigned from "../utils/AxiosSigned.js";
-import * as LoginToCognito from "./LoginToCognito.js";
+import * as Login from "./LoginToFirebase.js";
 
 var endpoints;
 async function InitializeEndpoints() {
@@ -16,7 +16,7 @@ InitializeEndpoints();
 /// home, all, add, inbox, profile, invite
 /// page is for 'add' only and is stored in cache 'nextPageKey'
 async function RefreshScreen(screen = "home") {
-  await LoginToCognito();
+  await Login();
   const jwt = Cache.get("jwt");
   const url = endpoints["/refresh"];
   var qStrng = {

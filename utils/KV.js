@@ -1,8 +1,8 @@
-import * as AxiosSigned from "./AxiosSigned.js";
-const endpoint = "https://localhost:3000/getKV"
+import { get } from "./AxiosSigned.js";
+const { TitleMicroservice: endpoint } = require("../config.json");
 
 async function _fetch(key) {
-    var params = undefined
+    let params = undefined
     if (!Array.isArray(key)) {
         params = {"key":key}
     } else {
@@ -10,7 +10,7 @@ async function _fetch(key) {
     }
 
     try{
-        const res = await AxiosSigned.get({uri : endpoint, queryString : params});
+        const res = await get({uri : endpoint, qString : params});
         return res
     }
     catch(err){
@@ -19,4 +19,4 @@ async function _fetch(key) {
     }
 } 
 
-export{ _fetch };
+export default { _fetch };

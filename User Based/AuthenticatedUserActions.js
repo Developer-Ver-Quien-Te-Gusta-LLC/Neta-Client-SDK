@@ -164,37 +164,6 @@ async function queryProfile(uid) {
     return res;
 }
 
-async function submitPFP(filePath) {
- // if (onboardingScreenIndex != 9) return;
-  //onboardingScreenIndex++;
- // Cache.set("onboardingScreenIndex", onboardingScreenIndex);
-  try {
-    const file = await fs.readFile(filePath, { encoding: "base64" }); // read file as base64
-    const buffer = Buffer.from(file, "base64"); // convert base64 to buffer
-    const filename = path.basename(filePath); // get the filename with extension
-    const mimetype = mime.lookup(filePath); // get the MIME type of the file
-
-    const data = new FormData(); // create form data
-    data.append("file", buffer, {
-      filename: filename, // provide actual file name
-      contentType: mimetype || "application/octet-stream", // provide actual file type or default to 'application/octet-stream'
-    });
-
-    const response = await axios({
-      method: "POST",
-      url: endpoints["/uploadpfp"],
-      data: data,
-      headers: {
-        ...data.getHeaders(), // append form-data specific headers
-        Authorization: Cache.getString("jwt"), // your custom authorization header
-      },
-    });
-
-    console.log("File uploaded successfully: ", response.data);
-  } catch (error) {
-    console.error("Error uploading file: ", error);
-  }
-}
 
 async function RequestDeletion(jwt = null) {
    // const jwt = Cache.getString("jwt");
