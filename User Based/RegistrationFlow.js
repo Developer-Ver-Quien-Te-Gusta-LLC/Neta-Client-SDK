@@ -179,12 +179,12 @@ async function fetchAddFriendsOnboarding(pagenumber = 1,jwt) {
 }
 
 // auto page
-async function fetchAllAddFriendsOnboardingPages() {
+async function fetchAllAddFriendsOnboardingPages(jwt) {
   let pagenumber = 1;
   let data = [];
 
   while (true) {
-    const pageData = await fetchAddFriendsOnboarding(pagenumber);
+    const pageData = await fetchAddFriendsOnboarding(pagenumber,jwt);
 
     if (!pageData || pageData.length === 0) {
       break;
