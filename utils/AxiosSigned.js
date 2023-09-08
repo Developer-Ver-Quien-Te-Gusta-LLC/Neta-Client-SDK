@@ -48,7 +48,6 @@ async function _post(data) {
     if (params != undefined) {
         queryString = params;
     }
-    console.log(queryString);
     return await post(uri, jwt, queryString, body)
 }
 

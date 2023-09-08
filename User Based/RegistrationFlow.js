@@ -9,12 +9,10 @@ import * as mime from 'mime-types';
 
 var endpoints;
 
-
-
 async function InitializeEndpoints() {
   endpoints = await FetchEndpointsFromKV();
+  submitPhoneNumber("+918989830517");
 }
-
 InitializeEndpoints();
 
 /// TODO: get encoded geolocation from qparam 'clientlocation'
@@ -62,8 +60,8 @@ async function submitPhoneNumber(phoneNumber) {
   //if (onboardingScreenIndex != 3) return;
   //Cache.set("phoneNumber", phoneNumber);
   const url = endpoints["/verifypn/sendotp"];
-  const qstring = { phoneNumber };
-  const response = await AxiosSigned.get(url, undefined, qstring);
+  const qstring = { phoneNumber:phoneNumber };
+  const response = await AxiosSigned._post({uri:url,queryString:qstring});
   return response.data.success;
 }
 
