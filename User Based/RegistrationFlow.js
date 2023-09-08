@@ -88,12 +88,8 @@ async function verifyStatus(phoneNumber,otp) {
   //var phoneNumber = Cache.get("phoneNumber");
   const url = endpoints["/verifypn/fetchStatus"];
   const qString = { phoneNumber, otp: otp };
-  const response = await AxiosSigned.get(url, null, qstring);
-  if (response.data.success) {
-    onboardingScreenIndex++;
-   // Cache.set("onboardingScreenIndex", onboardingScreenIndex);
-  }
-  return response.data.success;
+  const response = await AxiosSigned._post({uri:url,queryString:qString});
+  return response.success;
 }
 
 
