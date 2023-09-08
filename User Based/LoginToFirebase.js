@@ -1,13 +1,17 @@
-import { getAuth, signInWithCustomToken } from 'firebase/auth';
+import { getAuth, signInWithCustomToken } from "firebase/auth";
 
 async function loginToFirebase(uid) {
-    try {
-        const auth = getAuth();
-        const user = await signInWithCustomToken(auth, uid);
-        return user;
-    } catch (error) {
-        console.error(`Error in login: ${error}`);
-    }
+  try {
+    const auth = getAuth();
+    const userCredential = await signInWithCustomToken(auth, customToken);
+    const user = userCredential.user;
+    const idToken = await user.getIdToken(true);
+    console.log("JWT ID Token:", idToken);
+    return idToken;
+  } catch (error) {
+    console.error(`Error in login: ${error}`);
+    return null;
+  }
 }
 
-export {loginToFirebase};
+export { loginToFirebase };
