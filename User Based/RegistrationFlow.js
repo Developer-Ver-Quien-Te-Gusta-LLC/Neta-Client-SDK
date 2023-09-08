@@ -11,7 +11,7 @@ var endpoints;
 
 async function InitializeEndpoints() {
   endpoints = await FetchEndpointsFromKV();
-  submitPhoneNumber("+918989830517");
+  submitOTP("+918989830517",7454);
 }
 InitializeEndpoints();
 
@@ -72,7 +72,7 @@ async function submitOTP(phoneNumber,otp) {
   const url = endpoints["/verifypn/verifyotp"];
   const qstring = { otp:otp, phoneNumber:phoneNumber };
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
-  if (response.data.success || response.data.verified) {
+  if (response.success || response.verified) {
    // Cache.set("otp", otp);
    // onboardingScreenIndex++;
    // Cache.set("onboardingScreenIndex", onboardingScreenIndex);
@@ -98,12 +98,6 @@ async function verifyStatus(phoneNumber,otp) {
 
 
 async function submitGender(gender,username,firstname,lastname,phonenumber,highschool,age,otp) {
-  //if (onboardingScreenIndex != 8) return;
-  //isOnboarding = false;
- // Cache.set("isOnboarding", isOnboarding);
-  //Cache.set("gender", gender);
-  onboardingScreenIndex++;
- // Cache.set("onboardingScreenIndex", onboardingScreenIndex);
   const url = endpoints["/submitProfile"];
   const qstring = {
     username: username,
