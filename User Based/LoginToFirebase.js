@@ -1,8 +1,9 @@
-import * as firebase from 'firebase';
+import { getAuth, signInWithCustomToken } from 'firebase/auth';
 
 async function loginToFirebase(uid) {
     try {
-        const user = await firebase.auth().signInWithCustomToken(uid);
+        const auth = getAuth();
+        const user = await signInWithCustomToken(auth, uid);
         return user;
     } catch (error) {
         console.error(`Error in login: ${error}`);
@@ -10,4 +11,3 @@ async function loginToFirebase(uid) {
 }
 
 export {loginToFirebase};
-

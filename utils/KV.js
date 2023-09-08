@@ -1,5 +1,6 @@
 import { get } from "./AxiosSigned.js";
-const { TitleMicroservice: endpoint } = require("../config.json");
+import config from "../config.json" assert { type: "json" };
+const { TitleMicroservice: endpoint } = config;
 
 async function _fetch(key) {
     let params = undefined
