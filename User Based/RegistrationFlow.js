@@ -286,10 +286,10 @@ async function uploadUserContacts(phoneNumber, contactsList) {
 
     // Logging the server response to the console
     // This can be useful for debugging
-    console.log("Server response:", response);
+    console.log("Server response:", response.data);
     // Returning the server response
     // This can be used by the function caller to handle the result of the upload
-    return response;
+    return response.data;
   } catch (error) {
     // If an error occurs, we log the error message to the console
     // This can be useful for debugging
