@@ -32,11 +32,8 @@ async function login(uid,otp) {
     jwt = await LoginToCognito(uid,otp);
     const url = endpoints["/login"];
     const response = await AxiosSigned.get(url, {jwt});
-    loginFuncCache = JSON.stringify(response.data) /// cache login resp
-  //  Cache.set("loginFuncCache", loginFuncCache)
-   // Cache.set("unreadCount", JSON.parse(loginFuncCache).unreadCount)
-    //Cache.set("albyChannelId", response.data.albyChannelId);
-  //  Cache.set("albyDecryptionKey", response.data.albyDecryptionKey);
+    loginFuncCache = JSON.stringify(response.data)
+
     Alby.setupAlbyWithChannel(response.data.albyChannelId, handleAlbyData);
     if (response.data.deleted != undefined) {
         var deleteNow = response.data.deleted;
@@ -60,36 +57,10 @@ async function login(uid,otp) {
   }
 
 async function logout(jwt) {
-    isOnboarding = false;
-    onboardingScreenIndex = 0;
-    //Cache.set("isOnboarding", isOnboarding)
-    //Cache.set("onboardingScreenIndex", onboardingScreenIndex)
-   // const jwt = Cache.getString("jwt");
     await AxiosSigned.post(endpoints["/logout"],jwt,null,null);
     Alby.removeListener();
 }
 
-
-async function logoutAndDelete() {
-    logout();
-    /// reset isOnboarding to false and onboardingIndex to 0
-    /// as well as jwt, otp and anything else set in cache
-    isOnboarding = false;
-    onboardingScreenIndex = 0;
-    ///Cache.set("isOnboarding", isOnboarding)
-    ///Cache.set("onboardingScreenIndex", onboardingScreenIndex)
-    ///Cache.set("otp", undefined)
-    ///Cache.set("phoneNumber", undefined)
-    ///Cache.set("firstName", undefined)
-    //Cache.set("lastName", undefined)
-    ///Cache.set("jwt", undefined)
-    ///Cache.set("loginFuncCache", undefined);
-   ////Cache.set("schools", undefined)
-    //Cache.set("requestPolls", undefined)
-    ///Cache.set("pageKey", undefined)
-    ///Cache.set("uid", undefined)
-    ///Cache.set("addPageKey", undefined)
-}
 
 const listeners = []
 function addRealtimeListener(listener) {
@@ -104,4 +75,4 @@ async function handleAlbyData(data) {
     data = decryptAES256(data, Cache.getString("albyDecryptionKey"))
     for (listener in listeners) listener(data)
 }
-export {login, logout, logoutAndDelete, addRealtimeListener, removeRealtimeListener}
+export {login, logout, addRealtimeListener, removeRealtimeListener}
