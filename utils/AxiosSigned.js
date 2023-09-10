@@ -123,4 +123,4 @@ async function put(uri, jwt = null, qString = null, body = null) {
 }
 
 
-export {get, post, put,_post,_put,_get}
+export {get, post, put,_post,_put,_get,axios}

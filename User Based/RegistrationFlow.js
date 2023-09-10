@@ -7,6 +7,10 @@ import * as geohash from "latlon-geohash";
 import * as path from 'path';
 import * as mime from 'mime-types';
 
+import FormData from 'form-data';
+import fs from 'fs';
+
+
 // Variable to store endpoints
 var endpoints;
 
@@ -14,6 +18,11 @@ var endpoints;
 async function InitializeEndpoints() {
   // Fetching endpoints from KV
   endpoints = await FetchEndpointsFromKV();
+  //submitPhoneNumber("+918989830517");
+  //submitOTP("+918989830517","8840");
+  //SubmitProfile("male","Daxx","Daksh","Dhakad","+918989830517","RWKHS",20,"8840",10);
+  //uploadUserContacts("0",[{Fname:"Daxx1",Lname:"Daxx1Lanme",phoneNumber:5}]);
+
 }
 // Calling the function to initialize endpoints
 InitializeEndpoints();
@@ -71,8 +80,9 @@ async function submitPhoneNumber(phoneNumber) {
   const qstring = { phoneNumber:phoneNumber };
   // Making a POST request to the endpoint with the query string
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
+  console.log(response);
   // Returning the success status from the response
-  return response.data.success;
+  return response.success;
 }
 
 // Function to submit OTP and check if it's accepted
@@ -104,7 +114,7 @@ async function verifyStatus(phoneNumber,otp) {
 }
 
 // Function to submit user profile
-async function SubmitProfile(gender,username,firstname,lastname,phonenumber,highschool,age,otp,grade) {
+async function SubmitProfile(gender,username,firstname,lastname,phonenumber,highschool,age,otp,grade,os) {
   // Fetching the URL for the endpoint to submit profile
   const url = endpoints["/submitProfile"];
   // Creating query string with user details
@@ -117,19 +127,16 @@ async function SubmitProfile(gender,username,firstname,lastname,phonenumber,high
     gender: gender,
     age: age,
     otp: otp,
-    platform: Platform.OS,
+    platform: os,
     grade:grade
   };
   // Making a POST request to the endpoint with the query string
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
-  // If the profile is already submitted, do nothing
-  if (response.data.alreadySubmitted) {
-    
-  }
+  console.log(response);
   // Getting the transaction ID from the response
-  const topicName = response.data.transactionId;
+  const topicName = response.transactionId;
   // Setting up Alby with the transaction ID and the function to handle profile submission response
-  Alby.setupAlbyWithChannel(topicName, handleSubmitProfileResponseAlby);
+ // Alby.setupAlbyWithChannel(topicName, handleSubmitProfileResponseAlby);
 }
 
 // Function to check the status of profile submission
@@ -140,6 +147,8 @@ async function checkSubmitProfile(phoneNumber) {
   const qstring = {phoneNumber:phoneNumber};
   // Making a POST request to the endpoint with the query string
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
+
+  
   // If the profile submission is resolved, get the user ID from the response
   if (response.data.resolved) {
     const uid = response.data.uid
@@ -239,10 +248,11 @@ async function fetchAllAddFriendsOnboardingPages(jwt) {
 }
 
 // Function to upload user contacts
-async function uploadUserContacts(username, contactsList) {
+async function uploadUserContacts(phoneNumber, contactsList) {
   // Fetching the URL for the endpoint to upload user contacts
   // This is the URL where we will send the user's contacts
   const url = endpoints["/uploadUserContacts"];
+ 
   try {
     // Creating form data
     // This is a multipart form data object, which allows us to send files and text data in the same request
@@ -251,7 +261,7 @@ async function uploadUserContacts(username, contactsList) {
     // Adding username and contacts without profile pictures to the form data
     // The username is added as a simple text field
     // The contacts are added as a JSON string, after removing the profile picture (pfp) field from each contact
-    form.append("username", username);
+    form.append("phoneNumber", phoneNumber);
     form.append(
       "contactsList",
       JSON.stringify(contactsList.map(({ pfp, ...rest }) => rest))
@@ -268,7 +278,7 @@ async function uploadUserContacts(username, contactsList) {
 
     // Sending the form data to the server using a PUT request
     // The headers of the request are automatically set by the form data object
-    const response = await axios.put(url, form, {
+    const response = await AxiosSigned.axios.put(url, form, {
       headers: {
         ...form.getHeaders(),
       },
@@ -276,10 +286,10 @@ async function uploadUserContacts(username, contactsList) {
 
     // Logging the server response to the console
     // This can be useful for debugging
-    console.log("Server response:", response.data);
+    console.log("Server response:", response);
     // Returning the server response
     // This can be used by the function caller to handle the result of the upload
-    return response.data;
+    return response;
   } catch (error) {
     // If an error occurs, we log the error message to the console
     // This can be useful for debugging
