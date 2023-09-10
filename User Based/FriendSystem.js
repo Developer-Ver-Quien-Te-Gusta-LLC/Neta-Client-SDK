@@ -10,8 +10,8 @@ InitializeEndpoints();
 
 
 //#region Friend System
-async function OnFriendRequest(friendPN,jwt) {
-  const QueryString = { friend: friendPN };
+async function OnFriendRequest(friendUID,jwt) {
+  const QueryString = { friend: friendUID };
   const endpoint = endpoints["/friends/request"];
   //const jwt = Cache.getString("jwt");
 
@@ -19,9 +19,9 @@ async function OnFriendRequest(friendPN,jwt) {
   return res;
 }
 
-async function AcceptFriendRequest(friendPN,jwt) {
+async function AcceptFriendRequest(friendUID,jwt) {
   const endpoint = endpoints["/friends/accept"];
-  const QueryString = { friend: friendPN };
+  const QueryString = { friend: friendUID };
 
   //const jwt = Cache.getString("jwt");
 
@@ -29,27 +29,27 @@ async function AcceptFriendRequest(friendPN,jwt) {
   return res;
 }
 
-async function HideFriendRequestfriendPN(friendPN,jwt) {
+async function HideFriendRequestfriendUID(friendUID,jwt) {
   const endpoint = endpoints["/friends/hide"];
-  const QueryString = { friend: friendPN };
+  const QueryString = { friend: friendUID };
 
  // const jwt = Cache.getString("jwt");
 
   const res = await AxiosSigned.post(endpoint, jwt, QueryString, null);
   return res;
 }
-async function RemoveFriend(friendPN,jwt) {
+async function RemoveFriend(friendUID,jwt) {
   const endpoint = endpoints["/friends/remove"];
-  const QueryString = { friend: friendPN };
+  const QueryString = { friend: friendUID };
 
   //const jwt = Cache.getString("jwt");
 
   const res = await AxiosSigned.post(endpoint, jwt, QueryString, null);
   return res;
 }
-async function BlockFriend(friendPN,jwt) {
+async function BlockFriend(friendUID,jwt) {
   const endpoint = endpoints["/friends/remove"];
-  const QueryString = { friend: friendPN };
+  const QueryString = { friend: friendUID };
 
   //const jwt = Cache.getString("jwt");
 
@@ -78,7 +78,7 @@ async function ResetHideList(jwt) {
 export {
   OnFriendRequest,
   AcceptFriendRequest,
-  HideFriendRequestfriendPN,
+  HideFriendRequestfriendUID,
   RemoveFriend,
   BlockFriend,
   ResetBlockList,
