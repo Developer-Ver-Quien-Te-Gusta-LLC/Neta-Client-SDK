@@ -5,7 +5,7 @@ import * as AxiosSigned from "../utils/AxiosSigned.js";
 
 
 
-import * as LoginToFirebase from "./LoginToFirebase.js";
+import * as loginToFirebase from "./LoginToFirebase.js";
 
 var endpoints;
 
@@ -28,8 +28,8 @@ InitializeEndpoints();
 }*/
 
 
-async function login(uid,otp) {
-    jwt = await LoginToCognito(uid,otp);
+async function login(token) {
+    jwt = await loginToFirebase(token);
     const url = endpoints["/login"];
     const response = await AxiosSigned.get(url, {jwt});
     loginFuncCache = JSON.stringify(response.data)
