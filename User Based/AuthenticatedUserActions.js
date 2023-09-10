@@ -2,10 +2,7 @@
 //import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
 import * as AxiosSigned from "../utils/AxiosSigned.js";
 
-async function submitPFP(filePath) {
-    // if (onboardingScreenIndex != 9) return;
-     //onboardingScreenIndex++;
-    // Cache.set("onboardingScreenIndex", onboardingScreenIndex);
+async function submitPFP(filePath,jwt) {
      try {
        const file = await fs.readFile(filePath, { encoding: "base64" }); // read file as base64
        const buffer = Buffer.from(file, "base64"); // convert base64 to buffer
@@ -24,7 +21,7 @@ async function submitPFP(filePath) {
          data: data,
          headers: {
            ...data.getHeaders(), // append form-data specific headers
-           Authorization: Cache.getString("jwt"), // your custom authorization header
+           Authorization: jwt, // your custom authorization header
          },
        });
    
@@ -38,12 +35,7 @@ async function submitPFP(filePath) {
 /// context = "add", "invite", "share"
 async function inviteUser(uid, context = "add",isOnboarding,jwt = null) {
     try {
-        // Check if onboarding is still happening
-        if (isOnboarding) {
-            console.error("User is still onboarding");
-            return;
-        }
-
+       
         // Fetch jwt from cache
         if (!jwt) {
             console.error("No jwt in the cache");
@@ -80,12 +72,7 @@ async function inviteUser(uid, context = "add",isOnboarding,jwt = null) {
 }
 async function fetchInvite(UID,isOnboarding,jwt = null) {
     try {
-        // Check if onboarding is still happening
-        if (isOnboarding) {
-            console.error("User is still onboarding");
-            return;
-        }
-
+       
         // Fetch jwt from cache
        
         if (!jwt) {
@@ -123,7 +110,6 @@ async function fetchInvite(UID,isOnboarding,jwt = null) {
 async function OnPollReveal(messageUID,answerFirstLetter,jwt = null) {
     const QueryString = { messageUID: messageUID, firstLetter: answerFirstLetter };
     const endpoint = endpoints["/OnPollRevealed"];
-   // const jwt = Cache.getString("jwt");
     const res = await AxiosSigned.get(endpoint, jwt, QueryString, null);
     return res;
 }
@@ -144,8 +130,8 @@ async function DispatchVote(uid, answer, jwt = null) {
     return res;
 }
 
-async function submitProfileChange(gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode) {
-    const res = await AxiosSigned.post(endpoints["/submitProifleChange"], null, null, {gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode});
+async function submitProfileChange(jwt,gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode) {
+    const res = await AxiosSigned.post(endpoints["/submitProifleChange"], jwt, null, {gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode});
     if (res.data.success === false && res.data.notUnique) {
         /// user is not unique, print the msg perhaps to the user?
         var msg = res.data.error;
