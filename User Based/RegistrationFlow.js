@@ -3,12 +3,12 @@ import {FetchEndpointsFromKV} from "../utils/Endpoints.js";
 import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
 import * as AxiosSigned from "../utils/AxiosSigned.js";
 import * as KV from "../utils/KV.js";
-import * as geohash from "latlon-geohash";
 import * as path from 'path';
 import * as mime from 'mime-types';
 
 import FormData from 'form-data';
 import fs from 'fs';
+import { verify } from "crypto";
 
 var onError = [] /// should take in one param which is the response obj
 
@@ -24,7 +24,8 @@ async function InitializeEndpoints() {
   //submitOTP("+918989830517","8840");
   //SubmitProfile("male","Daxx","Daksh","Dhakad","+918989830517","RWKHS",20,"8840",10);
   //uploadUserContacts("0",[{Fname:"Daxx1",Lname:"Daxx1Lanme",phoneNumber:5}]);
-
+  //console.log(await verifyStatus("+918989830517")) ---> true
+  console.log(await fetchSchools(undefined, 70.1, -40))
 }
 // Calling the function to initialize endpoints
 InitializeEndpoints();
@@ -44,7 +45,7 @@ async function fetchSchools(schoolName = undefined, latitude, longitude, pageSiz
   const response = await AxiosSigned.get(url, undefined, qstring);
   // Check if the response has an error
   if (response.error || !response.data || !response.data.success) {
-    onError(response)
+    onError.forEach(func => func(response));
     return
   }
   
@@ -64,13 +65,11 @@ async function fetchSchoolsPaginated(schoolName = undefined, latitude, longitude
     fetchedSchools = []
   }
   lastSchoolName = schoolName
-  // Encoding latitude and longitude to geohash
-  const geohashValue = geohash.encode(latitude, longitude);
 
   // Fetching the URL for the endpoint to fetch schools
   const url = endpoints["/registration/fetchSchools"];
   // Creating query string with client location
-  const qstring = { clientlocation: geohashValue, pageSize };
+  const qstring = { clientlocation: geohashValue, pageSize, latitude, longitude };
   // If school name is provided, add it to the query string
   if (schoolName != undefined) qString["queryname"] = schoolName;
   // If nextPageToken is available, add it to the query string for pagination
@@ -79,7 +78,7 @@ async function fetchSchoolsPaginated(schoolName = undefined, latitude, longitude
   const response = await AxiosSigned.get(url, undefined, qstring);
   // Check if the response has an error
   if (response.error || !response.data || !response.data.success) {
-    onError(response)
+    onError.forEach(func => func(response));
     return
   }
 
@@ -139,7 +138,7 @@ async function submitPhoneNumber(phoneNumber) {
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
   // Check if the response has an error
   if (response.error || !response.data || !response.data.success) {
-    onError(response)
+    onError.forEach(func => func(response));
     return
   }
   // Returning the success status from the response
@@ -156,7 +155,7 @@ async function submitOTP(phoneNumber,otp) {
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
   // Check if the response has an error
   if (response.error || !response.data || !response.data.success) {
-    onError(response)
+    onError.forEach(func => func(response));
     return
   }
   // If the response is successful or verified, return true, else return false
@@ -168,16 +167,17 @@ async function submitOTP(phoneNumber,otp) {
 }
 
 // Function to check if a phone number is already verified
-async function verifyStatus(phoneNumber,otp) {
+async function verifyStatus(phoneNumber) {
   // Fetching the URL for the endpoint to fetch verification status
   const url = endpoints["/verifypn/fetchStatus"];
   // Creating query string with phone number and OTP
-  const qString = { phoneNumber, otp: otp };
+  const qString = { phoneNumber };
+  console.log("FETCHING: " + url + "/" + qString)
   // Making a POST request to the endpoint with the query string
   const response = await AxiosSigned._post({uri:url,queryString:qString});
   // Check if the response has an error
   if (response.error || !response.data) { /// NOTE: this specific function does not return success for an erro
-    onError(response)
+    onError.forEach(func => func(response));
   }
   // Returning the success status from the response
   return response.success;
@@ -204,7 +204,7 @@ async function SubmitProfile(gender,username,firstname,lastname,phonenumber,high
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
   // Check if the response has an error
   if (response.error || !response.data || !response.data.success) {
-    onError(response)
+    onError.forEach(func => func(response));
     return
   }
   // Getting the transaction ID from the response
@@ -222,7 +222,7 @@ async function checkSubmitProfile(phoneNumber) {
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
   // Check if the response has an error
   if (response.error || !response.data || !response.data.success) {
-    onError(response)
+    onError.forEach(func => func(response));
     return
   }
 
@@ -249,7 +249,7 @@ async function handleSubmitProfileResponseAlby(data) {
   // If the response is successful, increment the onboarding screen index and login
   // Check if the response has an error
   if (response.error || !response.data || !response.data.success) {
-    onError(response)
+    onError.forEach(func => func(response));
     return
   }
   onboardingScreenIndex++;
@@ -290,7 +290,7 @@ async function submitPFP(filePath,jwt) {
 
     // Check if the response has an error
   if (response.error || !response.data || !response.data.success) {
-    onError(response)
+    onError.forEach(func => func(response));
     return
   }
 
@@ -311,7 +311,7 @@ async function fetchAddFriendsOnboarding(pagenumber = 1,jwt) {
   // If the response is successful, return the data, else return null
   // Check if the response has an error
   if (response.error || !response.data || !response.data.success) {
-    onError(response)
+    onError.forEach(func => func(response));
     return
   }
   return response.data;
@@ -379,7 +379,7 @@ async function uploadUserContacts(phoneNumber, contactsList) {
     });
 
     if (response.error || !response.data || !response.data.success) {
-      onError(response)
+      onError.forEach(func => func(response));
     }
 
     // Logging the server response to the console
