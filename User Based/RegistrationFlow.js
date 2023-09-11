@@ -25,33 +25,31 @@ async function InitializeEndpoints() {
   //SubmitProfile("male","Daxx","Daksh","Dhakad","+918989830517","RWKHS",20,"8840",10);
   //uploadUserContacts("0",[{Fname:"Daxx1",Lname:"Daxx1Lanme",phoneNumber:5}]);
   //console.log(await verifyStatus("+918989830517")) ---> true
-  console.log(await fetchSchools(undefined, 70.1, -40))
+  //console.log(await fetchSchools(undefined, 40.7128, 74.0060))
+  console.log(await fetchSchoolsPaginated(undefined, 40.7128, 74.0060, 10))
+  console.log(await fetchSchoolsPaginated(undefined, 40.7128, 74.0060, 10))
 }
 // Calling the function to initialize endpoints
 InitializeEndpoints();
 
 // Function to fetch schools based on geolocation and optional school name
 async function fetchSchools(schoolName = undefined, latitude, longitude, pageSize = 12) {
-  // Encoding latitude and longitude to geohash
-  const geohashValue = geohash.encode(latitude, longitude);
-
   // Fetching the URL for the endpoint to fetch schools
   const url = endpoints["/registration/fetchSchools"];
   // Creating query string with client location
-  const qstring = { clientlocation: geohashValue, pageSize };
+  const qstring = { latitude, longitude, pageSize };
   // If school name is provided, add it to the query string
   if (schoolName != undefined) qString["queryname"] = schoolName;
   // Making a GET request to the endpoint with the query string
-  const response = await AxiosSigned.get(url, undefined, qstring);
+  const response = await AxiosSigned.post(url, undefined, qstring);
   // Check if the response has an error
-  if (response.error || !response.data || !response.data.success) {
+  if (!response.data || !response.data.success || response.error != undefined) {
     onError.forEach(func => func(response));
-    return
   }
   
 
   // Returning the data received from the response
-  return response.data.rows;
+  return response.data;
 }
 
 let fetchedSchools = [];
@@ -69,15 +67,16 @@ async function fetchSchoolsPaginated(schoolName = undefined, latitude, longitude
   // Fetching the URL for the endpoint to fetch schools
   const url = endpoints["/registration/fetchSchools"];
   // Creating query string with client location
-  const qstring = { clientlocation: geohashValue, pageSize, latitude, longitude };
+  const qstring = { pageSize, latitude, longitude };
+  console.log(url + qstring)
   // If school name is provided, add it to the query string
   if (schoolName != undefined) qString["queryname"] = schoolName;
   // If nextPageToken is available, add it to the query string for pagination
   if (nextPageToken != null) qString["nextPageToken"] = nextPageToken;
   // Making a GET request to the endpoint with the query string
-  const response = await AxiosSigned.get(url, undefined, qstring);
+  const response = await AxiosSigned.post(url, undefined, qstring);
   // Check if the response has an error
-  if (response.error || !response.data || !response.data.success) {
+  if (!response.data) {
     onError.forEach(func => func(response));
     return
   }
@@ -89,7 +88,7 @@ async function fetchSchoolsPaginated(schoolName = undefined, latitude, longitude
     nextPageToken = null
   }
   // Add the fetched schools to the fetchedSchools array
-  fetchedSchools = [...fetchedSchools, ...response.data.rows];
+  fetchedSchools = [...fetchedSchools, ...response.data];
 
   // Returning the fetched schools
   return fetchedSchools;
@@ -137,10 +136,10 @@ async function submitPhoneNumber(phoneNumber) {
   // Making a POST request to the endpoint with the query string
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
   // Check if the response has an error
-  if (response.error || !response.data || !response.data.success) {
-    onError.forEach(func => func(response));
+  if (!response.data || response.error) {
+onError.forEach(func => func(response));
     return
-  }
+}
   // Returning the success status from the response
   return response.success;
 }
@@ -154,10 +153,10 @@ async function submitOTP(phoneNumber,otp) {
   // Making a POST request to the endpoint with the query string
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
   // Check if the response has an error
-  if (response.error || !response.data || !response.data.success) {
-    onError.forEach(func => func(response));
+  if (!response.data || response.error) {
+onError.forEach(func => func(response));
     return
-  }
+}
   // If the response is successful or verified, return true, else return false
   if (response.verified) {
     return true;
@@ -203,10 +202,10 @@ async function SubmitProfile(gender,username,firstname,lastname,phonenumber,high
   // Making a POST request to the endpoint with the query string
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
   // Check if the response has an error
-  if (response.error || !response.data || !response.data.success) {
-    onError.forEach(func => func(response));
+  if (!response.data || response.error) {
+onError.forEach(func => func(response));
     return
-  }
+}
   // Getting the transaction ID from the response
   const topicName = response.transactionId;
   // TODO: Setting up Alby with the transaction ID and the function to handle profile submission response
@@ -221,10 +220,10 @@ async function checkSubmitProfile(phoneNumber) {
   // Making a POST request to the endpoint with the query string
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
   // Check if the response has an error
-  if (response.error || !response.data || !response.data.success) {
-    onError.forEach(func => func(response));
+  if (!response.data || response.error) {
+onError.forEach(func => func(response));
     return
-  }
+}
 
 
   if (!response.data.success)
@@ -248,10 +247,10 @@ async function handleSubmitProfileResponseAlby(data) {
   if (onboardingScreenIndex != 8) return;
   // If the response is successful, increment the onboarding screen index and login
   // Check if the response has an error
-  if (response.error || !response.data || !response.data.success) {
-    onError.forEach(func => func(response));
+  if (!response.data || response.error) {
+onError.forEach(func => func(response));
     return
-  }
+}
   onboardingScreenIndex++;
   // Cache.set("onboardingScreenIndex", onboardingScreenIndex);
   login(Cache.get("username"), Cache.get("otp"));
@@ -289,10 +288,10 @@ async function submitPFP(filePath,jwt) {
     });
 
     // Check if the response has an error
-  if (response.error || !response.data || !response.data.success) {
-    onError.forEach(func => func(response));
+  if (!response.data || response.error) {
+onError.forEach(func => func(response));
     return
-  }
+}
 
     // Logging the success message
     console.log("File uploaded successfully: ", response.data);
@@ -310,10 +309,10 @@ async function fetchAddFriendsOnboarding(pagenumber = 1,jwt) {
   const response = await AxiosSigned.post(url,jwt,{pagenumber},null);
   // If the response is successful, return the data, else return null
   // Check if the response has an error
-  if (response.error || !response.data || !response.data.success) {
-    onError.forEach(func => func(response));
+  if (!response.data || response.error) {
+onError.forEach(func => func(response));
     return
-  }
+}
   return response.data;
 }
 
@@ -407,6 +406,7 @@ export {
   SubmitProfile,
   checkSubmitProfile,
   uploadUserContacts,
-  fetchSchoolsPaginated
+  fetchSchoolsPaginated,
+  clearFetchSchools
 };
 
