@@ -83,14 +83,14 @@ async function RefreshScreen(screen = "home") {
     if (req.query.requestedProfile == undefined) {
       // Cache data
       // Cache.set("profileData", {
-        [response.requestedProfile]: response.data.userData,
-      });
+   //     [response.requestedProfile]: response.data.userData,
+     // });
       return response.data.userData;
     }
     // Cache data
     // Cache.set("profileData", {
-      [response.requestedProfile]: response.data.data,
-    });
+     // [response.requestedProfile]: response.data.data,
+    //});
     return response.data.data;
   } else if (screen === "invite") {
     // Cache data
