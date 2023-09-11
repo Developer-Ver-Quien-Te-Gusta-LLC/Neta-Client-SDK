@@ -31,8 +31,8 @@ async function RefreshScreen(screen = "home") {
   const response = await AxiosSigned.get(url, qStrng);;
 
   // Cache and setup Alby
-  Cache.set("albyChannelId", response.data.albyChannelId);
-  Cache.set("albyDecryptionKey", response.data.albyDecryptionKey);
+  // Cache.set("albyChannelId", response.data.albyChannelId);
+  // Cache.set("albyDecryptionKey", response.data.albyDecryptionKey);
   Alby.setupAlbyWithChannel(response.data.albyChannelId, handleAlbyData);
 
   // Return the data based on the requested screen
@@ -47,12 +47,12 @@ async function RefreshScreen(screen = "home") {
       albyDecryptionKey,
     } = response.data;
     // Cache data
-    Cache.set("homeData", home);
-    Cache.set("addData", add);
-    Cache.set("inboxData", inbox);
-    Cache.set("profileData", { [response.requestedProfile]: profile });
-    Cache.set("inviteData", invite);
-    Cache.set("FriendRequests", response.data.profile.friendRequests.count);
+    // Cache.set("homeData", home);
+    // Cache.set("addData", add);
+    // Cache.set("inboxData", inbox);
+    // Cache.set("profileData", { [response.requestedProfile]: profile });
+    // Cache.set("inviteData", invite);
+    // Cache.set("FriendRequests", response.data.profile.friendRequests.count);
     return {
       home,
       add,
@@ -65,36 +65,36 @@ async function RefreshScreen(screen = "home") {
     };
   } else if (screen === "home") {
     // Cache data
-    Cache.set("homeData", response.data.data);
+    // Cache.set("homeData", response.data.data);
     return response.data.data;
   } else if (screen === "add") {
     // Cache data
     const addData = response.data.data;
-    Cache.set("addData", addData);
-    if (response.data.nextPage) Cache.set("addPageKey", response.data.nextPage);
+    // Cache.set("addData", addData);
+    if (response.data.nextPage) // Cache.set("addPageKey", response.data.nextPage);
     return addData;
 } else if (screen === "inbox") {
     // Cache data
-    Cache.set("inboxData", response.data.data);
-    if (response.data.nextPageKey) Cache.set("pageKey", response.data.nextPageKey);
-    Cache.set("unreadCount", response.data.unreadCount)
+    // Cache.set("inboxData", response.data.data);
+    if (response.data.nextPageKey) // Cache.set("pageKey", response.data.nextPageKey);
+    // Cache.set("unreadCount", response.data.unreadCount)
     return {inboxData: response.data.inbox, unreadCount: response.data.unreadCount};
   } else if (screen === "profile") {
     if (req.query.requestedProfile == undefined) {
       // Cache data
-      Cache.set("profileData", {
+      // Cache.set("profileData", {
         [response.requestedProfile]: response.data.userData,
       });
       return response.data.userData;
     }
     // Cache data
-    Cache.set("profileData", {
+    // Cache.set("profileData", {
       [response.requestedProfile]: response.data.data,
     });
     return response.data.data;
   } else if (screen === "invite") {
     // Cache data
-    Cache.set("inviteData", response.data.data);
+    // Cache.set("inviteData", response.data.data);
     return response.data.data;
   }
 }

@@ -10,6 +10,8 @@ import * as mime from 'mime-types';
 import FormData from 'form-data';
 import fs from 'fs';
 
+var onError = [] /// should take in one param which is the response obj
+
 
 // Variable to store endpoints
 var endpoints;
@@ -28,21 +30,76 @@ async function InitializeEndpoints() {
 InitializeEndpoints();
 
 // Function to fetch schools based on geolocation and optional school name
-async function fetchSchools(schoolName = undefined, latitude, longitude) {
+async function fetchSchools(schoolName = undefined, latitude, longitude, pageSize = 12) {
   // Encoding latitude and longitude to geohash
   const geohashValue = geohash.encode(latitude, longitude);
 
   // Fetching the URL for the endpoint to fetch schools
   const url = endpoints["/registration/fetchSchools"];
   // Creating query string with client location
-  const qstring = { clientlocation: geohashValue };
+  const qstring = { clientlocation: geohashValue, pageSize };
   // If school name is provided, add it to the query string
   if (schoolName != undefined) qString["queryname"] = schoolName;
   // Making a GET request to the endpoint with the query string
   const response = await AxiosSigned.get(url, undefined, qstring);
+  // Check if the response has an error
+  if (response.error || !response.data || !response.data.success) {
+    onError(response)
+    return
+  }
+  
 
   // Returning the data received from the response
   return response.data.rows;
+}
+
+let fetchedSchools = [];
+let nextPageToken = null;
+let lastSchoolName = null
+
+async function fetchSchoolsPaginated(schoolName = undefined, latitude, longitude, pageSize = 10) {
+  if (lastSchoolName != null && lastSchoolName != schoolName) {
+    // CASE: school name changed, reset stored pagination token
+    nextPageToken = null
+    fetchedSchools = []
+  }
+  lastSchoolName = schoolName
+  // Encoding latitude and longitude to geohash
+  const geohashValue = geohash.encode(latitude, longitude);
+
+  // Fetching the URL for the endpoint to fetch schools
+  const url = endpoints["/registration/fetchSchools"];
+  // Creating query string with client location
+  const qstring = { clientlocation: geohashValue, pageSize };
+  // If school name is provided, add it to the query string
+  if (schoolName != undefined) qString["queryname"] = schoolName;
+  // If nextPageToken is available, add it to the query string for pagination
+  if (nextPageToken != null) qString["nextPageToken"] = nextPageToken;
+  // Making a GET request to the endpoint with the query string
+  const response = await AxiosSigned.get(url, undefined, qstring);
+  // Check if the response has an error
+  if (response.error || !response.data || !response.data.success) {
+    onError(response)
+    return
+  }
+
+  // Update nextPageToken for the next page
+  if (response.data.nextPageToken) {
+  nextPageToken = response.data.nextPageToken;
+  } else {
+    nextPageToken = null
+  }
+  // Add the fetched schools to the fetchedSchools array
+  fetchedSchools = [...fetchedSchools, ...response.data.rows];
+
+  // Returning the fetched schools
+  return fetchedSchools;
+}
+
+function clearFetchSchools() {
+  // Clear the fetched schools and reset the nextPageToken
+  fetchedSchools = [];
+  nextPageToken = null;
 }
 
 // Function to check if a location is geofenced
@@ -80,7 +137,11 @@ async function submitPhoneNumber(phoneNumber) {
   const qstring = { phoneNumber:phoneNumber };
   // Making a POST request to the endpoint with the query string
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
-  console.log(response);
+  // Check if the response has an error
+  if (response.error || !response.data || !response.data.success) {
+    onError(response)
+    return
+  }
   // Returning the success status from the response
   return response.success;
 }
@@ -93,8 +154,13 @@ async function submitOTP(phoneNumber,otp) {
   const qstring = { otp:otp, phoneNumber:phoneNumber };
   // Making a POST request to the endpoint with the query string
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
+  // Check if the response has an error
+  if (response.error || !response.data || !response.data.success) {
+    onError(response)
+    return
+  }
   // If the response is successful or verified, return true, else return false
-  if (response.success || response.verified) {
+  if (response.verified) {
     return true;
   } else {
     return false;
@@ -109,6 +175,10 @@ async function verifyStatus(phoneNumber,otp) {
   const qString = { phoneNumber, otp: otp };
   // Making a POST request to the endpoint with the query string
   const response = await AxiosSigned._post({uri:url,queryString:qString});
+  // Check if the response has an error
+  if (response.error || !response.data) { /// NOTE: this specific function does not return success for an erro
+    onError(response)
+  }
   // Returning the success status from the response
   return response.success;
 }
@@ -132,11 +202,14 @@ async function SubmitProfile(gender,username,firstname,lastname,phonenumber,high
   };
   // Making a POST request to the endpoint with the query string
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
-  console.log(response);
+  // Check if the response has an error
+  if (response.error || !response.data || !response.data.success) {
+    onError(response)
+    return
+  }
   // Getting the transaction ID from the response
   const topicName = response.transactionId;
-  // Setting up Alby with the transaction ID and the function to handle profile submission response
- // Alby.setupAlbyWithChannel(topicName, handleSubmitProfileResponseAlby);
+  // TODO: Setting up Alby with the transaction ID and the function to handle profile submission response
 }
 
 // Function to check the status of profile submission
@@ -147,9 +220,21 @@ async function checkSubmitProfile(phoneNumber) {
   const qstring = {phoneNumber:phoneNumber};
   // Making a POST request to the endpoint with the query string
   const response = await AxiosSigned._post({uri:url,queryString:qstring});
+  // Check if the response has an error
+  if (response.error || !response.data || !response.data.success) {
+    onError(response)
+    return
+  }
+
+
+  if (!response.data.success)
+  {
+    /// TODO: handle frontend error
+  }
 
   
   // If the profile submission is resolved, get the user ID from the response
+  /// TODO: 
   if (response.data.resolved) {
     const uid = response.data.uid
   }
@@ -162,11 +247,14 @@ async function handleSubmitProfileResponseAlby(data) {
   // If the onboarding screen index is not 8, do nothing
   if (onboardingScreenIndex != 8) return;
   // If the response is successful, increment the onboarding screen index and login
-  if (data.success) {
-    onboardingScreenIndex++;
-    Cache.set("onboardingScreenIndex", onboardingScreenIndex);
-    login(Cache.get("username"), Cache.get("otp"));
+  // Check if the response has an error
+  if (response.error || !response.data || !response.data.success) {
+    onError(response)
+    return
   }
+  onboardingScreenIndex++;
+  // Cache.set("onboardingScreenIndex", onboardingScreenIndex);
+  login(Cache.get("username"), Cache.get("otp"));
 }
 
 // Function to submit profile picture
@@ -200,6 +288,12 @@ async function submitPFP(filePath,jwt) {
       },
     });
 
+    // Check if the response has an error
+  if (response.error || !response.data || !response.data.success) {
+    onError(response)
+    return
+  }
+
     // Logging the success message
     console.log("File uploaded successfully: ", response.data);
   } catch (error) {
@@ -215,12 +309,12 @@ async function fetchAddFriendsOnboarding(pagenumber = 1,jwt) {
   // Making a POST request to the endpoint with JWT and page number
   const response = await AxiosSigned.post(url,jwt,{pagenumber},null);
   // If the response is successful, return the data, else return null
-  if (response.success) {
-    return response.data;
+  // Check if the response has an error
+  if (response.error || !response.data || !response.data.success) {
+    onError(response)
+    return
   }
-  else{
-    return null;
-  }
+  return response.data;
 }
 
 // Function to fetch all pages of friends during onboarding
@@ -284,6 +378,10 @@ async function uploadUserContacts(phoneNumber, contactsList) {
       },
     });
 
+    if (response.error || !response.data || !response.data.success) {
+      onError(response)
+    }
+
     // Logging the server response to the console
     // This can be useful for debugging
     console.log("Server response:", response.data);
@@ -309,5 +407,6 @@ export {
   SubmitProfile,
   checkSubmitProfile,
   uploadUserContacts,
+  fetchSchoolsPaginated
 };
 

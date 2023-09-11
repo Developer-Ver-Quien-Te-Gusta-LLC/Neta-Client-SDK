@@ -46,10 +46,10 @@ function setupInAppNotifications(transactionID, encryptionKey) {
                       inboxData.sort((a, b) => b.pushedTime - a.pushedTime);
                       
                       // Store the sorted data back in cache
-                      Cache.set("inboxData", inboxData);
+                      // Cache.set("inboxData", inboxData);
                     
                       var unreadCount;
-                      Cache.set("unreadCount", unreadCount = (parseInt(cache.getString("unreadCount") + 1).toString())) /// another line of code from a paranoid react native programmer
+                      // Cache.set("unreadCount", unreadCount = (parseInt(cache.getString("unreadCount") + 1).toString())) /// another line of code from a paranoid react native programmer
 
                       inboxReceivedListener(unreadCount, inboxData)
                     } else if (parsedData.friends != undefined) {
