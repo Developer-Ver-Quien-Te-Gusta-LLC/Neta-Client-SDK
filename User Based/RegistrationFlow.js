@@ -161,10 +161,10 @@ async function submitOTP(phoneNumber, otp) {
   // Making a POST request to the endpoint with the query string
   const response = await AxiosSigned._post({ uri: url, queryString: qstring });
   // Check if the response has an error
-  if (!response.data || response.error) {
+  /*if (!response.data || response.error) {
     onError.forEach((func) => func(response));
     return;
-  }
+  }*/
   // If the response is successful or verified, return true, else return false
   if (response.verified) {
     return true;
