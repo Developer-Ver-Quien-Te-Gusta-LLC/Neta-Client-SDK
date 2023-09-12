@@ -131,7 +131,7 @@ async function DispatchVote(uid, answer, jwt = null) {
 }
 
 async function submitProfileChange(jwt,gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode) {
-    const res = await AxiosSigned.post(endpoints["/submitProifleChange"], jwt, null, {gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode});
+    const res = await AxiosSigned.post(endpoints["/submitProifleChange"], jwt, {gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode}, null);
     if (res.data.success === false && res.data.notUnique) {
         /// user is not unique, print the msg perhaps to the user?
         var msg = res.data.error;
