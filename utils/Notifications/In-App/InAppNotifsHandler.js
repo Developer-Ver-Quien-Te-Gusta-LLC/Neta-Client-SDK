@@ -1,25 +1,23 @@
-import * as Ably from "ably";
+import Ably from 'ably';
+
 let timer;
 import * as KV from "../../KV.js";
-
 
 var realtime;
 var channel;
 async function SetupAbly(){
-    const AblyKey = await KV.fetch("AblyAPIClientKey");
-    realtime = new Ably.Realtime(AblyKey);
+    const AblyKey = await KV._fetch("AblyAPIClientKey");
+    realtime = new Ably.Realtime(AblyKey.data);
 }
 
-//SetupAbly();
-
-import * as decryption from "../../../utils/Decryption.js";
+SetupAbly();
 
 // Keep track of subscribed channels
 const subscribedChannels = new Set();
 
 let inboxReceivedListener, friendEventReceievedListener, modalReceievedListener;
 
-function setupInAppNotifications(transactionID, encryptionKey) {
+function setupInAppNotifications(transactionID) {
     // Cancel any pending disconnection
     if (timer) clearTimeout(timer);
 
@@ -31,7 +29,9 @@ function setupInAppNotifications(transactionID, encryptionKey) {
         if (!subscribedChannels.has(transactionID)) {
             const channel = realtime.channels.get(transactionID);
             channel.subscribe(async (message) => {
-                const data = await decryption.decrypt(message.data, encryptionKey);
+                const data = (message.data);
+                console.log(data);
+                console.log(message.data);
                 try {
                     const parsedData = JSON.parse(data);
                     if (parsedData.inbox != null) {
@@ -85,12 +85,5 @@ function removeListener(){
     channel.unsubscribe();
 }
 
-function tearDownInAppNotifications() {
-    // Set up a timer to disconnect from Ably after 60 seconds
-    timer = setTimeout(() => {
-        // Close the connection
-        realtime.connection.close();
-    }, 60000);
-}
 
-export {setupInAppNotifications,tearDownInAppNotifications,removeListener};
+export {setupInAppNotifications,removeListener};

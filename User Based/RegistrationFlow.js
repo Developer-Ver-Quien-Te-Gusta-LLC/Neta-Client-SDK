@@ -19,14 +19,7 @@ var endpoints;
 async function InitializeEndpoints() {
   // Fetching endpoints from KV
   endpoints = await FetchEndpointsFromKV();
-  //submitPhoneNumber("+918989830517");
-  //submitOTP("+918989830517","8840");
-  //SubmitProfile("male","Daxx","Daksh","Dhakad","+918989830517","RWKHS",20,"8840",10);
-  //uploadUserContacts("0",[{Fname:"Daxx1",Lname:"Daxx1Lanme",phoneNumber:5}]);
-  //console.log(await verifyStatus("+918989830517")) ---> true
-  //console.log(await fetchSchools(undefined, 40.7128, 74.0060))
-  console.log(await fetchSchoolsPaginated(undefined, 40.7128, 74.006, 10));
-  console.log(await fetchSchoolsPaginated(undefined, 40.7128, 74.006, 10));
+ 
 }
 // Calling the function to initialize endpoints
 InitializeEndpoints();

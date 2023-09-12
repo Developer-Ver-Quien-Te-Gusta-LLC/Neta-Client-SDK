@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/Developer-Ver-Quien-Te-Gusta-LLC/Neta-Client-SDK#README",
   "dependencies": {
-    "ably": "^1.2.43",
+    "ably": "^1.2.44",
     "amazon-cognito-identity-js": "^6.3.2",
     "axios": "^1.4.0",
     "firebase": "^10.3.1",
