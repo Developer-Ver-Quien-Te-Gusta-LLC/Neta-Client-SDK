@@ -266,7 +266,7 @@ async function handleSubmitProfileResponseAlby(data) {
 }
 
 // Function to submit profile picture
-async function submitPFP(fileBuffer, jwt) {
+async function submitPFP(fileBuffer, fileName, jwt) {
   try {
     // Assuming the fileBuffer is already in base64 format
     const file = fileBuffer;
@@ -281,7 +281,7 @@ async function submitPFP(fileBuffer, jwt) {
     const data = new FormData();
     // Appending the file to the form data
     data.append("file", buffer, {
-      filename: filename, // provide actual file name
+      filename: fileName, // provide actual file name
       contentType: mimetype || "application/octet-stream", // provide actual file type or default to 'application/octet-stream'
     });
 
