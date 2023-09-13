@@ -7,7 +7,8 @@ var realtime;
 var channel;
 async function SetupAbly(){
     const AblyKey = await KV._fetch("AblyAPIClientKey");
-    realtime = new Ably.Realtime(AblyKey.data);
+    realtime = new Ably.Realtime({key:AblyKey.data});
+    console.log("connected to ably");
 }
 
 SetupAbly();
