@@ -7,7 +7,6 @@ import * as path from "path";
 import * as mime from "mime-types";
 
 import FormData from "form-data";
-import fs from "fs";
 import { verify } from "crypto";
 
 var onError = []; /// should take in one param which is the response obj
@@ -267,10 +266,10 @@ async function handleSubmitProfileResponseAlby(data) {
 }
 
 // Function to submit profile picture
-async function submitPFP(filePath, jwt) {
+async function submitPFP(fileBuffer, jwt) {
   try {
-    // Reading the file as base64
-    const file = await fs.readFile(filePath, { encoding: "base64" });
+    // Assuming the fileBuffer is already in base64 format
+    const file = fileBuffer;
     // Converting the base64 file to buffer
     const buffer = Buffer.from(file, "base64");
     // Getting the filename with extension
@@ -385,15 +384,6 @@ async function uploadUserContacts(phoneNumber, contactsList) {
       "contactsList",
       JSON.stringify(contactsList.map(({ pfp, ...rest }) => rest))
     );
-
-    // Add profile pictures to the form data
-    // For each contact that has a profile picture, we add the picture as a file field to the form data
-    // The field name is "profilePicture" followed by the index of the contact in the list
-    contactsList.forEach((contact, index) => {
-      if (contact.pfp) {
-        form.append(`profilePicture${index}`, fs.createReadStream(contact.pfp));
-      }
-    });
 
     // Sending the form data to the server using a PUT request
     // The headers of the request are automatically set by the form data object
