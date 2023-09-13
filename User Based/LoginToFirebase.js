@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
+import * as KV from "../utils/KV.js";
 
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
@@ -10,17 +11,34 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-async function loginToFirebase(customToken) {
+// Variable to store endpoints
+var endpoints;
+
+// Function to initialize endpoints
+async function InitializeEndpoints() {
+  // Fetching endpoints from KV
+  endpoints = await FetchEndpointsFromKV();
+ 
+}
+// Calling the function to initialize endpoints
+InitializeEndpoints();
+
+async function loginToFirebase(customToken,phoneNumber) {
   try {
     const auth = getAuth(app);
     const userCredential = await signInWithCustomToken(auth, customToken);
     const user = userCredential.user;
     const idToken = await user.getIdToken(true);
     console.log("JWT ID Token:", idToken);
-    return idToken;
+    return {jwt:idToken};
   } catch (error) {
-    console.error(`Error in login: ${error}`);
-    return null;
+    console.error(`customToken has expired , generating new one`);
+
+    const url = endpoints["/generateNewCustomToken"];
+    const qString = {phoneNumber:phoneNumber};
+    const response = await AxiosSigned._post({ uri: url, queryString: qString });
+    const res = await loginToFirebase(response.customToken,phoneNumber);
+    return{jwt:res.jwt,customToken:response.customToken};
   }
 }
 
