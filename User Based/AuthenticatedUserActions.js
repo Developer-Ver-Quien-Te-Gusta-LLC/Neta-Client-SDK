@@ -10,7 +10,16 @@ var endpoints;
 async function InitializeEndpoints() {
   // Fetching endpoints from KV
   endpoints = await FetchEndpointsFromKV();
-  //await submitPFP("D:/Github/Neta/Neta-Business-Application-Logic-Tasks/Populate Questions/128.png","eyJhbGciOiJSUzI1NiIsImtpZCI6ImFhMDhlN2M3ODNkYjhjOGFjNGNhNzJhZjdmOWRkN2JiMzk4ZjE2ZGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiSGFzc2FuMTIzIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL25ldGEtMjllNGUiLCJhdWQiOiJuZXRhLTI5ZTRlIiwiYXV0aF90aW1lIjoxNjk0NzIwMjY3LCJ1c2VyX2lkIjoiZjg2Njk1NmMtZDQwNy00Mzg5LWI0OGQtYjVjZGRjZTYxMGZkIiwic3ViIjoiZjg2Njk1NmMtZDQwNy00Mzg5LWI0OGQtYjVjZGRjZTYxMGZkIiwiaWF0IjoxNjk0NzIwMjY4LCJleHAiOjE2OTQ3MjM4NjgsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnt9LCJzaWduX2luX3Byb3ZpZGVyIjoiY3VzdG9tIn19.MbpTFQAp5dviHNLmhL5PraGg8Ba_LCy-11UVX8YFIyMVxtu3oH1SIq3zk7rGqswYRkZ_GYb56T-_9dPWgeTN91jIXegNe4-hwowmeeIZCN4m3UQEB5qU-5LwBbkiHdJBZRbm0hbOHUYyvhsOLgOeXZmyPN36wUXM9RJ8ctiuVdM2Ct-myl6-LOACrOcpW3zxyKd4AXPyZbueX4J7ww01g6S3dNESf0q9_yGlFouOnzs64MapPLtxavOL9YCD63aQvJyLVutgT4jhqOFP0X4h_NDPdsye0UAoJXMk80qwnj2bW85IDK60baB9ZMVHJE3nngRjl_sC-X6Y8NAFWX3sdg");
+  /*await submitProfileChange("eyJhbGciOiJSUzI1NiIsImtpZCI6ImFhMDhlN2M3ODNkYjhjOGFjNGNhNzJhZjdmOWRkN2JiMzk4ZjE2ZGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiSGFzc2FuMTIzIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL25ldGEtMjllNGUiLCJhdWQiOiJuZXRhLTI5ZTRlIiwiYXV0aF90aW1lIjoxNjk0NzIwMjY3LCJ1c2VyX2lkIjoiZjg2Njk1NmMtZDQwNy00Mzg5LWI0OGQtYjVjZGRjZTYxMGZkIiwic3ViIjoiZjg2Njk1NmMtZDQwNy00Mzg5LWI0OGQtYjVjZGRjZTYxMGZkIiwiaWF0IjoxNjk0NzIwMjY4LCJleHAiOjE2OTQ3MjM4NjgsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnt9LCJzaWduX2luX3Byb3ZpZGVyIjoiY3VzdG9tIn19.MbpTFQAp5dviHNLmhL5PraGg8Ba_LCy-11UVX8YFIyMVxtu3oH1SIq3zk7rGqswYRkZ_GYb56T-_9dPWgeTN91jIXegNe4-hwowmeeIZCN4m3UQEB5qU-5LwBbkiHdJBZRbm0hbOHUYyvhsOLgOeXZmyPN36wUXM9RJ8ctiuVdM2Ct-myl6-LOACrOcpW3zxyKd4AXPyZbueX4J7ww01g6S3dNESf0q9_yGlFouOnzs64MapPLtxavOL9YCD63aQvJyLVutgT4jhqOFP0X4h_NDPdsye0UAoJXMk80qwnj2bW85IDK60baB9ZMVHJE3nngRjl_sC-X6Y8NAFWX3sdg"
+  ,undefined,
+  "Hassan2",
+  undefined,
+  undefined,
+  false,
+  false,
+  false,
+  false,
+  false);*/
 }
 // Calling the function to initialize endpoints
 InitializeEndpoints();
@@ -145,7 +154,7 @@ async function DispatchVote(uid, answer, jwt = null) {
 }
 
 async function submitProfileChange(jwt,gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode) {
-    const res = await AxiosSigned.post(endpoints["/submitProifleChange"], jwt, {gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode}, null);
+    const res = await AxiosSigned.post(endpoints["/submitProfileChange"], jwt, {gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode}, null);
     if (res.success === false) {
         return false;
         
