@@ -32,12 +32,12 @@ function setupInAppNotifications(transactionID) {
         try {
           const parsedData = JSON.parse(data);
           if (parsedData.inbox != null) {
-            inboxReceivedListener(unreadCount, inboxData);
+            inboxReceivedListener(parsedData.inbox);
           } else if (parsedData.friends != undefined) {
-            friendEventReceievedListener(event, friend, message);
+            friendEventReceievedListener(parsedData.friends);
           } else if (parsedData.uri != undefined) {
             /// case: modal is pushed to this user in RT
-            modalReceievedListener(uri);
+            modalReceievedListener(parsedData.uri);
           }
           else if(parsedData.token !=null){
             TokenReceivedListener(parsedData.token);
