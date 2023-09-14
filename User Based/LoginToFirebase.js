@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
-import * as KV from "../utils/KV.js";
+import {FetchEndpointsFromKV}  from "../utils/KV.js";
 
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
