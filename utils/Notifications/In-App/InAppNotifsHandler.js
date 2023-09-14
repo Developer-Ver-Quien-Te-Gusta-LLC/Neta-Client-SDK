@@ -1,90 +1,66 @@
-import Ably from 'ably';
+import Ably from "ably";
 
-let timer;
 import * as KV from "../../KV.js";
+import { parse } from "path";
 
 var realtime;
 var channel;
-async function SetupAbly(){
-    const AblyKey = await KV._fetch("AblyAPIClientKey");
-    realtime = new Ably.Realtime({key:AblyKey.data});
-    console.log("connected to ably");
-}
-
-SetupAbly();
 
 // Keep track of subscribed channels
 const subscribedChannels = new Set();
 
-let inboxReceivedListener, friendEventReceievedListener, modalReceievedListener;
+async function SetupAbly() {
+  const AblyKey = await KV._fetch("AblyAPIClientKey");
+  realtime = new Ably.Realtime({ key: AblyKey.data });
+  realtime.connection.on("connected", function () {
+    console.log("Connected to Ably");
+  });
+}
+
+SetupAbly();
+
+let inboxReceivedListener, friendEventReceievedListener, modalReceievedListener,TokenReceivedListener;
 
 function setupInAppNotifications(transactionID) {
-    // Cancel any pending disconnection
-    if (timer) clearTimeout(timer);
-
-    // If the connection is not already established, connect to Ably and set up the subscription
-    if (
-        realtime.connection.state !== 'connected' &&
-        realtime.connection.state !== 'connecting'
-    ) {
-        if (!subscribedChannels.has(transactionID)) {
-            const channel = realtime.channels.get(transactionID);
-            channel.subscribe(async (message) => {
-                const data = (message.data);
-                console.log(data);
-                console.log(message.data);
-                try {
-                    const parsedData = JSON.parse(data);
-                    if (parsedData.inbox != null) {
-                        /// CASE: poll sent to this user
-                      // Get current cache data
-                      let inboxData = Cache.get("inboxData") || [];
-                      
-                      // Combine the old data with the new data
-                      inboxData = inboxData.concat(parsedData.inbox);
-                      
-                      // Sort the data in descending order by pushedTime
-                      inboxData.sort((a, b) => b.pushedTime - a.pushedTime);
-                      
-                      // Store the sorted data back in cache
-                      // Cache.set("inboxData", inboxData);
-                    
-                      var unreadCount;
-                      // Cache.set("unreadCount", unreadCount = (parseInt(cache.getString("unreadCount") + 1).toString())) /// another line of code from a paranoid react native programmer
-
-                      inboxReceivedListener(unreadCount, inboxData)
-                    } else if (parsedData.friends != undefined) {
-                        /// case: event from friends for this user
-                        var event = parsedData.friends.event; /// add, request, remove, accept
-                        var friend = parsedData.friends.friend
-                        var message = parsedData.friends.message // display this msg
-
-                        friendEventReceievedListener(event, friend, message)
-
-                    } else if (parsedData.uri != undefined) {
-                        /// case: modal is pushed to this user in RT
-                        modalReceievedListener(uri)
-                    }
-                    // Do something with the data
-                  } catch (error) {
-                    console.error("Error parsing the received data:", error);
-                  }
-                  
-            });
-
-            // Mark the channel as subscribed
-            subscribedChannels.add(transactionID);
-        } else {
-            console.warn("Already subscribed to channel with ID:", transactionID);
-            return;
+  // If the connection is not already established, connect to Ably and set up the subscription
+  if (realtime.connection.state == "connected") {
+    if (!subscribedChannels.has(transactionID)) {
+      channel = realtime.channels.get(transactionID);
+      channel.subscribe(async (message) => {
+        const data = message.data;
+        console.log(data);
+        try {
+          const parsedData = JSON.parse(data);
+          if (parsedData.inbox != null) {
+            inboxReceivedListener(unreadCount, inboxData);
+          } else if (parsedData.friends != undefined) {
+            friendEventReceievedListener(event, friend, message);
+          } else if (parsedData.uri != undefined) {
+            /// case: modal is pushed to this user in RT
+            modalReceievedListener(uri);
+          }
+          else if(parsedData.token !=null){
+            TokenReceivedListener(parsedData.token);
+          }
+          // Do something with the data
+        } catch (error) {
+          console.error("Error parsing the received data:", error);
         }
+      });
+
+      // Mark the channel as subscribed
+      subscribedChannels.add(transactionID);
+    } else {
+      console.warn("Already subscribed to channel with ID:", transactionID);
+      return;
     }
+  } else {
+    console.log("Ably Not Connected");
+  }
 }
 
-
-function removeListener(){
-    channel.unsubscribe();
+function removeListener() {
+  channel.unsubscribe();
 }
 
-
-export {setupInAppNotifications,removeListener};
+export { setupInAppNotifications, removeListener,inboxReceivedListener, friendEventReceievedListener, modalReceievedListener,TokenReceivedListener };
