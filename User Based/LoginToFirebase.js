@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
-import {FetchEndpointsFromKV}  from "../utils/KV.js";
-
+import {FetchEndpointsFromKV}  from "../utils/Endpoints.js";
+import {_post} from "../utils/AxiosSigned.js";
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
   apiKey: " AIzaSyCJ-pIfMEyavmWK9DcK1c2es78NCqSunhU ",
@@ -18,7 +18,7 @@ var endpoints;
 async function InitializeEndpoints() {
   // Fetching endpoints from KV
   endpoints = await FetchEndpointsFromKV();
- 
+  //console.log(endpoints);
 }
 // Calling the function to initialize endpoints
 InitializeEndpoints();
@@ -36,8 +36,10 @@ async function loginToFirebase(customToken,phoneNumber) {
 
     const url = endpoints["/generateNewCustomToken"];
     const qString = {phoneNumber:phoneNumber};
-    const response = await AxiosSigned._post({ uri: url, queryString: qString });
+    const response = await _post({ uri: url, queryString: qString });
+    console.log(response);
     const res = await loginToFirebase(response.customToken,phoneNumber);
+ 
     return{jwt:res.jwt,customToken:response.customToken};
   }
 }
