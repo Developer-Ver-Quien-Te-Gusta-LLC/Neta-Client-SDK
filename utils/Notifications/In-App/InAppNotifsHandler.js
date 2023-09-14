@@ -26,7 +26,7 @@ function setupInAppNotifications(transactionID) {
   if (realtime.connection.state == "connected") {
     if (!subscribedChannels.has(transactionID)) {
       channel = realtime.channels.get(transactionID);
-      channel.subscribe(async (message) => {
+      channel.subscribe('event', async (message) => {
         const data = message.data;
         console.log(data);
         try {
