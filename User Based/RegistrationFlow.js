@@ -147,6 +147,7 @@ async function verifyStatus(phoneNumber) {
   return response.success;
 }
 
+//@hassan please call SetupInAppNotifications.js after you get a response from this function , pass in the functions too
 async function SubmitProfile(gender, username, firstname, lastname, phonenumber, highschool, age, otp, grade, os) {
   const url = endpoints["/submitProfile"];
   const qstring = { username: username, firstName: firstname, lastName: lastname, phoneNumber: phonenumber, highschool: highschool, gender: gender, age: age, otp: otp, platform: os, grade: grade };
@@ -154,7 +155,7 @@ async function SubmitProfile(gender, username, firstname, lastname, phonenumber,
   console.log(response);
   //if (!response.data || response.error) { onError.forEach((func) => func(response)); return; }
   const topicName = response.albyTopicId;
-  setupInAppNotifications(topicName);
+  return topicName;
 }
 
 async function checkSubmitProfile(phoneNumber) {
