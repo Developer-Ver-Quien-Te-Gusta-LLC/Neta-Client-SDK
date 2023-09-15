@@ -24,35 +24,39 @@ async function InitializeEndpoints() {
 // Calling the function to initialize endpoints
 InitializeEndpoints();
 
-
-async function submitPFP(filePath,jwt) {
-     try {
-       const file = await fs.readFile(filePath, { encoding: "base64" }); // read file as base64
-       const buffer = Buffer.from(file, "base64"); // convert base64 to buffer
-       const filename = path.basename(filePath); // get the filename with extension
-       const mimetype = mime.lookup(filePath); // get the MIME type of the file
-   
-       const data = new FormData(); // create form data
-       data.append("file", buffer, {
-         filename: filename, // provide actual file name
-         contentType: mimetype || "application/octet-stream", // provide actual file type or default to 'application/octet-stream'
-       });
-   
-       const response = await axios({
-         method: "POST",
-         url: endpoints["/uploadpfp"],
-         data: data,
-         headers: {
-           ...data.getHeaders(), // append form-data specific headers
-           Authorization: jwt, // your custom authorization header
-         },
-       });
-   
-       console.log("File uploaded successfully: ", response.data);
-     } catch (error) {
-       console.error("Error uploading file: ", error);
-     }
-   }
+async function submitPFP(fileBuffer, fileName, jwt) {
+    try {
+      const file = fileBuffer;
+      const buffer = Buffer.from(file, "base64");
+      const filename = path.basename(filePath);
+      const mimetype = mime.lookup(filePath);
+  
+      const data = new FormData();
+      data.append("file", buffer, {
+        filename: fileName,
+        contentType: mimetype || "application/octet-stream",
+      });
+  
+      const response = await axios({
+        method: "POST",
+        url: endpoints["/uploadpfp"],
+        data: data,
+        headers: {
+          ...data.getHeaders(),
+          Authorization: jwt,
+        },
+      });
+  
+      if (!response.data || response.error) {
+        onError.forEach((func) => func(response));
+        return;
+      }
+  
+      console.log("File uploaded successfully: ", response.data);
+    } catch (error) {
+      console.error("Error uploading file: ", error);
+    }
+  }
 
 /// invoked to invite a user
 /// context = "add", "invite", "share"
