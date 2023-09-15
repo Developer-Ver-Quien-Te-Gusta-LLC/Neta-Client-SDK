@@ -28,33 +28,12 @@ InitializeEndpoints();
 }*/
 
 
-async function login(token) {
-    jwt = await loginToFirebase(token);
+async function login(platform,jwt) {
     const url = endpoints["/login"];
-    const response = await AxiosSigned.get(url, {jwt});
-    loginFuncCache = JSON.stringify(response.data)
-
-    Alby.setupAlbyWithChannel(response.data.albyChannelId, handleAlbyData);
-    if (response.data.deleted != undefined) {
-        var deleteNow = response.data.deleted;
-        if (deleteNow) {
-            return logoutAndDelete()
-        } else {
-            /// TODO: handle requested deletion by showing screen
-        }
-    } else if (response.waiting) {
-        var secondsWaiting = Int.asInt(response.secondsWaiting)
-
-    // setup a timer
-    setTimeout(() => {
-        // this block of code will be executed when 'secondsWaiting' has passed
-        /// TODO: invoke fetchPollsNow
-    }, secondsWaiting * 1000); // setTimeout takes time in milliseconds
-    } else if (response.data.polls == undefined) {
-        /// TODO: show screen that says "add friends" bc no polls are avail.
-    }
-    return [response.data.polls,jwt];
-  }
+    const response = await AxiosSigned.post(url,jwt,{platform:platform},null);
+    console.log(response);
+    return response;
+}
 
 async function logout(jwt) {
     await AxiosSigned.post(endpoints["/logout"],jwt,null,null);

@@ -258,8 +258,7 @@ async function uploadUserContacts(phoneNumber, contactsList) {
 
     form.append("phoneNumber", phoneNumber);
     form.append(
-      "contactsList",
-      JSON.stringify(contactsList.map(({ pfp, ...rest }) => rest))
+      "contactsList",contactsList
     );
 
     const response = await AxiosSigned.axios.put(url, form, {
