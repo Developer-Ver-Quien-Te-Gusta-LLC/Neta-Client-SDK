@@ -25,6 +25,7 @@ function setupInAppNotifications(transactionID) {
   // If the connection is not already established, connect to Ably and set up the subscription
   if (realtime.connection.state == "connected") {
     if (!subscribedChannels.has(transactionID)) {
+      console.log("Setting Up Ably User Channel");
       channel = realtime.channels.get(transactionID);
       channel.subscribe('event', async (message) => {
         const data = message.data;

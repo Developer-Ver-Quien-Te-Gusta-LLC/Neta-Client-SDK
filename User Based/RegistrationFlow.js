@@ -1,6 +1,6 @@
 // Importing necessary modules and functions
 import { FetchEndpointsFromKV } from "../utils/Endpoints.js";
-import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
+import {setupInAppNotifications} from "../utils/Notifications/In-App/InAppNotifsHandler.js";
 import * as AxiosSigned from "../utils/AxiosSigned.js";
 import * as KV from "../utils/KV.js";
 import * as path from "path";
@@ -20,7 +20,9 @@ let lastSchoolName = null;
 async function InitializeEndpoints() {
   // Fetching endpoints from KV
   endpoints = await FetchEndpointsFromKV();
- 
+  //submitPhoneNumber("+918989830517");
+  //submitOTP("+918989830517","0000");
+  //SubmitProfile("male","Daxx","Daksh","Dhakad","+918989830517","RWKHS",15,"0000",10,"ios");
 }
 // Calling the function to initialize endpoints
 InitializeEndpoints();
@@ -127,6 +129,7 @@ async function submitOTP(phoneNumber, otp) {
   const url = endpoints["/verifypn/verifyotp"];
   const qstring = { otp: otp, phoneNumber: phoneNumber };
   const response = await AxiosSigned._post({ uri: url, queryString: qstring });
+  console.log(response);
   if (response.verified) {
     return true;
   } else {
@@ -148,8 +151,10 @@ async function SubmitProfile(gender, username, firstname, lastname, phonenumber,
   const url = endpoints["/submitProfile"];
   const qstring = { username: username, firstName: firstname, lastName: lastname, phoneNumber: phonenumber, highschool: highschool, gender: gender, age: age, otp: otp, platform: os, grade: grade };
   const response = await AxiosSigned._post({ uri: url, queryString: qstring });
-  if (!response.data || response.error) { onError.forEach((func) => func(response)); return; }
-  const topicName = response.transactionId;
+  console.log(response);
+  //if (!response.data || response.error) { onError.forEach((func) => func(response)); return; }
+  const topicName = response.albyTopicId;
+  setupInAppNotifications(topicName);
 }
 
 async function checkSubmitProfile(phoneNumber) {
