@@ -15,9 +15,8 @@ InitializeEndpoints();
 /// invoked by the user to refresh with either
 /// home, all, add, inbox, profile, invite
 /// page is for 'add' only and is stored in cache 'nextPageKey'
-async function RefreshScreen(screen = "home") {
+async function RefreshScreen(screen = "home",jwt) {
   await Login();
-  const jwt = Cache.get("jwt");
   const url = endpoints["/refresh"];
   var qStrng = {
     jwt,
@@ -30,9 +29,6 @@ async function RefreshScreen(screen = "home") {
   }
   const response = await AxiosSigned.get(url, qStrng);;
 
-  // Cache and setup Alby
-  // Cache.set("albyChannelId", response.data.albyChannelId);
-  // Cache.set("albyDecryptionKey", response.data.albyDecryptionKey);
   Alby.setupAlbyWithChannel(response.data.albyChannelId, handleAlbyData);
 
   // Return the data based on the requested screen
@@ -46,13 +42,6 @@ async function RefreshScreen(screen = "home") {
       albyChannelId,
       albyDecryptionKey,
     } = response.data;
-    // Cache data
-    // Cache.set("homeData", home);
-    // Cache.set("addData", add);
-    // Cache.set("inboxData", inbox);
-    // Cache.set("profileData", { [response.requestedProfile]: profile });
-    // Cache.set("inviteData", invite);
-    // Cache.set("FriendRequests", response.data.profile.friendRequests.count);
     return {
       home,
       add,
@@ -93,8 +82,6 @@ async function RefreshScreen(screen = "home") {
     //});
     return response.data.data;
   } else if (screen === "invite") {
-    // Cache data
-    // Cache.set("inviteData", response.data.data);
     return response.data.data;
   }
 }
