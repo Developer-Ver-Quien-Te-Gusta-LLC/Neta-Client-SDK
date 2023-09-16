@@ -252,30 +252,23 @@ async function fetchAllAddFriendsOnboardingPages(jwt) {
 
 async function uploadUserContacts(phoneNumber, contactsList) {
   const url = endpoints["/uploadUserContacts"];
+try {
+  const queryParams = {
+    phoneNumber: phoneNumber,
+    contactsList: JSON.stringify(contactsList),
+  };
 
-  try {
-    const form = new FormData();
+  const response = await AxiosSigned.put(url, null, queryParams,null);
 
-    form.append("phoneNumber", phoneNumber);
-    form.append(
-      "contactsList",contactsList
-    );
-
-    const response = await AxiosSigned.axios.put(url, form, {
-      headers: {
-        ...form.getHeaders(),
-      },
-    });
-
-    if (response.error || !response.data || !response.data.success) {
-      onError.forEach((func) => func(response));
-    }
-
-    console.log("Server response:", response.data);
-    return response.data;
-  } catch (error) {
-    console.error("Error sending contact list:", error.message);
+  if (response.error) {
+    onError.forEach((func) => func(response));
   }
+
+  console.log("Server response:", response);
+  return response;
+} catch (error) {
+  console.error("Error sending contact list:", error);
+}
 }
 
 export {
