@@ -197,7 +197,7 @@ async function DisableDeletion(jwt = null) {
 }
 
 async function FetchPollsNow(jwt = null) {
-    const endpoint = endpoints["/fetchPollsNow"];
+    const endpoint = endpoints["/forceFetchPolls"];
    // const jwt = Cache.getString("jwt");
     const res = await AxiosSigned.post(endpoint, jwt, null, null);
     return res;
