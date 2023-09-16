@@ -3,87 +3,68 @@ import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
 import * as AxiosSigned from "../utils/AxiosSigned.js";
 import * as Login from "./LoginToFirebase.js";
 
-var endpoints;
+var endpoints,refreshEndpoint;
 async function InitializeEndpoints() {
   endpoints = await FetchEndpointsFromKV();
+  refreshEndpoint = endpoints["/refresh"];
 }
 
 InitializeEndpoints();
 
-/// TODO: LoginToCognito resets inboxData.pageKey and pageKey and addPageKey 
+//TO DO 
+async function RefreshAll(jwt,platform){
+  const requestedScreen = "all";
+  const qString = {requestedScreen:requestedScreen,platform:platform};
 
-/// invoked by the user to refresh with either
-/// home, all, add, inbox, profile, invite
-/// page is for 'add' only and is stored in cache 'nextPageKey'
-async function RefreshScreen(screen = "home",jwt) {
-  await Login();
-  const url = endpoints["/refresh"];
-  var qStrng = {
-    jwt,
-    requestedScreen: screen,
-  }
-  if (screen == "inbox" && Cache.getString("pageKey") != undefined) {
-    qStrng.page = Cache.getString("pageKey")
-  } else if (screen == "add" && Cache.get("addPageKey") != undefined) {
-    qStrng.page = Cache.getString("addPageKey")
-  }
-  const response = await AxiosSigned.get(url, qStrng);;
+  const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
+  return res;
+}
+async function RefreshHome(jwt,platform){
+const requestedScreen = "home";
+const qString = {requestedScreen:requestedScreen,platform:platform};
+const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
 
-  Alby.setupAlbyWithChannel(response.data.albyChannelId, handleAlbyData);
+return JSON.parse(res.data);
+}
+async function RefreshAdd(jwt,platform,page_FriendsOfFriends,page_SchoolUsers,page_Contacts,highschool,grade){
+  const requestedScreen = "add";
+  const qString = {requestedScreen:requestedScreen,platform:platform,page_FriendsOfFriends:page_FriendsOfFriends,page_SchoolUsers:page_SchoolUsers,page_Contacts:page_Contacts,highschool:highschool,grade:grade};
 
-  // Return the data based on the requested screen
-  if (screen === "all") {
-    const {
-      home,
-      add,
-      inbox,
-      profile,
-      invite,
-      albyChannelId,
-      albyDecryptionKey,
-    } = response.data;
-    return {
-      home,
-      add,
-      inbox,
-      profile,
-      invite,
-      albyChannelId,
-      albyDecryptionKey,
-      FriendRequestsCount: response.data.profile.friendRequests.count,
-    };
-  } else if (screen === "home") {
-    // Cache data
-    // Cache.set("homeData", response.data.data);
-    return response.data.data;
-  } else if (screen === "add") {
-    // Cache data
-    const addData = response.data.data;
-    // Cache.set("addData", addData);
-    if (response.data.nextPage) // Cache.set("addPageKey", response.data.nextPage);
-    return addData;
-} else if (screen === "inbox") {
-    // Cache data
-    // Cache.set("inboxData", response.data.data);
-    if (response.data.nextPageKey) // Cache.set("pageKey", response.data.nextPageKey);
-    // Cache.set("unreadCount", response.data.unreadCount)
-    return {inboxData: response.data.inbox, unreadCount: response.data.unreadCount};
-  } else if (screen === "profile") {
-    if (req.query.requestedProfile == undefined) {
-      // Cache data
-      // Cache.set("profileData", {
-   //     [response.requestedProfile]: response.data.userData,
-     // });
-      return response.data.userData;
-    }
-    // Cache data
-    // Cache.set("profileData", {
-     // [response.requestedProfile]: response.data.data,
-    //});
-    return response.data.data;
-  } else if (screen === "invite") {
-    return response.data.data;
-  }
+  const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
+  console.log(res);
+return res;
 }
 
-export{RefreshScreen}
+async function RefreshInbox(jwt,platform,page){
+  const requestedScreen = "inbox";
+  const qString = {requestedScreen:requestedScreen,platform:platform,page:page};
+
+  const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
+return res;
+}
+
+async function RefreshProfile(jwt,platform,requestedProfile){
+  const requestedScreen = "profile";
+  const qString = {requestedScreen:requestedScreen,platform:platform,requestedProfile:requestedProfile};
+
+  const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
+  console.log(res);
+return res;
+}
+
+async function RefreshInvite(jwt,platform){
+  const requestedScreen = "invite";
+  const qString = {requestedScreen:requestedScreen,platform:platform};
+  const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
+return res;
+}
+
+//TO DO 
+async function RefreshActivity(jwt,platform){
+  const requestedScreen = "activity";
+  const qString = {requestedScreen:requestedScreen,platform:platform};
+  const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
+return res;
+
+}
+export{RefreshAdd,RefreshAll,RefreshHome,RefreshInbox,RefreshInvite,RefreshActivity,RefreshProfile}
