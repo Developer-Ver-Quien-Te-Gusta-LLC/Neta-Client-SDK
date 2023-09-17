@@ -169,9 +169,9 @@ async function submitProfileChange(jwt,gender, fname, lname, username, reduceNot
 }
 
 /// data = username, grade, username, numberOfStars
-async function queryProfile(uid) {
+async function queryProfile(uid,jwt) {
     const endpoint = endpoints["/refresh"];
-    const res = await AxiosSigned.post(endpoint, null, {requestedProfile: uid,requestedScreen:"profile"});
+    const res = await AxiosSigned.post(endpoint, jwt, {requestedProfile: uid,requestedScreen:"profile"});
     return res;
 }
 
