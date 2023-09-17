@@ -203,6 +203,11 @@ async function FetchPollsNow(jwt = null) {
     return res;
 }
 
+async function UpdateFCMNotificationToken(jwt,token){
+    const url = endpoints["setToken"];
+    const res = await AxiosSigned.post(url,jwt,{token:token},null);
+    return res;
+}
 
 export{
     queryProfile,
@@ -216,5 +221,6 @@ export{
     fetchInvite,
     DisableDeletion,
     RequestDeletion,
-    checkUsernameUniqueness
+    checkUsernameUniqueness,
+    UpdateFCMNotificationToken
 }
