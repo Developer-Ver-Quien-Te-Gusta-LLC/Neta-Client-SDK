@@ -5,6 +5,8 @@ import * as AxiosSigned from "../utils/AxiosSigned.js";
 import * as KV from "../utils/KV.js";
 import * as path from "path";
 import * as mime from "mime-types";
+import ngeohash from "ngeohash";
+
 
 import FormData from "form-data";
 
@@ -36,9 +38,11 @@ async function fetchSchools(
 ) {
  
   const url = endpoints["/registration/fetchSchools"];
-  const qstring = { latitude, longitude, pageSize };
+  const geohash = ngeohash.encode(latitude, longitude);
+  
+  const qstring = { geohashValue:geohash, pageSize };
   if (schoolName != undefined) qString["queryname"] = schoolName;
-  const response = await AxiosSigned.post(url, undefined, qstring);
+  const response = await AxiosSigned.post(url, undefined,qstring,undefined );
   if (!response.data || !response.data.success || response.error != undefined) {
     onError.forEach((func) => func(response));
   }
