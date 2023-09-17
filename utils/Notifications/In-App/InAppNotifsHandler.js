@@ -46,7 +46,7 @@ function setupInAppNotifications(transactionID,inboxReceivedCallback,
           const parsedData = JSON.parse(data);
           if (parsedData.inbox != null) {
             if(inboxReceivedCallback!=null)inboxReceivedCallback(parsedData.inbox);
-          } else if (parsedData.friends != undefined) {
+          } else if (parsedData.friend != undefined) {
             if(friendEventReceivedCallback!=null)friendEventReceivedCallback(parsedData.friends);
           } else if (parsedData.uri != undefined) {
             /// case: modal is pushed to this user in RT
