@@ -57,9 +57,11 @@ async function submitPFP(fileBuffer, fileName, jwt) {
       console.error("Error uploading file: ", error);
     }
   }
-
-/// invoked to invite a user
-/// context = "add", "invite", "share"
+async function checkUsernameUniqueness(requestedUsername){
+    const endpoint = endpoints["/checkUsername"];
+    const res = await AxiosSigned.post(endpoint, null,{username:requestedUsername},null);
+    return res;
+}
 async function inviteUser(uid, context = "add",isOnboarding,jwt = null) {
     try {
        
@@ -175,7 +177,6 @@ async function queryProfile(uid) {
 
 
 async function RequestDeletion(jwt = null) {
-   // const jwt = Cache.getString("jwt");
     if (!jwt) {
         console.error("No jwt in the cache");
         return;
@@ -201,6 +202,8 @@ async function FetchPollsNow(jwt = null) {
     const res = await AxiosSigned.post(endpoint, jwt, null, null);
     return res;
 }
+
+
 export{
     queryProfile,
     inviteUser,
@@ -212,5 +215,6 @@ export{
     FetchPollsNow,
     fetchInvite,
     DisableDeletion,
-    RequestDeletion
+    RequestDeletion,
+    checkUsernameUniqueness
 }
