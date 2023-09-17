@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithCustomToken } from "firebase/auth";
+import { getAuth, signInWithCustomToken, signOut } from "firebase/auth";
 import {FetchEndpointsFromKV}  from "../utils/Endpoints.js";
 import {_post} from "../utils/AxiosSigned.js";
 // TODO: Replace the following with your app's Firebase project configuration
@@ -44,5 +44,11 @@ async function loginToFirebase(customToken,phoneNumber) {
   }
 }
 
+async function Logout(){
+  const auth = getAuth(app);
+  await signOut(auth);
+  return true;
+}
+
 //loginToFirebase("eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJodHRwczovL2lkZW50aXR5dG9vbGtpdC5nb29nbGVhcGlzLmNvbS9nb29nbGUuaWRlbnRpdHkuaWRlbnRpdHl0b29sa2l0LnYxLklkZW50aXR5VG9vbGtpdCIsImlhdCI6MTY5NDUwMTAyMiwiZXhwIjoxNjk0NTA0NjIyLCJpc3MiOiJmaXJlYmFzZS1hZG1pbnNkay04MG1rYUBuZXRhLTI5ZTRlLmlhbS5nc2VydmljZWFjY291bnQuY29tIiwic3ViIjoiZmlyZWJhc2UtYWRtaW5zZGstODBta2FAbmV0YS0yOWU0ZS5pYW0uZ3NlcnZpY2VhY2NvdW50LmNvbSIsInVpZCI6IjQ3ZTg4MzkxLTMxODItNDlmMC1hYmM2LTY2MDFlYjgxOTgwMyJ9.hV2XmmoL6niplUOb7TMFZi5AOAzMgbm3M5QmkXHk69nQFpQCq6UGjOSCagkMxQOJ4HCDCCMxCzTsYWL7jmoOa9DGy6phpHle_Wv6oBzy-S0WPMZswLYg8orBI4GbDhRMuGi62CM5j7hZNQ-yRDeWTRlZmlruh5Ixfb3Iu5pbQDgZSLGYJZI3-9KbzJP60zdHZmjRG89AfgzZbEAm99Y0qBxltDeFcDwA3niYAHai6hxVOFd7qGppqD7zec0R1qGaUpRZroZhhemCYVAque1KEN68pzgKy0SsTineJFsdxAMKcLWzDSh4A_CgXAEr83Rtj-Yo7UXfTVCb8ey1O3cE5A")
-export { loginToFirebase };
+export { loginToFirebase,Logout };

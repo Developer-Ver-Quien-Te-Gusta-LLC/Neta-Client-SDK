@@ -15,18 +15,6 @@ async function InitializeEndpoints() {
 
 InitializeEndpoints();
 
-//// used to decrypt all Alby data
-/*function decryptAES256(encryptedText, key) {
-    const iv = encryptedText.slice(0, 16);
-    const content = encryptedText.slice(16);
-    const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(key), iv);
-    
-    let decrypted = decipher.update(content, 'hex', 'utf8');
-    decrypted += decipher.final('utf8');
-    
-    return decrypted;
-}*/
-
 
 async function login(platform,jwt) {
     const url = endpoints["/login"];
@@ -36,22 +24,10 @@ async function login(platform,jwt) {
 }
 
 async function logout(jwt) {
-    await AxiosSigned.post(endpoints["/logout"],jwt,null,null);
-    Alby.removeListener();
+    const res = await AxiosSigned.post(endpoints["/logout"],jwt,null,null);
+    return res
 }
 
 
-const listeners = []
-function addRealtimeListener(listener) {
-    listeners.push(listener)
-}
 
-function removeRealtimeListener(listener) {
-    listeners.pop(listener)
-}
-
-async function handleAlbyData(data) {
-    data = decryptAES256(data, Cache.getString("albyDecryptionKey"))
-    for (listener in listeners) listener(data)
-}
-export {login, logout, addRealtimeListener, removeRealtimeListener}
+export {login, logout}
