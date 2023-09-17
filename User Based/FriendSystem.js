@@ -48,7 +48,7 @@ async function RemoveFriend(friendUID,jwt) {
   return res;
 }
 async function BlockFriend(friendUID,jwt) {
-  const endpoint = endpoints["/friends/remove"];
+  const endpoint = endpoints["/friends/block"];
   const QueryString = { friend: friendUID };
 
   //const jwt = Cache.getString("jwt");
