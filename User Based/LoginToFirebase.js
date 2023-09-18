@@ -38,7 +38,7 @@ async function loginToFirebase(customToken,phoneNumber) {
     const qString = {phoneNumber:phoneNumber};
     const response = await _post({ uri: url, queryString: qString });
     console.log(response);
-    if(res.error != undefined){
+    if(response.error != undefined){
       return false;
     }
     const res = await loginToFirebase(response.customToken,phoneNumber);
