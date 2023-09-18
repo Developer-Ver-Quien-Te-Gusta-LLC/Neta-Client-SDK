@@ -150,11 +150,11 @@ async function ReadInbox(separator, messageID,jwt = null) {
     return res;
 }
 
-/// TODO: impl
-async function DispatchVote(Answer,asset, question, jwt = null) {
+/// pass in UID for Answer
+async function DispatchVote(Answer,asset, question,pollid, jwt = null) {
     const endpoint = endpoints["/dispatchVote"];
     //const jwt = Cache.getString("jwt");
-    const res = await AxiosSigned.post(endpoint, jwt, null, {polls: JSON.stringify([{"uid":Answer,"question":question,"asset":asset}])});
+    const res = await AxiosSigned.post(endpoint, jwt, null, {polls: JSON.stringify([{"uid":Answer,"question":question,"asset":asset,"pollid":pollid}])});
     return res;
 }
 
