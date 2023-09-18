@@ -203,6 +203,17 @@ async function FetchPollsNow(jwt = null) {
     return res;
 }
 
+async function HideActivity(uids, jwt = null) {
+    const endpoint = endpoints["/hideActivvity"];
+    if (!Array.isArray(uids) || !uids.every(uid => typeof uid === 'string')) {
+        throw new Error('uids must be an array of strings');
+    }
+    const uidsString = uids.join(',');
+    
+    const res = await AxiosSigned.post(endpoint, jwt, {uid: uidsString}, null);
+    return res;
+}
+
 async function UpdateFCMNotificationToken(jwt,token){
     const url = endpoints["setToken"];
     const res = await AxiosSigned.post(url,jwt,{token:token},null);
@@ -218,6 +229,7 @@ export{
     ReadInbox,
     DispatchVote,
     FetchPollsNow,
+    HideActivity,
     fetchInvite,
     DisableDeletion,
     RequestDeletion,
