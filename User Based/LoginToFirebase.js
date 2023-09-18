@@ -38,6 +38,9 @@ async function loginToFirebase(customToken,phoneNumber) {
     const qString = {phoneNumber:phoneNumber};
     const response = await _post({ uri: url, queryString: qString });
     console.log(response);
+    if(res.error != undefined){
+      return false;
+    }
     const res = await loginToFirebase(response.customToken,phoneNumber);
  
     return{jwt:res.jwt,customToken:response.customToken};
