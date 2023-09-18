@@ -18,7 +18,6 @@ var endpoints;
 async function InitializeEndpoints() {
   // Fetching endpoints from KV
   endpoints = await FetchEndpointsFromKV();
-  console.log(loginToFirebase(null, "+92300413379"));
 }
 // Calling the function to initialize endpoints
 InitializeEndpoints();
