@@ -82,7 +82,11 @@ async function inviteUser(
         }
         // Prepare request url
         const url = endpoints["/invitations/request"];
-        const QueryString = {}
+        const QueryString = {inviteeFname:inviteeFname,
+            inviteeLname : inviteeLname,
+            inviteephoneNumber : inviteephoneNumber,
+            SendingDestination : SendingDestination,
+            invitescreen : invitescreen};
 
         // Send get request
         const response = await AxiosSigned.post(url, jwt,QueryString,null);
@@ -98,7 +102,7 @@ async function inviteUser(
         return { success: false, message: error.message || "An error occurred while inviting the user" };
     }
 }
-async function fetchInvite(UID,isOnboarding,jwt = null) {
+async function fetchInvite(inviteuid) {
     try {
        
         // Fetch jwt from cache
@@ -111,28 +115,20 @@ async function fetchInvite(UID,isOnboarding,jwt = null) {
         // Prepare request url
         const url = endpoints["/invitations/fetch"];
 
-        // Prepare axios configuration
-        const axiosConfig = {
-            headers: {
-                Authorization: 'Bearer ' + jwt
-            },
-            params: {
-               uid:UID
-            }
-        };
+       const QueryString={inviteuid:inviteuid};
 
         // Send get request
-        const response = await AxiosSigned.get(url, axiosConfig);
+        const response = await AxiosSigned.post(url,jwt,QueryString,null);
 
         if (response.data.success) {
-            return { success: true, data: response.data };
+            return { success: true, data: response.invite};
         } else {
-            return { success: false, message: response.data.message || "An error occurred while fetching the invite" };
+            return { success: false, message: response.error || "An error occurred while fetching the invite" };
         }
 
     } catch (error) {
         console.error(error);
-        return { success: false, message: error.message || "An error occurred while fetching the invitation" };
+        return { success: false, message: response.error || "An error occurred while fetching the invitation" };
     }
 }
 async function OnPollReveal(messageUID,answerFirstLetter,jwt = null) {
