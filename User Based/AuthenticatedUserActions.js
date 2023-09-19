@@ -66,7 +66,13 @@ async function checkUsernameUniqueness(requestedUsername){
     const res = await AxiosSigned.post(endpoint, null,{username:requestedUsername},null);
     return res;
 }
-async function inviteUser(uid, context = "add",isOnboarding,jwt = null) {
+async function inviteUser(
+    inviteeFname,
+    inviteeLname,
+    inviteephoneNumber,
+    SendingDestination,
+    invitescreen,
+    jwt) {
     try {
        
         // Fetch jwt from cache
@@ -74,28 +80,17 @@ async function inviteUser(uid, context = "add",isOnboarding,jwt = null) {
             console.error("No jwt in the cache");
             return;
         }
-
         // Prepare request url
-        const url = endpoints["/invitations/invite"];
-
-        // Prepare axios configuration
-        const axiosConfig = {
-            headers: {
-                Authorization: 'Bearer ' + jwt
-            },
-            params: {
-                invitee : uid,
-                context
-            }
-        };
+        const url = endpoints["/invitations/request"];
+        const QueryString = {}
 
         // Send get request
-        const response = await AxiosSigned.get(url, axiosConfig);
+        const response = await AxiosSigned.post(url, jwt,QueryString,null);
 
         if (response.data.success) {
-            return { success: true, data: response.data };
+            return { success: true, data: response.inviteuid };
         } else {
-            return { success: false, message: response.data.message || "An error occurred while inviting the user" };
+            return { success: false, message: response.error || "An error occurred while inviting the user" };
         }
 
     } catch (error) {

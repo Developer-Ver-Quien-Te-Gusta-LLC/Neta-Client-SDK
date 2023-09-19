@@ -1,6 +1,5 @@
 import { _post } from "./AxiosSigned.js";
-import config from "../config.json" assert { type: "json" };
-const { TitleMicroservice: endpoint } = config;
+
 
 async function _fetch(key) {
     let params = {}
@@ -11,7 +10,7 @@ async function _fetch(key) {
     }
 
     try{
-        const res = await _post({uri : endpoint, queryString : params});
+        const res = await _post({uri : "https://tgwib23qhc.us-east-1.awsapprunner.com/getKV", queryString : params});
         return res
     }
     catch(err){
