@@ -12,9 +12,9 @@ async function InitializeEndpoints() {
 InitializeEndpoints();
 
 //TO DO 
-async function RefreshAll(jwt,platform){
+async function RefreshAll(jwt,platform,page_LimitInbox,page_FriendsOfFriends,page_SchoolUsers,page_Contacts,highschool,grade){
   const requestedScreen = "all";
-  const qString = {requestedScreen:requestedScreen,platform:platform};
+  const qString = {requestedScreen:requestedScreen,platform:platform,page_LimitInbox:page_LimitInbox,page_FriendsOfFriends:page_FriendsOfFriends,page_SchoolUsers:page_SchoolUsers,page_Contacts:page_Contacts,highschool:highschool,grade:grade};
 
   const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
   return res;
