@@ -213,7 +213,7 @@ async function HideActivity(uids, jwt = null) {
 }
 
 async function UpdateFCMNotificationToken(jwt,token){
-    const url = endpoints["setToken"];
+    const url = endpoints["/setToken"];
     const res = await AxiosSigned.post(url,jwt,{token:token},null);
     return res;
 }
