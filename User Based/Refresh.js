@@ -24,7 +24,8 @@ const requestedScreen = "home";
 const qString = {requestedScreen:requestedScreen,platform:platform};
 const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
 
-return JSON.parse(res.data);
+
+return res;
 }
 async function RefreshAdd(jwt,platform,page_FriendsOfFriends,page_SchoolUsers,page_Contacts,highschool,grade){
   const requestedScreen = "add";
