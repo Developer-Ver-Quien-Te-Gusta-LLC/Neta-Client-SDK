@@ -27,12 +27,19 @@ const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
 
 return res;
 }
-async function RefreshAdd(jwt,platform,page_FriendsOfFriends,page_SchoolUsers,page_Contacts,highschool,grade){
+
+var page_FriendsOfFriends,page_SchoolUsers,page_Contacts = 0;
+
+
+async function RefreshAdd(jwt,platform,highschool,grade){
   const requestedScreen = "add";
   const qString = {requestedScreen:requestedScreen,platform:platform,page_FriendsOfFriends:page_FriendsOfFriends,page_SchoolUsers:page_SchoolUsers,page_Contacts:page_Contacts,highschool:highschool,grade:grade};
 
   const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
   console.log(res);
+  page_FriendsOfFriends++;
+  page_SchoolUsers++;
+  page_Contacts++;
 return res;
 }
 
