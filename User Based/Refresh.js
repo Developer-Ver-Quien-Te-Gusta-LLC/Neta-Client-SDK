@@ -11,11 +11,15 @@ async function InitializeEndpoints() {
 
 InitializeEndpoints();
 
+var page_FriendsOfFriends,page_SchoolUsers,page_Contacts = 0;
+
 //TO DO 
-async function RefreshAll(jwt,platform,page_LimitInbox,page_FriendsOfFriends,page_SchoolUsers,page_Contacts,highschool,grade){
+async function RefreshAll(jwt,platform,page_LimitInbox,highschool,grade){
   const requestedScreen = "all";
   const qString = {requestedScreen:requestedScreen,platform:platform,page_LimitInbox:page_LimitInbox,page_FriendsOfFriends:page_FriendsOfFriends,page_SchoolUsers:page_SchoolUsers,page_Contacts:page_Contacts,highschool:highschool,grade:grade};
-
+  page_FriendsOfFriends++;
+  page_SchoolUsers++;
+  page_Contacts++;
   const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
   return res;
 }
@@ -28,7 +32,7 @@ const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
 return res;
 }
 
-var page_FriendsOfFriends,page_SchoolUsers,page_Contacts = 0;
+
 
 
 async function RefreshAdd(jwt,platform,highschool,grade){
