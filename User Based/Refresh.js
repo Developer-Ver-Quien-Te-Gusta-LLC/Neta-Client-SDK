@@ -43,6 +43,10 @@ async function RefreshAdd(jwt,platform,highschool,grade){
 return res;
 }
 
+async function ResetAdd(){
+  page_FriendsOfFriends,page_SchoolUsers,page_Contacts = 0;
+}
+
 async function RefreshInbox(jwt,platform,page){
   const requestedScreen = "inbox";
   const qString = {requestedScreen:requestedScreen,platform:platform,page:page};
@@ -75,4 +79,4 @@ async function RefreshActivity(jwt,platform){
 return res;
 
 }
-export{RefreshAdd,RefreshAll,RefreshHome,RefreshInbox,RefreshInvite,RefreshActivity,RefreshProfile}
+export{RefreshAdd,RefreshAll,RefreshHome,RefreshInbox,RefreshInvite,RefreshActivity,RefreshProfile,ResetAdd}
