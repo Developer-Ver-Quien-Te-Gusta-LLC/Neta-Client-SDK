@@ -1,6 +1,6 @@
 import Ably from "ably";
 
-import * as KV from "../../KV.js";
+import * as KV from "./KV.js";
 import { parse } from "path";
 
 var realtime;

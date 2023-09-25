@@ -4,7 +4,7 @@ import * as FriendSystem from "./User Based/FriendSystem.js";
 import * as loginLogout from  "./User Based/LoginLogout.js";
 import * as registrationFlow from "./User Based/RegistrationFlow.js";
 import * as refresh from "./User Based/Refresh.js";
-import * as InAppNotifsHandler from "./utils/Notifications/In-App/InAppNotifsHandler.js";
+import * as InAppNotifsHandler from "./utils/InAppNotifsHandler.js";
 import * as fetchFromKV from "./utils/KV.js";
 import * as PfpBuilder from "./User Based/PfpBuilder.js";
 //import * as MixpanelLib from "";

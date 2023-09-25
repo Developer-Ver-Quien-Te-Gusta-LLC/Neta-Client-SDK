@@ -1,6 +1,6 @@
 //import * as crypto from 'crypto';
 import {FetchEndpointsFromKV} from "../utils/Endpoints.js";
-import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
+import * as Alby from "../utils/InAppNotifsHandler.js";
 import * as AxiosSigned from "../utils/AxiosSigned.js";
 
 

@@ -1,6 +1,6 @@
 // Importing necessary modules and functions
 import { FetchEndpointsFromKV } from "../utils/Endpoints.js";
-import {setupInAppNotifications} from "../utils/Notifications/In-App/InAppNotifsHandler.js";
+import {setupInAppNotifications} from "../utils/InAppNotifsHandler.js";
 import * as AxiosSigned from "../utils/AxiosSigned.js";
 import * as KV from "../utils/KV.js";
 import * as path from "path";
