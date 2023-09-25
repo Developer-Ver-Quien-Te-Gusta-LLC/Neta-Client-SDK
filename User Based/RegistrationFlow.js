@@ -41,7 +41,7 @@ async function fetchSchools(
   const geohash = ngeohash.encode(latitude, longitude);
   
   const qstring = { geohashValue:geohash, pageSize };
-  if (schoolName != undefined) qString["queryname"] = schoolName;
+  if (schoolName != undefined) qstring["queryname"] = schoolName;
   const response = await AxiosSigned.post(url, undefined,qstring,undefined );
   if (!response.data || !response.data.success || response.error != undefined) {
     onError.forEach((func) => func(response));
