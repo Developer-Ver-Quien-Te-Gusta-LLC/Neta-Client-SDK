@@ -10,7 +10,7 @@ async function _fetch(key) {
     }
 
     try{
-        const res = await _post({uri : "https://tgwib23qhc.us-east-1.awsapprunner.com/getKV", queryString : params});
+        const res = await _post({uri : "https://f6du6bvzz2.execute-api.us-east-1.amazonaws.com/getKV", queryString : params});
         return res
     }
     catch(err){
