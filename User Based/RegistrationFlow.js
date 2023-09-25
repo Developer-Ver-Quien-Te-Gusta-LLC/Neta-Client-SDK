@@ -71,9 +71,9 @@ async function fetchSchoolsPaginated(
   const qstring = { pageSize, latitude, longitude };
   console.log(url + qstring);
 
-  if (schoolName != undefined) qString["queryname"] = schoolName;
+  if (schoolName != undefined) qstring["queryname"] = schoolName;
 
-  if (nextPageToken != null) qString["nextPageToken"] = nextPageToken;
+  if (nextPageToken != null) qstring["nextPageToken"] = nextPageToken;
 
   const response = await AxiosSigned.post(url, undefined, qstring);
   // Check if the response has an error
