@@ -22,10 +22,7 @@ let lastSchoolName = null;
 async function InitializeEndpoints() {
   // Fetching endpoints from KV
   endpoints = await FetchEndpointsFromKV();
-  //submitPhoneNumber("+918989830517");
-  //submitOTP("+918989830517","0000");
-  //SubmitProfile("male","Daxx","Daksh","Dhakad","+918989830517","RWKHS",15,"0000",10,"ios");
-}
+ }
 // Calling the function to initialize endpoints
 InitializeEndpoints();
 
@@ -259,7 +256,7 @@ async function uploadUserContacts(phoneNumber, contactsList) {
 try {
   const payload  = {
     phoneNumber: phoneNumber,
-    contactsList: JSON.stringify(contactsList),
+    contactsList: contactsList,
   };
 
   const response = await AxiosSigned.put(url, null, null,payload);
