@@ -54,6 +54,7 @@ function setupInAppNotifications(transactionID,inboxReceivedCallback,
           }
           else if(parsedData.token !=null){
             console.log("Token Received , make sure listeners are subscribed to");
+            console.log(parsedData);
             if(tokenReceivedCallback!=null)tokenReceivedCallback(parsedData.token);
           }
           // Do something with the data
