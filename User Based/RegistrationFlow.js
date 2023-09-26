@@ -257,12 +257,12 @@ async function fetchAllAddFriendsOnboardingPages(jwt) {
 async function uploadUserContacts(phoneNumber, contactsList) {
   const url = endpoints["/uploadUserContacts"];
 try {
-  const queryParams = {
+  const payload  = {
     phoneNumber: phoneNumber,
     contactsList: JSON.stringify(contactsList),
   };
 
-  const response = await AxiosSigned.put(url, null, queryParams,null);
+  const response = await AxiosSigned.put(url, null, null,payload);
 
   if (response.error) {
     onError.forEach((func) => func(response));
