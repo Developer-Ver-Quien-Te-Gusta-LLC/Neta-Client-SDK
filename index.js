@@ -7,6 +7,7 @@ import * as refresh from "./User Based/Refresh.js";
 import * as InAppNotifsHandler from "./utils/InAppNotifsHandler.js";
 import * as fetchFromKV from "./utils/KV.js";
 import * as PfpBuilder from "./User Based/PfpBuilder.js";
+import * as Firebase from "./User Based/LoginToFirebase.js";
 
 
 export {
@@ -18,5 +19,6 @@ export {
   refresh,
   InAppNotifsHandler,
   fetchFromKV,
-  PfpBuilder
+  PfpBuilder,
+  Firebase
 };
