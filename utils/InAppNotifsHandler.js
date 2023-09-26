@@ -32,7 +32,7 @@ function setupInAppNotifications(transactionID,inboxReceivedCallback,
     if (!subscribedChannels.has(transactionID)) {
       channel = realtime.channels.get(String(transactionID));
       channel.on('attached', function() {
-        console.log('Successfully attached to channel');
+        console.log('Successfully attached to channel' + transactionID);
       });
 
       channel.on('error', function(error) {
