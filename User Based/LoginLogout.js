@@ -19,7 +19,7 @@ InitializeEndpoints();
 async function login(platform,jwt) {
     const url = endpoints["/login"];
     var response = await AxiosSigned.post(url,jwt,{platform:platform},null);
-    response.forEach(item => {
+    response.polls.forEach(item => {
       if (typeof item.users === 'string') {
           item.users = JSON.parse(item.users);
       }
