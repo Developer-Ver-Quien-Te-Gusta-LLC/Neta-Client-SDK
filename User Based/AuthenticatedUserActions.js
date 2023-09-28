@@ -140,8 +140,8 @@ async function OnPollReveal(messageUID,answerFirstLetter,jwt = null) {
     return res;
 }
 
-async function ReadInbox(separator, messageID,jwt = null) {
-    const QueryString = { uid: messageID, separator: separator };
+async function ReadInbox(separator, messageID,jwt = null,pushedTime) {
+    const QueryString = { uid: messageID, separator: separator ,pushedTime:pushedTime};
     const endpoint = endpoints["/readInbox"];
     const res = await AxiosSigned.post(endpoint, jwt, QueryString, null);
     return res;
