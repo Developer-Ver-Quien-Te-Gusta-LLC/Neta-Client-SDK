@@ -37,20 +37,21 @@ return res;
 
 
 
-async function RefreshAdd(jwt,platform,highschool,grade){
+async function RefreshAdd(jwt,platform,highschool,grade, page_FriendsOfFriends,page_SchoolUsers,page_Contacts){
   const requestedScreen = "add";
   const qString = {requestedScreen:requestedScreen,platform:platform,page_FriendsOfFriends:page_FriendsOfFriends,page_SchoolUsers:page_SchoolUsers,page_Contacts:page_Contacts,highschool:highschool,grade:grade};
 
   const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
   console.log(res);
-  page_FriendsOfFriends++;
-  page_SchoolUsers++;
-  page_Contacts++;
+  ResetAdd();
+
 return res;
 }
 
 async function ResetAdd(){
-  page_FriendsOfFriends,page_SchoolUsers,page_Contacts = 0;
+  page_FriendsOfFriends = 0;
+  page_SchoolUsers =0;
+  page_Contacts = 0;
 }
 
 async function RefreshInbox(jwt,platform,page){
