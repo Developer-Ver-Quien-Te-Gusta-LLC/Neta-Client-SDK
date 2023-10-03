@@ -131,11 +131,7 @@ async function submitOTP(phoneNumber, otp) {
   const qstring = { otp: otp, phoneNumber: phoneNumber };
   const response = await AxiosSigned._post({ uri: url, queryString: qstring });
   console.log(response);
-  if (response.verified) {
-    return true;
-  } else {
-    return false;
-  }
+  return response;
 }
 
 async function verifyStatus(phoneNumber) {
