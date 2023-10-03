@@ -119,10 +119,10 @@ async function submitPhoneNumber(phoneNumber) {
   const url = endpoints["/verifypn/sendotp"];
   const qstring = { phoneNumber: phoneNumber };
   const response = await AxiosSigned._post({ uri: url, queryString: qstring });
-  if (!response.data || response.error) {
+ /* if (!response.data || response.error) {
     onError.forEach((func) => func(response));
     return;
-  }
+  }*/
   return response.success;
 }
 
