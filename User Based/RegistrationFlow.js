@@ -123,7 +123,7 @@ async function submitPhoneNumber(phoneNumber) {
     onError.forEach((func) => func(response));
     return;
   }*/
-  return response.success;
+  return response;
 }
 
 async function submitOTP(phoneNumber, otp) {
