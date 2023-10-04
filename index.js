@@ -8,7 +8,7 @@ import * as InAppNotifsHandler from "./utils/InAppNotifsHandler.js";
 import * as fetchFromKV from "./utils/KV.js";
 import * as PfpBuilder from "./User Based/PfpBuilder.js";
 import * as Firebase from "./User Based/LoginToFirebase.js";
-
+import { onEndpointsFetched } from "./utils/Endpoints.js";
 
 export {
   Analytics,
@@ -20,5 +20,6 @@ export {
   InAppNotifsHandler,
   fetchFromKV,
   PfpBuilder,
-  Firebase
+  Firebase,
+  onEndpointsFetched,
 };
