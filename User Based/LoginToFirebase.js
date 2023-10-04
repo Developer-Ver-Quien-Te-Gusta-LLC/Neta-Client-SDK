@@ -23,27 +23,7 @@ async function InitializeEndpoints() {
 InitializeEndpoints();
 
 async function loginToFirebase(customToken,phoneNumber) {
-  try {
-    const auth = getAuth(app);
-    const userCredential = await signInWithCustomToken(auth, customToken);
-    const user = userCredential.user;
-    const idToken = await user.getIdToken(true);
-    console.log("JWT ID Token:", idToken);
-    return {jwt:idToken};
-  } catch (error) {
-    console.error(`customToken has expired , generating new one`);
-
-    const url = endpoints["/generateNewCustomToken"];
-    const qString = {phoneNumber:phoneNumber};
-    const response = await _post({ uri: url, queryString: qString });
-    console.log(response);
-    if(response.error != undefined){
-      return false;
-    }
-    const res = await loginToFirebase(response.customToken,phoneNumber);
- 
-    return{jwt:res.jwt,customToken:response.customToken};
-  }
+    return{jwt:customToken};
 }
 
 async function Logout(){
