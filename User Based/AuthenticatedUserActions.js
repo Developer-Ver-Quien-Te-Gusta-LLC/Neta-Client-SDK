@@ -2,8 +2,6 @@
 //import * as Alby from "../utils/Notifications/In-App/InAppNotifsHandler.js";
 import * as AxiosSigned from "../utils/AxiosSigned.js";
 import { FetchEndpointsFromKV } from "../utils/Endpoints.js";
-//const TestJWT="eyJhbGciOiJSUzI1NiIsImtpZCI6ImFhMDhlN2M3ODNkYjhjOGFjNGNhNzJhZjdmOWRkN2JiMzk4ZjE2ZGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiSGFzc2FuMTIzIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL25ldGEtMjllNGUiLCJhdWQiOiJuZXRhLTI5ZTRlIiwiYXV0aF90aW1lIjoxNjk1MDYzMjgwLCJ1c2VyX2lkIjoiMTNjMzk4MjItNGEzNy00MDk2LTlmNzctNmNiMWQzMmVhYWE3Iiwic3ViIjoiMTNjMzk4MjItNGEzNy00MDk2LTlmNzctNmNiMWQzMmVhYWE3IiwiaWF0IjoxNjk1MDYzMjgyLCJleHAiOjE2OTUwNjY4ODIsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnt9LCJzaWduX2luX3Byb3ZpZGVyIjoiY3VzdG9tIn19.a5dYpX59gGu08zCG_TJSTvqKHFBFrXpw0xkB7Q7gZpzg9fxrp8XCxGq2S_Vtvcy95k2KksNe0kvGaMgN7RGtHDNE9S5oRgyw4M0DL5UPckPaOm_aaAMP48tr9seKOU-rUTQ6cf7PTAhwanzcevFk97_JSnGZ3v9sqGesY3e6jAIOt-i8EIZMoRT2s3JTh2Pv7U-H8gwX0wSNpm-C6MlpZfDbbDy4ENUbQixI0v6SYuWqHm7nwbL4LtAnZu6HZy-C1056WXiSA9xRQHFH-x9AriplhN4QZ3rvPPtXHzNjF5dZDNrCBMmJhocDptnmz7LxSDP7irlLCyyk25oiJ7EhPg"
-// Variable to store endpoints
 var endpoints;
 
 
@@ -12,18 +10,7 @@ var endpoints;
 async function InitializeEndpoints() {
   // Fetching endpoints from KV
   endpoints = await FetchEndpointsFromKV();
-  /*await submitProfileChange("eyJhbGciOiJSUzI1NiIsImtpZCI6ImFhMDhlN2M3ODNkYjhjOGFjNGNhNzJhZjdmOWRkN2JiMzk4ZjE2ZGMiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiSGFzc2FuMTIzIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL25ldGEtMjllNGUiLCJhdWQiOiJuZXRhLTI5ZTRlIiwiYXV0aF90aW1lIjoxNjk0NzIwMjY3LCJ1c2VyX2lkIjoiZjg2Njk1NmMtZDQwNy00Mzg5LWI0OGQtYjVjZGRjZTYxMGZkIiwic3ViIjoiZjg2Njk1NmMtZDQwNy00Mzg5LWI0OGQtYjVjZGRjZTYxMGZkIiwiaWF0IjoxNjk0NzIwMjY4LCJleHAiOjE2OTQ3MjM4NjgsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnt9LCJzaWduX2luX3Byb3ZpZGVyIjoiY3VzdG9tIn19.MbpTFQAp5dviHNLmhL5PraGg8Ba_LCy-11UVX8YFIyMVxtu3oH1SIq3zk7rGqswYRkZ_GYb56T-_9dPWgeTN91jIXegNe4-hwowmeeIZCN4m3UQEB5qU-5LwBbkiHdJBZRbm0hbOHUYyvhsOLgOeXZmyPN36wUXM9RJ8ctiuVdM2Ct-myl6-LOACrOcpW3zxyKd4AXPyZbueX4J7ww01g6S3dNESf0q9_yGlFouOnzs64MapPLtxavOL9YCD63aQvJyLVutgT4jhqOFP0X4h_NDPdsye0UAoJXMk80qwnj2bW85IDK60baB9ZMVHJE3nngRjl_sC-X6Y8NAFWX3sdg"
-  ,undefined,
-  "Hassan2",
-  undefined,
-  undefined,
-  false,
-  false,
-  false,
-  false,
-  false);*/
- // await DispatchVote("d910773d-ca20-4a2e-89d8-73cdb7b4d7ce","https://assets.descarganeta.com/570ece0d-a6e7-4616-9b8b-16bf18d94d7c.png","Quiere robarlos de su novio novia","033e86e6-f92b-4103-bcd3-ca662e8fe1d8",TestJWT);
- //await OnPollReveal("d25dfd89-1e64-40e9-a1dc-e43fe5dbbbbb",true,TestJWT);
+ 
 }
 // Calling the function to initialize endpoints
 InitializeEndpoints();
@@ -151,7 +138,7 @@ async function ReadInbox(separator, messageID,jwt = null,pushedTime) {
 async function DispatchVote(Answer,asset, question,pollid, jwt = null) {
     const endpoint = endpoints["/dispatchVote"];
     //const jwt = Cache.getString("jwt");
-    const res = await AxiosSigned.post(endpoint, jwt, {polls: [JSON.stringify({"uid":Answer,"question":question,"asset":asset,"pollid":pollid})]},null);
+    const res = await AxiosSigned.post(endpoint, jwt, {"uid":Answer,"question":question,"asset":asset,"pollid":pollid},null);
     console.log(res);
     return res;
 }
