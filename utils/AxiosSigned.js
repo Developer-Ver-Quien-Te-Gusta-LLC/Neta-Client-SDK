@@ -13,30 +13,27 @@ async function _get(data) {
         queryStr = params;
         queryString = params;
     }
-    return await get(uri, jwt, queryStr, body)
+    return await retryFunction(() => get(uri, jwt, queryStr, body));
 }
 async function get(uri, jwt = null, qString = null, body = null) {
-    let options = {
-        method: 'GET',
-        url: uri,
-        params: qString,  // query string in the form of JSON
-        data: body,  // body data
-    };
-
-    // Add authorization header if jwt token is provided
-    if (jwt) {
-        options.headers = {
-            'Authorization': jwt
+    return await retryFunction(async () => {
+        let options = {
+            method: 'GET',
+            url: uri,
+            params: qString,  // query string in the form of JSON
+            data: body,  // body data
         };
-    }
 
-    try {
+        // Add authorization header if jwt token is provided
+        if (jwt) {
+            options.headers = {
+                'Authorization': jwt
+            };
+        }
+
         const response = await axios.request(options);
         return response.data;
-    } catch (error) {
-        console.error(`Error in GET request: ${error}`);
-        throw error;
-    }
+    });
 }
 
 async function _post(data) {
@@ -48,37 +45,34 @@ async function _post(data) {
     if (params != undefined) {
         queryString = params;
     }
-    return await post(uri, jwt, queryString, body)
+    return await retryFunction(() => post(uri, jwt, queryString, body));
 }
 
 async function post(uri, jwt = null, qString = null, body = null) {
-    // If qString is provided, append it to the uri
-    if (qString) {
-        const queryString = Object.keys(qString).map(key => key + '=' + qString[key]).join('&');
-        uri += '?' + queryString;
-    }
+    return await retryFunction(async () => {
+        // If qString is provided, append it to the uri
+        if (qString) {
+            const queryString = Object.keys(qString).map(key => key + '=' + qString[key]).join('&');
+            uri += '?' + queryString;
+        }
 
-    let options = {
-        method: 'POST',
-        url: uri,
-        data: body,  // body data
-    };
-    console.log(uri);
-
-    // Add authorization header if jwt token is provided
-    if (jwt) {
-        options.headers = {
-            'Authorization': jwt
+        let options = {
+            method: 'POST',
+            url: uri,
+            data: body,  // body data
         };
-    }
+        console.log(uri);
 
-    try {
+        // Add authorization header if jwt token is provided
+        if (jwt) {
+            options.headers = {
+                'Authorization': jwt
+            };
+        }
+
         const response = await axios(options);
         return response.data;
-    } catch (error) {
-        console.error(`Error in POST request: ${error}`);
-        throw error;
-    }
+    });
 }
 
 async function _put(data) {
@@ -95,32 +89,42 @@ async function _put(data) {
         queryStr = params;
         queryString = params;
     }
-    return await put(uri, jwt, queryStr, body)
+    return await retryFunction(() => put(uri, jwt, queryStr, body));
 }
 
 async function put(uri, jwt = null, qString = null, body = null) {
-    let options = {
-        method: 'PUT',
-        url: uri,
-        params: qString,  // query string
-        data: body,  // body data
-    };
-
-    // Add authorization header if jwt token is provided
-    if (jwt) {
-        options.headers = {
-            'Authorization': jwt
+    return await retryFunction(async () => {
+        let options = {
+            method: 'PUT',
+            url: uri,
+            params: qString,  // query string
+            data: body,  // body data
         };
-    }
 
-    try {
+        // Add authorization header if jwt token is provided
+        if (jwt) {
+            options.headers = {
+                'Authorization': jwt
+            };
+        }
+
         const response = await axios(options);
         return response.data;
+    });
+}
+
+async function retryFunction(fn, retries = 3) {
+    try {
+        return await fn();
     } catch (error) {
-        console.error(`Error in PUT request: ${error}`);
-        throw error;
+        if (retries > 1) {
+            return await retryFunction(fn, retries - 1);
+        } else {
+            console.error(`Error after ${retries} attempts: ${error}`);
+            throw error;
+        }
     }
 }
 
-
 export {get, post, put,_post,_put,_get,axios}
+
