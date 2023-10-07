@@ -27,25 +27,15 @@ function setupInAppNotifications(transactionID,inboxReceivedCallback,
   friendEventReceivedCallback,
   modalReceivedCallback,
   tokenReceivedCallback,
-  OnRewindedMessagesCallback,
-  rewindTime) {// add values like 10m , 30m for a limited number of minutes to rewind to
+ ) {// add values like 10m , 30m for a limited number of minutes to rewind to
   // If the connection is not already established, connect to Ably and set up the subscription
   if (realtime.connection.state == "connected") {
     if (!subscribedChannels.has(transactionID)) {
-      channel = realtime.channels.get(String(transactionID), { params: { rewind: rewindTime } });
+      channel = realtime.channels.get(String(transactionID));
       channel.on('attached', function() {
         console.log('Successfully attached to channel' + transactionID);
-        channel.history((err, page) => {
-          if(err) {
-            console.log('Error fetching channel history:', err);
-          } else {
-            console.log('Checking for unread messages in the channel before initialization:');
-            page.items.forEach((message) => {
-              console.log(message);
-              OnRewindedMessagesCallback(message);
-            });
-          }
-        });
+        
+        
       });
 
       channel.on('error', function(error) {
