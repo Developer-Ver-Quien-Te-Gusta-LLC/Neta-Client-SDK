@@ -18,7 +18,7 @@ var page_Contacts = 0;
 //TO DO 
 async function RefreshAll(jwt,platform,page_LimitInbox){
   const requestedScreen = "all";
-  const qString = {requestedScreen:requestedScreen,platform:platform,page_LimitInbox:page_LimitInbox,page_FriendsOfFriends:page_FriendsOfFriends,page_SchoolUsers:page_SchoolUsers,page_Contacts:page_Contacts,highschool:highschool,grade:grade};
+  const qString = {requestedScreen:requestedScreen,platform:platform,page_LimitInbox:page_LimitInbox,page_FriendsOfFriends:page_FriendsOfFriends,page_SchoolUsers:page_SchoolUsers,page_Contacts:page_Contacts};
   page_FriendsOfFriends++;
   page_SchoolUsers++;
   page_Contacts++;
