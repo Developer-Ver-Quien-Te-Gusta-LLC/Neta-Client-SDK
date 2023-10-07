@@ -143,8 +143,8 @@ async function DispatchVote(Answer,asset, question,pollid, jwt = null) {
     return res;
 }
 
-async function submitProfileChange(jwt,gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode) {
-    const res = await AxiosSigned.post(endpoints["/submitProfileChange"], jwt, {gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode}, null);
+async function submitProfileChange(jwt,gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode,highschool,grade) {
+    const res = await AxiosSigned.post(endpoints["/submitProfileChange"], jwt, {gender, fname, lname, username, reduceNotifications, hideTopStars, takeBreak, nameInpolls, anonymousMode,highschool,grade}, null);
     if (res.success === false) {
         return false;
         
