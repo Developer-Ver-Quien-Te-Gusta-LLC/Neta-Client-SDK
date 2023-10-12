@@ -171,38 +171,41 @@ async function checkSubmitProfile(phoneNumber) {
   return response.data.resolved;
 }
 
+import axios from 'axios';
+import FormData from 'form-data';
+import path from 'path';
+import mime from 'mime';
+
 async function submitPFP(fileBuffer, fileName, jwt) {
-  try {
-    const file = fileBuffer;
-    const buffer = Buffer.from(file, "base64");
-    const filename = path.basename(filePath);
-    const mimetype = mime.lookup(filePath);
+    try {
+        const buffer = Buffer.from(fileBuffer, "base64");
+        const mimetype = mime.getType(fileName);
 
-    const data = new FormData();
-    data.append("file", buffer, {
-      filename: fileName,
-      contentType: mimetype || "application/octet-stream",
-    });
+        const data = new FormData();
+        data.append("file", buffer, {
+            filename: fileName,
+            contentType: mimetype || "application/octet-stream",
+        });
 
-    const response = await axios({
-      method: "POST",
-      url: endpoints["/uploadpfp"],
-      data: data,
-      headers: {
-        ...data.getHeaders(),
-        Authorization: jwt,
-      },
-    });
+        const response = await axios({
+            method: "POST",
+            url: endpoints["/uploadpfp"],
+            data: data,
+            headers: {
+                ...data.getHeaders(),
+                Authorization: jwt,
+            },
+        });
 
-    if (!response.data || response.error) {
-      onError.forEach((func) => func(response));
-      return;
+        if (!response.data || response.data.error) {
+            console.error("Error in response: ", response.data);
+            return;
+        }
+
+        console.log("File uploaded successfully: ", response.data);
+    } catch (error) {
+        console.error("Error uploading file: ", error);
     }
-
-    console.log("File uploaded successfully: ", response.data);
-  } catch (error) {
-    console.error("Error uploading file: ", error);
-  }
 }
 
 async function fetchAddFriendsOnboarding(
