@@ -1,22 +1,36 @@
-import { _post } from "./AxiosSigned.js";
-
+import remoteConfig from '@react-native-firebase/remote-config';
 
 async function _fetch(key) {
-    let params = {}
-    if (!Array.isArray(key)) {
-        params = {"key":key}
-    } else {
-        params = {"keys":key}
-    }
+    try {
+        // Ensure default values are loaded from Firebase, and fetch them.
+        await remoteConfig().setDefaults({
+            // ...default values, if any...
+        });
+        
+        // Fetch values from Firebase
+        await remoteConfig().fetch(10); // 10 seconds cache duration
+        await remoteConfig().activate();
 
-    try{
-        const res = await _post({uri : "https://f6du6bvzz2.execute-api.us-east-1.amazonaws.com/getKV", queryString : params});
-        return res
+        // Fetch value for the key(s)
+        if (!Array.isArray(key)) {
+            const value = remoteConfig().getValue(key);
+            console.log(`Fetched key ${key} with value ${value.asString()}`);
+            return value ? { [key]: value.asString() } : null;
+        } else {
+            const result = {};
+            key.forEach(k => {
+                const value = remoteConfig().getValue(k);
+                if (value) {
+                    result[k] = value.asString();
+                    console.log(`Fetched key ${k} with value ${result[k]}`);
+                }
+            });
+            return result;
+        }
+    } catch (err) {
+        console.log("Error fetching KV from Firebase Remote Config", err);
+        return [];
     }
-    catch(err){
-        console.log("Error fetching KV");
-        return []
-    }
-} 
+}
 
-export  { _fetch };
+export { _fetch };
