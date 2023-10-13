@@ -172,9 +172,7 @@ async function checkSubmitProfile(phoneNumber) {
 }
 
 import axios from 'axios';
-import FormData from 'form-data';
-import path from 'path';
-import mime from 'mime';
+
 
 async function submitPFP(fileBuffer, fileName, jwt) {
     try {
