@@ -92,5 +92,6 @@ export {
   RemoveFriend,
   BlockFriend,
   ResetBlockList,
-  ResetHideList
+  ResetHideList,
+  AddFriend
 };
