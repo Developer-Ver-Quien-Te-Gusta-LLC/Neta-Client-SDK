@@ -25,7 +25,6 @@ async function _fetch(key) {
                     console.log(`Fetched key ${k} with value ${result[k]}`);
                 }
             });
-            console.log("ABLY API KEY IS ------>" + result);
             return result;
         }
     } catch (err) {
