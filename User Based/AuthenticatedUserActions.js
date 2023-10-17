@@ -138,10 +138,9 @@ async function ReadInbox(separator, messageID,jwt = null,pushedTime) {
 }
 
 /// pass in UID for Answer
-async function DispatchVote(Answer,asset, question,pollid, jwt = null) {
+async function DispatchVote(Answer,pollid, jwt = null,skipped=false) {
     const endpoint = endpoints["/dispatchVote"];
-    //const jwt = Cache.getString("jwt");
-    const res = await AxiosSigned.post(endpoint, jwt, {"uid":Answer,"question":question,"asset":asset,"pollid":pollid},null);
+    const res = await AxiosSigned.post(endpoint, jwt, {"uid":Answer,"pollid":pollid,"skipped":skipped},null);
     console.log(res);
     return res;
 }
