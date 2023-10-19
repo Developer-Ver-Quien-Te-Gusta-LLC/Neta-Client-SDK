@@ -61,7 +61,7 @@ async function post(uri, jwt = null, qString = null, body = null) {
             url: uri,
             data: body,  // body data
         };
-        console.log(uri);
+      
 
         // Add authorization header if jwt token is provided
         if (jwt) {
@@ -69,6 +69,7 @@ async function post(uri, jwt = null, qString = null, body = null) {
                 'Authorization': jwt
             };
         }
+        console.log(options);
 
         const response = await axios(options);
         return response.data;
