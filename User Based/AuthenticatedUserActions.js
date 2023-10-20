@@ -181,6 +181,17 @@ async function DisableDeletion(jwt = null) {
     return res;
 }
 
+async function Purchase(a) { // param is a boolean
+    // const jwt = Cache.getString("jwt");
+     if (!jwt) {
+         console.error("No jwt in the cache");
+         return;
+     }
+     const url = endpoints["/purchase"];
+     const res = await AxiosSigned.post(url, jwt, {subType:a ? "TempSubTop" : "TempSubCrush"}, null);
+     return res;
+ }
+
 async function FetchPollsNow(jwt = null) {
     const endpoint = endpoints["/forceFetchPolls"];
    // const jwt = Cache.getString("jwt");
@@ -219,5 +230,6 @@ export{
     DisableDeletion,
     RequestDeletion,
     checkUsernameUniqueness,
-    UpdateFCMNotificationToken
+    UpdateFCMNotificationToken,
+    Purchase
 }
