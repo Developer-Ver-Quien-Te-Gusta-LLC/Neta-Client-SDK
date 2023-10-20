@@ -11,7 +11,7 @@ const subscribedChannels = new Set();
 
 async function SetupAbly() {
   const AblyKey = await KV._fetch("AblyAPIClientKey");
-  realtime = new Ably.Realtime({ key: AblyKey.data });
+  realtime = new Ably.Realtime({ key:  AblyKey["AblyAPIClientKey"] });
   realtime.connection.on('connected', function() {
     console.log("Connected to Ably");
   });

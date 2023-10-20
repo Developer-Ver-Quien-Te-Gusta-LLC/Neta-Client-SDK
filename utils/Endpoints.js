@@ -18,6 +18,7 @@ var FetchedEndpoints = {
   "/checkUsername":"https://0ioa1u4p5b.execute-api.us-east-1.amazonaws.com/checkUsername",
   "/friends/request":"https://0ioa1u4p5b.execute-api.us-east-1.amazonaws.com/friends/request",
   "/friends/accept":"https://0ioa1u4p5b.execute-api.us-east-1.amazonaws.com/friends/accept",
+  "/friends/add":"https://0ioa1u4p5b.execute-api.us-east-1.amazonaws.com/friends/add",
   "/friends/hide":"https://0ioa1u4p5b.execute-api.us-east-1.amazonaws.com/friends/hide",
   "/friends/remove":"https://0ioa1u4p5b.execute-api.us-east-1.amazonaws.com/friends/remove",
   "/friends/block":"https://0ioa1u4p5b.execute-api.us-east-1.amazonaws.com/friends/block",
