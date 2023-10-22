@@ -48,8 +48,34 @@ async function _post(data) {
     return await retryFunction(() => post(uri, jwt, queryString, body));
 }
 
-async function post(uri, jwt = null, qString = null, body = null) {
-    return await retryFunction(async () => {
+async function post(uri, jwt = null, qString = null, body = null,retry = true) {
+    if (retry) {
+        return await retryFunction(async () => {
+            // If qString is provided, append it to the uri
+            if (qString) {
+                const queryString = Object.keys(qString).map(key => key + '=' + qString[key]).join('&');
+                uri += '?' + queryString;
+            }
+
+            let options = {
+                method: 'POST',
+                url: uri,
+                data: body,  // body data
+            };
+          
+
+            // Add authorization header if jwt token is provided
+            if (jwt) {
+                options.headers = {
+                    'Authorization': jwt
+                };
+            }
+            console.log(options);
+
+            const response = await axios(options);
+            return response.data;
+        });
+    } else {
         // If qString is provided, append it to the uri
         if (qString) {
             const queryString = Object.keys(qString).map(key => key + '=' + qString[key]).join('&');
@@ -73,7 +99,9 @@ async function post(uri, jwt = null, qString = null, body = null) {
 
         const response = await axios(options);
         return response.data;
-    });
+    }
+
+
 }
 
 async function _put(data) {
