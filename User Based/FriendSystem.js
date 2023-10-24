@@ -29,16 +29,6 @@ async function AcceptFriendRequest(friendUID,jwt) {
   return res;
 }
 
-async function AddFriend(friendUID,jwt) {
-  const endpoint = endpoints["/friends/add"];
-  const QueryString = { friend: friendUID };
-
-  //const jwt = Cache.getString("jwt");
-
-  const res = await AxiosSigned._post({uri:endpoint,queryString:QueryString,jwt:jwt});
-  return res;
-}
-
 async function HideFriendRequestfriendUID(friendUID,jwt) {
   const endpoint = endpoints["/friends/hide"];
   const QueryString = { friend: friendUID };
