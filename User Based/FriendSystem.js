@@ -83,5 +83,4 @@ export {
   BlockFriend,
   ResetBlockList,
   ResetHideList,
-  AddFriend
 };
