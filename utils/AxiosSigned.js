@@ -49,59 +49,36 @@ async function _post(data) {
 }
 
 async function post(uri, jwt = null, qString = null, body = null,retry = true) {
+    // If qString is provided, append it to the uri
+    let appendedUri = uri;
+    if (qString) {
+        const queryString = Object.keys(qString).map(key => key + '=' + qString[key]).join('&');
+        appendedUri += '?' + queryString;
+    }
+
+    let options = {
+        method: 'POST',
+        url: appendedUri,
+        data: body,  // body data
+    };
+
+    // Add authorization header if jwt token is provided
+    if (jwt) {
+        options.headers = {
+            'Authorization': jwt
+        };
+    }
+    console.log(options);
+
     if (retry) {
         return await retryFunction(async () => {
-            // If qString is provided, append it to the uri
-            if (qString) {
-                const queryString = Object.keys(qString).map(key => key + '=' + qString[key]).join('&');
-                uri += '?' + queryString;
-            }
-
-            let options = {
-                method: 'POST',
-                url: uri,
-                data: body,  // body data
-            };
-          
-
-            // Add authorization header if jwt token is provided
-            if (jwt) {
-                options.headers = {
-                    'Authorization': jwt
-                };
-            }
-            console.log(options);
-
             const response = await axios(options);
             return response.data;
         });
     } else {
-        // If qString is provided, append it to the uri
-        if (qString) {
-            const queryString = Object.keys(qString).map(key => key + '=' + qString[key]).join('&');
-            uri += '?' + queryString;
-        }
-
-        let options = {
-            method: 'POST',
-            url: uri,
-            data: body,  // body data
-        };
-      
-
-        // Add authorization header if jwt token is provided
-        if (jwt) {
-            options.headers = {
-                'Authorization': jwt
-            };
-        }
-        console.log(options);
-
         const response = await axios(options);
         return response.data;
     }
-
-
 }
 
 async function _put(data) {
