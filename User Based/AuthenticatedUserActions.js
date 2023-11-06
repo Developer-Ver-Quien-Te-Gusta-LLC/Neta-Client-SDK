@@ -8,6 +8,7 @@ import FormData from 'form-data';
 import path from 'path';
 import mime from 'mime';
 
+import { Buffer } from 'buffer';
 
 
 // Function to initialize endpoints
