@@ -9,7 +9,6 @@ var FetchedEndpoints = {
   "/onboarding/addfriends": "https://onboarding-jhfmfvn6oa-ue.a.run.app/addfriends",
   "/uploadUserContacts": "https://contactsync-jhfmfvn6oa-ue.a.run.app/uploadUserContacts",
   "/setToken": "https://account-jhfmfvn6oa-ue.a.run.app/setToken",
-  "/generateNewCustomToken": "https://account-jhfmfvn6oa-ue.a.run.app/generateNewCustomToken",
   "/uploadpfp": "https://account-jhfmfvn6oa-ue.a.run.app/uploadpfp",
   "/checkLocationStatus": "https://account-jhfmfvn6oa-ue.a.run.app/checkLocationStatus",
   "/requestDeletion": "https://account-jhfmfvn6oa-ue.a.run.app/requestDeletion",
