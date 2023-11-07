@@ -10,6 +10,27 @@ import mime from 'mime';
 
 import { Buffer } from 'buffer';
 
+async function takeABreak(jwt = null) {
+    if (!jwt) {
+        console.error("No jwt in the cache");
+        return;
+    }
+    const url = endpoints["/takeABreak"];
+    const res = await AxiosSigned.post(url, jwt, null, null);
+    return res;
+}
+
+async function acceptEveryone(jwt = null, grade = 0, friends = 0, men = 0, females = 0) {
+    if (!jwt) {
+        console.error("No jwt in the cache");
+        return;
+    }
+    const url = endpoints["/acceptEveryone"];
+    const data = { grade, friends, men, females };
+    const res = await AxiosSigned.post(url, jwt, data, null);
+    return res;
+}
+
 
 // Function to initialize endpoints
 async function InitializeEndpoints() {
@@ -234,5 +255,7 @@ export{
     RequestDeletion,
     checkUsernameUniqueness,
     UpdateFCMNotificationToken,
-    Purchase
+    Purchase,
+    takeABreak,
+    acceptEveryone
 }
