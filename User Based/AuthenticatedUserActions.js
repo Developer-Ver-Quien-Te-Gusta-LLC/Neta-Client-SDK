@@ -44,24 +44,11 @@ InitializeEndpoints();
 
 async function submitPFP(fileBuffer, fileName, jwt) {
     try {
-        const buffer = Buffer.from(fileBuffer, "base64");
-        const mimetype = mime.getType(fileName);
+        const data = {
+            file: fileBuffer
+        };
 
-        const data = new FormData();
-        data.append("file", buffer, {
-            filename: fileName,
-            contentType: mimetype || "application/octet-stream",
-        });
-
-        const response = await axios({
-            method: "POST",
-            url: endpoints["/uploadpfp"],
-            data: data,
-            headers: {
-                ...data.getHeaders(),
-                Authorization: jwt,
-            },
-        });
+        const response = await AxiosSigned.post(endpoints["/uploadpfp"], jwt, null, data);
 
         if (!response.data || response.data.error) {
             console.error("Error in response: ", response.data);

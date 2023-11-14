@@ -27,6 +27,8 @@ async function RefreshAll(jwt,platform,page_LimitInbox){
 }
 
 
+
+
 async function RefreshAdd(jwt,platform,highschool,grade, page_FriendsOfFriends,page_SchoolUsers,page_Contacts){
   const requestedScreen = "add";
   const qString = {requestedScreen:requestedScreen,platform:platform,page_FriendsOfFriends:page_FriendsOfFriends,page_SchoolUsers:page_SchoolUsers,page_Contacts:page_Contacts,highschool:highschool,grade:grade};
@@ -58,6 +60,13 @@ async function RefreshProfile(jwt,platform,requestedProfile){
 
   const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
   console.log(res);
+return res;
+}
+
+async function RefreshInvite(jwt,platform){
+  const requestedScreen = "invite";
+  const qString = {requestedScreen:requestedScreen,platform:platform};
+  const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
 return res;
 }
 
