@@ -78,4 +78,4 @@ async function RefreshActivity(jwt,platform){
 return res;
 
 }
-export{RefreshAdd,RefreshAll,RefreshHome,RefreshInbox,RefreshInvite,RefreshActivity,RefreshProfile,ResetAdd}
+export{RefreshAdd,RefreshAll,RefreshInbox,RefreshInvite,RefreshActivity,RefreshProfile,ResetAdd}
