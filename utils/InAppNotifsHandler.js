@@ -3,6 +3,8 @@ import Ably from "ably";
 import * as KV from "./KV.js";
 import { parse } from "path";
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 var realtime;
 var channel;
 
@@ -10,7 +12,10 @@ var channel;
 const subscribedChannels = new Set();
 
 async function SetupAbly() {
-  const AblyKey = await KV._fetch("AblyAPIClientKey");
+  let AblyKey = await AsyncStorage.getItem("AblyAPIClientKey");
+  if (AblyKey == undefined) {
+    AblyKey = await KV._fetch("AblyAPIClientKey");
+  }
   realtime = new Ably.Realtime({ key:  AblyKey["AblyAPIClientKey"] });
   realtime.connection.on('connected', function() {
     console.log("Connected to Ably");
