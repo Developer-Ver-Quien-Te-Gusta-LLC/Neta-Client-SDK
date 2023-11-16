@@ -71,9 +71,9 @@ return res;
 }
 
 //TO DO 
-async function RefreshActivity(jwt,platform){
+async function RefreshActivity(jwt,platform,page){
   const requestedScreen = "activity";
-  const qString = {requestedScreen:requestedScreen,platform:platform};
+  const qString = {requestedScreen:requestedScreen,platform:platform,page:page};
   const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
 return res;
 
