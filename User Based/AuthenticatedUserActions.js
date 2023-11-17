@@ -221,9 +221,9 @@ async function HideActivity(uids, jwt = null) {
     return res;
 }
 
-async function UpdateFCMNotificationToken(jwt,token){
+async function UpdateFCMNotificationToken(jwt,token,phoneNumber){
     const url = endpoints["/setToken"];
-    const res = await AxiosSigned.post(url,jwt,{token:token},null);
+    const res = await AxiosSigned.post(url,jwt,{token:token,phoneNumber:phoneNumber},null);
     return res;
 }
 
