@@ -35,16 +35,11 @@ async function RefreshAdd(jwt,platform,highschool,grade, page_FriendsOfFriends,p
 
   const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
   console.log(res);
-  ResetAdd();
+ 
 
 return res;
 }
 
-async function ResetAdd(){
-  page_FriendsOfFriends = 0;
-  page_SchoolUsers =0;
-  page_Contacts = 0;
-}
 
 async function RefreshInbox(jwt,platform,page){
   const requestedScreen = "inbox";
