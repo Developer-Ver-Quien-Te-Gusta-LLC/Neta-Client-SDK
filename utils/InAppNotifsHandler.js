@@ -13,11 +13,11 @@ const subscribedChannels = new Set();
 
 async function SetupAbly() {
   var cachedAblyKey = await AsyncStorage.getItem("AblyAPIClientKey")
-  var AblyKey = !cachedAblyKey ? (await KV._fetch("AblyAPIClientKey")) : await AsyncStorage.getItem('AblyAPIClientKey')
+  //var AblyKey = !cachedAblyKey ? (await KV._fetch("AblyAPIClientKey")) : await AsyncStorage.getItem('AblyAPIClientKey')
 
-  console.log("ABLY KEY -------------------->",AblyKey);
-  if (!cachedAblyKey) await AsyncStorage.setItem('AblyAPIClientKey', AblyKey)
-  realtime = new Ably.Realtime({ key:  AblyKey["AblyAPIClientKey"] });
+  //console.log("ABLY KEY -------------------->",AblyKey);
+  //if (!cachedAblyKey) await AsyncStorage.setItem('AblyAPIClientKey', AblyKey)
+  realtime = new Ably.Realtime({ key:  "8zqj4w.nBBRpA:nCTI0fVqgPsN-GNDCz8Z7vKbcAD-jjqRP1ZFfsgVdmo" });
   realtime.connection.on('connected', function() {
     console.log("Connected to Ably");
   });
