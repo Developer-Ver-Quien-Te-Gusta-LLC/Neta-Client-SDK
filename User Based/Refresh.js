@@ -29,9 +29,9 @@ async function RefreshAll(jwt,platform,page_LimitInbox){
 
 
 // pass in friendRequstsPage as undefined for 0 , pagekey for next page
-async function RefreshAdd(jwt,platform,highschool,grade, page_FriendsOfFriends,page_SchoolUsers,page_Contacts,friendRequstsPage,username){
+async function RefreshAdd(jwt,platform,highschool,grade, page_FriendsOfFriends,page_SchoolUsers,page_Contacts,username){
   const requestedScreen = "add";
-  const qString = {requestedScreen:requestedScreen,platform:platform,page_FriendsOfFriends:page_FriendsOfFriends,page_SchoolUsers:page_SchoolUsers,page_Contacts:page_Contacts,highschool:highschool,grade:grade,name:username,friendRequstsPage:friendRequstsPage};
+  const qString = {requestedScreen:requestedScreen,platform:platform,page_FriendsOfFriends:page_FriendsOfFriends,page_SchoolUsers:page_SchoolUsers,page_Contacts:page_Contacts,highschool:highschool,grade:grade,name:username};
 
   const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
   console.log(res);
