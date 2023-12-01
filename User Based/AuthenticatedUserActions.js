@@ -101,35 +101,7 @@ async function inviteUser(
         return { success: false, message: error.message || "An error occurred while inviting the user" };
     }
 }
-async function fetchInvite(inviteuid) {
-    try {
-       
-        // Fetch jwt from cache
-       
-        if (!jwt) {
-            console.error("No jwt in the cache");
-            return;
-        }
 
-        // Prepare request url
-        const url = endpoints["/invitations/fetch"];
-
-       const QueryString={inviteuid:inviteuid};
-
-        // Send get request
-        const response = await AxiosSigned.post(url,jwt,QueryString,null);
-
-        if (response.data.success) {
-            return { success: true, data: response.invite};
-        } else {
-            return { success: false, message: response.error || "An error occurred while fetching the invite" };
-        }
-
-    } catch (error) {
-        console.error(error);
-        return { success: false, message: response.error || "An error occurred while fetching the invitation" };
-    }
-}
 async function OnPollReveal(messageUID,answerFirstLetter,jwt = null) {
     const QueryString = { messageUID: messageUID, firstLetter: answerFirstLetter };
     const endpoint = endpoints["/OnPollRevealed"];
@@ -237,7 +209,6 @@ export{
     DispatchVote,
     FetchPollsNow,
     HideActivity,
-    fetchInvite,
     DisableDeletion,
     RequestDeletion,
     checkUsernameUniqueness,
