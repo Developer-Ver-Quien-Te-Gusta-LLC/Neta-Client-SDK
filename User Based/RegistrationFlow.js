@@ -248,7 +248,7 @@ async function fetchAllAddFriendsOnboardingPages(jwt) {
   return data;
 }
 
-async function uploadUserContacts(phoneNumber, contactsList,jwt) {
+async function uploadUserContacts(phoneNumber,jwt,contactsList) {
   const url = endpoints["/uploadUserContacts"];
 try {
   const payload  = {
