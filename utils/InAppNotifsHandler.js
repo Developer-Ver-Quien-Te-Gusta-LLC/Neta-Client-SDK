@@ -37,7 +37,7 @@ function setupInAppNotifications(transactionID,inboxReceivedCallback,
   // If the connection is not already established, connect to Ably and set up the subscription
   if (realtime.connection.state == "connected") {
     if (!subscribedChannels.has(transactionID)) {
-      channel = realtime.channels.get(String(transactionID));
+      channel = realtime.channels.get(String(transactionID),{params:{rewind:'1'}});
       channel.on('attached', function() {
         console.log('Successfully attached to channel' + transactionID);
         
