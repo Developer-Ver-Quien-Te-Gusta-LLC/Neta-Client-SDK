@@ -12,7 +12,7 @@ async function InviteInbox(messageID,jwt = null) {
 }
 
 async function InviteContact(ContactName, ContactNumber, jwt) {
-    const QueryString = { screen:"contact",ContactName:ContactName,ContactNumber:ContactNumber};
+    const QueryString = { screen:"contact",invitedname:ContactName,ContactNumber:ContactNumber};
     const endpoint = endpoints["/invite"];
     const res = await AxiosSigned.post(endpoint, jwt, QueryString, null);
     return res;
