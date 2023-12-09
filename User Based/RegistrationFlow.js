@@ -100,19 +100,35 @@ function clearFetchSchools() {
 
 async function isGeofenced(latitude, longitude) {
   var geohashPolygon = await KV._fetch("geohashPolygon");
-  geohashPolygon = parseStringToArray(geohashPolygon);
+  const checkIsGeofenced = async (geohash) => {
+    // Assume parseStringToArray is a function that converts a string to an array
+    // If it's not defined, you need to implement it or use an alternative method
+    geohashPolygon = ["dpz833","dpz838","dpz893","dpz898"];
+    // Decode geohash to latitude/longitude
+    const decodedPoint = ngeohash.decode(geohash);
+    const point = turf.point([decodedPoint.longitude, decodedPoint.latitude]);
 
-  const point = turf.point([longitude, latitude]);
-  const coordinates = geohashPolygon.map((gh) => {
-    const decodedCoord = ngeohash.decode(gh);
-    return [decodedCoord.longitude, decodedCoord.latitude];
-  });
+    // Decode geohashes of the polygon to latitude/longitude
+    const coordinates = geohashPolygon.map((gh) => {
+      const decodedCoord = ngeohash.decode(gh);
+      return [decodedCoord.longitude, decodedCoord.latitude];
+    });
 
-  coordinates.push(coordinates[0]);
+    // Close the polygon by adding the first point at the end
+    coordinates.push(coordinates[0]);
 
-  const polygon = turf.polygon([coordinates]);
+    const polygon = turf.polygon([coordinates]);
 
-  return turf.booleanPointInPolygon(point, polygon);
+    // Check if the point is inside the polygon
+    return turf.booleanPointInPolygon(point, polygon);
+  };
+  var geofenced = await checkIsGeofenced(ngeohash.encode(latitude,latitude));
+ 
+  if (geofenced) {
+    return true
+  } else {
+    return false
+  }
 }
 
 async function submitPhoneNumber(phoneNumber) {
