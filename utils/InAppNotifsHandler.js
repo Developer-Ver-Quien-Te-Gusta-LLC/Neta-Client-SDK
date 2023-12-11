@@ -12,7 +12,7 @@ var channel;
 const subscribedChannels = new Set();
 
 async function SetupAbly() {
-  var cachedAblyKey = await AsyncStorage.getItem("AblyAPIClientKey")
+  //var cachedAblyKey = await AsyncStorage.getItem("AblyAPIClientKey")
   //var AblyKey = !cachedAblyKey ? (await KV._fetch("AblyAPIClientKey")) : await AsyncStorage.getItem('AblyAPIClientKey')
 
   //console.log("ABLY KEY -------------------->",AblyKey);
@@ -51,9 +51,11 @@ function setupInAppNotifications(transactionID,inboxReceivedCallback,
       channel.subscribe("event", async (message) => {
         console.log("message");
         const data = message.data;
+        console.log('message ' + data)
         
         try {
-          const parsedData = JSON.parse(data);
+          const parsedData = data
+          return inboxReceivedCallback(parsedData);
           if (parsedData.inbox != null) {
             if(inboxReceivedCallback!=null)inboxReceivedCallback(parsedData.inbox);
           } else if (parsedData.friend != undefined) {

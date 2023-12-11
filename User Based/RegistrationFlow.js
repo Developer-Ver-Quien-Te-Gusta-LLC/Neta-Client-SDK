@@ -6,7 +6,6 @@ import * as KV from "../utils/KV.js";
 import * as path from "path";
 import * as mime from "mime-types";
 import ngeohash from "ngeohash";
-import { point,polygon, booleanPointInPolygon } from "@turf/turf";
 
 
 import FormData from "form-data";
@@ -47,11 +46,11 @@ async function fetchSchoolsPaginated(
   schoolName = undefined,
   latitude,
   longitude,
-  pageSize = 10
+  pageSize = 10, nextPageToken
 ) {
   if (lastSchoolName != null && lastSchoolName != schoolName) {
     // CASE: school name changed, reset stored pagination token
-    nextPageToken = null;
+    //nextPageToken = null;
     fetchedSchools = [];
   }
   lastSchoolName = schoolName;
@@ -75,15 +74,15 @@ async function fetchSchoolsPaginated(
 
   // Update nextPageToken for the next page
   if (response.data.nextPageToken) {
-    nextPageToken = response.data.nextPageToken;
+    //nextPageToken = response.data.nextPageToken;
   } else {
-    nextPageToken = null;
+    //nextPageToken = null;
   }
   // Add the fetched schools to the fetchedSchools array
   fetchedSchools = [...fetchedSchools, ...response.data];
 
   // Returning the fetched schools
-  return fetchedSchools;
+  return response;
 }
 
 function clearFetchSchools() {
@@ -92,10 +91,11 @@ function clearFetchSchools() {
   nextPageToken = null;
 }
 
-function isGeofenced(latitude, longitude) {
-  var geohashPolygon = ["dpz833","dpz838","dpz893","dpz898"];
- 
-  const _point = point([longitude, latitude]);
+async function isGeofenced(latitude, longitude) {
+  var geohashPolygon = await KV._fetch("geohashPolygon");
+  geohashPolygon = parseStringToArray(geohashPolygon);
+
+  const point = turf.point([longitude, latitude]);
   const coordinates = geohashPolygon.map((gh) => {
     const decodedCoord = ngeohash.decode(gh);
     return [decodedCoord.longitude, decodedCoord.latitude];
@@ -103,10 +103,11 @@ function isGeofenced(latitude, longitude) {
 
   coordinates.push(coordinates[0]);
 
-  const _polygon = polygon([coordinates]);
+  const polygon = turf.polygon([coordinates]);
 
-  return booleanPointInPolygon(_point, _polygon);
+  return turf.booleanPointInPolygon(point, polygon);
 }
+
 async function submitPhoneNumber(phoneNumber) {
   const url = endpoints["/verifypn/sendotp"];
   const qstring = { phoneNumber: phoneNumber };
@@ -144,7 +145,7 @@ async function SubmitProfile(gender, username, firstname, lastname, phonenumber,
   console.log(response);
   //if (!response.data || response.error) { onError.forEach((func) => func(response)); return; }
   const topicName = response.albyTopicId;
-  return topicName;
+  return response;
 }
 
 async function checkSubmitProfile(phoneNumber) {

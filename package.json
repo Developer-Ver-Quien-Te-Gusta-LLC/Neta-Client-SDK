@@ -18,7 +18,6 @@
   "homepage": "https://github.com/Developer-Ver-Quien-Te-Gusta-LLC/Neta-Client-SDK#README",
   "dependencies": {
     "@react-native-firebase/remote-config": "^18.5.0",
-    "@turf/turf": "^6.5.0",
     "ably": "^1.2.44",
     "amazon-cognito-identity-js": "^6.3.2",
     "axios": "^1.4.0",

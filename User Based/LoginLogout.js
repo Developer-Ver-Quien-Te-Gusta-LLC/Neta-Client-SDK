@@ -1,5 +1,5 @@
 //import * as crypto from 'crypto';
-import {FetchEndpointsFromKV} from "../utils/Endpoints.js";
+import {FetchEndpointsFromKV, FetchedEndpoints} from "../utils/Endpoints.js";
 import * as Alby from "../utils/InAppNotifsHandler.js";
 import * as AxiosSigned from "../utils/AxiosSigned.js";
 
@@ -7,13 +7,7 @@ import * as AxiosSigned from "../utils/AxiosSigned.js";
 
 import * as loginToFirebase from "./LoginToFirebase.js";
 
-var endpoints;
-
-async function InitializeEndpoints() {
-  endpoints = await FetchEndpointsFromKV();
-}
-
-InitializeEndpoints();
+var endpoints = FetchedEndpoints
 
 
 async function login(platform,jwt,highschool,grade) {

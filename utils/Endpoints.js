@@ -1,6 +1,6 @@
 import { _fetch } from "./KV.js";
- 
-var FetchedEndpoints = {
+  const  FetchedEndpoints = {
+    "/invite" : "https://invite-website-jhfmfvn6oa-ue.a.run.app/invitations/request",
   "/verifypn/sendotp": "https://onboarding-jhfmfvn6oa-ue.a.run.app/sendOtp",
   "/verifypn/verifyotp": "https://onboarding-jhfmfvn6oa-ue.a.run.app/verifyOTP",
   "/verifypn/fetchStatus": "https://onboarding-jhfmfvn6oa-ue.a.run.app/fetchStatus",
@@ -34,7 +34,7 @@ var FetchedEndpoints = {
   "/hideActivity": "https://social-graph-jhfmfvn6oa-ue.a.run.app/hideActivity",
   "/invitations/request": "https://0ioa1u4p5b.execute-api.us-east-1.amazonaws.com/invitations/request",
   "/invitations/fetch": "https://0ioa1u4p5b.execute-api.us-east-1.amazonaws.com/invitations/fetch",
-  "/invite":"https://invite-website-jhfmfvn6oa-ue.a.run.app/invitations/request"
+  "/invite":"https://invite-website-jhfmfvn6oa-ue.a.run.app"
 };
 var LocalEndpoints = {
   "/verifypn/sendotp":"http://localhost:3000/sendOtp",
@@ -92,4 +92,4 @@ async function onEndpointsFetched(Callback){
   }
 }
  
-export { onEndpointsFetched, FetchEndpointsFromKV };
+export { onEndpointsFetched, FetchEndpointsFromKV, FetchedEndpoints };
