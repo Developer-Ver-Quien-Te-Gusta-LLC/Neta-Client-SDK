@@ -33,7 +33,8 @@ var FetchedEndpoints = {
   "/OnPollRevealed": "https://social-graph-jhfmfvn6oa-ue.a.run.app/revealPoll",
   "/hideActivity": "https://social-graph-jhfmfvn6oa-ue.a.run.app/hideActivity",
   "/invitations/request": "https://0ioa1u4p5b.execute-api.us-east-1.amazonaws.com/invitations/request",
-  "/invitations/fetch": "https://0ioa1u4p5b.execute-api.us-east-1.amazonaws.com/invitations/fetch"
+  "/invitations/fetch": "https://0ioa1u4p5b.execute-api.us-east-1.amazonaws.com/invitations/fetch",
+  "/invite":"https://invite-website-jhfmfvn6oa-ue.a.run.app"
 };
 var LocalEndpoints = {
   "/verifypn/sendotp":"http://localhost:3000/sendOtp",
