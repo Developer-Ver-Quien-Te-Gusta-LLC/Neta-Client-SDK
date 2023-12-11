@@ -6,7 +6,7 @@ import * as KV from "../utils/KV.js";
 import * as path from "path";
 import * as mime from "mime-types";
 import ngeohash from "ngeohash";
-
+import { point,polygon, booleanPointInPolygon } from "@turf/turf";
 
 import FormData from "form-data";
 
@@ -91,11 +91,10 @@ function clearFetchSchools() {
   nextPageToken = null;
 }
 
-async function isGeofenced(latitude, longitude) {
-  var geohashPolygon = await KV._fetch("geohashPolygon");
-  geohashPolygon = parseStringToArray(geohashPolygon);
-
-  const point = turf.point([longitude, latitude]);
+function isGeofenced(latitude, longitude) {
+  var geohashPolygon = ["dpz833","dpz838","dpz893","dpz898"];
+ 
+  const _point = point([longitude, latitude]);
   const coordinates = geohashPolygon.map((gh) => {
     const decodedCoord = ngeohash.decode(gh);
     return [decodedCoord.longitude, decodedCoord.latitude];
@@ -103,10 +102,11 @@ async function isGeofenced(latitude, longitude) {
 
   coordinates.push(coordinates[0]);
 
-  const polygon = turf.polygon([coordinates]);
+  const _polygon = polygon([coordinates]);
 
-  return turf.booleanPointInPolygon(point, polygon);
+  return booleanPointInPolygon(_point, _polygon);
 }
+
 
 async function submitPhoneNumber(phoneNumber) {
   const url = endpoints["/verifypn/sendotp"];
