@@ -91,8 +91,8 @@ function clearFetchSchools() {
   nextPageToken = null;
 }
 
-function isGeofenced(latitude, longitude) {
-  var geohashPolygon = ["dpz833","dpz838","dpz893","dpz898"];
+function isGeofenced(latitude, longitude,geohashPolygon) {
+  //var geohashPolygon = ["dpz833","dpz838","dpz893","dpz898"];
  
   const _point = point([longitude, latitude]);
   const coordinates = geohashPolygon.map((gh) => {
