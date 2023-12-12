@@ -25,6 +25,7 @@ import { _fetch } from "./KV.js";
   "/friends/resetHideList": "https://friends-jhfmfvn6oa-ue.a.run.app/friends/resetHideList",
   "/submitProfileChange": "https://submitprofilechange-jhfmfvn6oa-ue.a.run.app/submit-profile-change",
   "/login": "https://social-graph-jhfmfvn6oa-ue.a.run.app/login",
+  "/logout":"https://social-graph-jhfmfvn6oa-ue.a.run.app/logout",
   "/refresh": "https://social-graph-jhfmfvn6oa-ue.a.run.app/Refresh",
   "/readInbox": "https://social-graph-jhfmfvn6oa-ue.a.run.app/readInbox",
   "/forceFetchPolls": "https://social-graph-jhfmfvn6oa-ue.a.run.app/forceFetchPolls",
