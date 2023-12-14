@@ -11,9 +11,9 @@ async function InitializeEndpoints() {
 
 InitializeEndpoints();
 
-var page_FriendsOfFriends=0
-var page_SchoolUsers=0
-var page_Contacts = 0;
+var page_FriendsOfFriends=1
+var page_SchoolUsers=1
+var page_Contacts = 1
 
 //TO DO 
 async function RefreshAll(jwt,platform,page_LimitInbox){
