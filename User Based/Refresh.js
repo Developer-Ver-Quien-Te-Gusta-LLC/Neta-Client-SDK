@@ -19,9 +19,6 @@ var page_Contacts = 1
 async function RefreshAll(jwt,platform,page_LimitInbox){
   const requestedScreen = "all";
   const qString = {requestedScreen:requestedScreen,platform:platform,page_LimitInbox:page_LimitInbox,page_FriendsOfFriends:page_FriendsOfFriends,page_SchoolUsers:page_SchoolUsers,page_Contacts:page_Contacts};
-  page_FriendsOfFriends++;
-  page_SchoolUsers++;
-  page_Contacts++;
   const res = await AxiosSigned.post(refreshEndpoint,jwt,qString,null);
   return res;
 }
