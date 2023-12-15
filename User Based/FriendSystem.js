@@ -18,16 +18,6 @@ async function OnFriendRequest(friendUID,jwt) {
   return res;
 }
 
-async function AcceptFriendRequest(friendUID,jwt) {
-  const endpoint = endpoints["/friends/accept"];
-  const QueryString = { friend: friendUID };
-
-
-  const res = await AxiosSigned._post({uri:endpoint,queryString:QueryString,jwt:jwt});
-  return res;
-}
-
-
 async function RemoveFriend(friendUID,jwt) {
   const endpoint = endpoints["/friends/remove"];
   const QueryString = { friend: friendUID };
@@ -41,6 +31,5 @@ async function RemoveFriend(friendUID,jwt) {
 
 export {
   OnFriendRequest,
-  AcceptFriendRequest,
   RemoveFriend,
 };
