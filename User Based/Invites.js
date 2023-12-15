@@ -30,7 +30,21 @@ async function InviteContact(ContactName, ContactNumber, jwt) {
     return res;
 }
 
+async function UploadInvite(filebuffer,jwt){
+    try {
+        const data = {
+            file: filebuffer
+        };
+
+        const response = await AxiosSigned.post("https://invitations-jhfmfvn6oa-ue.a.run.app/uploadinvites", jwt, null, data);
+
+        console.log("File uploaded successfully: ", response.data);
+    } catch (error) {
+        console.error("Error uploading file: ", error);
+    }
+}
+
 /// response.link
 
 
-export{InviteContact,InviteInbox,InviteProfile};
+export{InviteContact,InviteInbox,InviteProfile,UploadInvite};
