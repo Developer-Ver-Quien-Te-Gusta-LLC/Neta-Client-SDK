@@ -32,13 +32,14 @@ SetupAbly();
 function setupInAppNotifications(transactionID,inboxReceivedCallback,
   friendEventReceivedCallback,
   modalReceivedCallback,
-  tokenReceivedCallback, doRewind = false
+  tokenReceivedCallback, rewind = undefined
  ) {// add values like 10m , 30m for a limited number of minutes to rewind to
   // If the connection is not already established, connect to Ably and set up the subscription
   if (realtime.connection.state == "connected") {
     if (!subscribedChannels.has(transactionID)) {
-      let doRewind = false; // Set this to true if you want to rewind
-      channel = doRewind ? realtime.channels.get(String(transactionID),{params:{rewind:'1'}}) : realtime.channels.get(String(transactionID));
+      console.log("REWIND " + rewind)
+      let doRewind = rewind; // Set this to true if you want to rewind
+      channel = doRewind ? realtime.channels.get(String(transactionID),{params:{rewind}}) : realtime.channels.get(String(transactionID));
       channel.on('attached', function() {
         console.log('Successfully attached to channel' + transactionID);
         
@@ -52,6 +53,7 @@ function setupInAppNotifications(transactionID,inboxReceivedCallback,
         console.log("message");
         const data = message.data;
         console.log('message ' + data)
+        data.inboxindex = -1
         
         try {
           const parsedData = data
