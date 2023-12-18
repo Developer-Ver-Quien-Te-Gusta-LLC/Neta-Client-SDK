@@ -38,13 +38,14 @@ async function UploadInvite(filebuffer,jwt){
 
         const response = await AxiosSigned.post("https://invitations-jhfmfvn6oa-ue.a.run.app/uploadinvites", jwt, null, data);
 
-        console.log("File uploaded successfully: ", response.data);
+        return response;
+
+       // console.log("File uploaded successfully: ", response.Data);
     } catch (error) {
         console.error("Error uploading file: ", error);
     }
 }
 
-/// response.link
 
 
 export{InviteContact,InviteInbox,InviteProfile,UploadInvite};
