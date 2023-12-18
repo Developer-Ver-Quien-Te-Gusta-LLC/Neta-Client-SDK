@@ -30,13 +30,15 @@ async function InviteContact(ContactName, ContactNumber, jwt) {
     return res;
 }
 
-async function UploadInvite(filebuffer,jwt){
+async function UploadInvite(filebuffer,jwt,messageID){
     try {
         const data = {
             file: filebuffer
         };
 
-        const response = await AxiosSigned.post("https://invitations-jhfmfvn6oa-ue.a.run.app/uploadinvites", jwt, null, data);
+        const QueryString = { messageID};
+
+        const response = await AxiosSigned.post("https://invitations-jhfmfvn6oa-ue.a.run.app/uploadinvites", jwt, QueryString, data);
 
         return response;
 
