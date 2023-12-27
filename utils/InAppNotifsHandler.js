@@ -90,7 +90,9 @@ function setupInAppNotifications(transactionID,inboxReceivedCallback,
 }
 
 function removeListener() {
-  channel.unsubscribe();
+  subscribedChannels.forEach((channel) => {
+    channel.unsubscribe();
+  });
 }
 
 export { setupInAppNotifications, removeListener };
