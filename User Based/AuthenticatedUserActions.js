@@ -164,7 +164,7 @@ async function DisableDeletion(jwt = null) {
     return res;
 }
 
-async function Purchase(a) { // param is a boolean
+async function Purchase(a, jwt) { // param is a boolean
     // const jwt = Cache.getString("jwt");
      if (!jwt) {
          console.error("No jwt in the cache");
