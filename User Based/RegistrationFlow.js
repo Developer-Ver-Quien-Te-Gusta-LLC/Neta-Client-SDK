@@ -108,9 +108,9 @@ function isGeofenced(latitude, longitude,geohashPolygon) {
 }
 
 
-async function submitPhoneNumber(phoneNumber) {
+async function submitPhoneNumber(phoneNumber,CountryCodePhoneNumber) {
   const url = endpoints["/verifypn/sendotp"];
-  const qstring = { phoneNumber: phoneNumber };
+  const qstring = { phoneNumber: phoneNumber,CountryCodePhoneNumber:CountryCodePhoneNumber };
   const response = await AxiosSigned._post({ uri: url, queryString: qstring });
  /* if (!response.data || response.error) {
     onError.forEach((func) => func(response));
