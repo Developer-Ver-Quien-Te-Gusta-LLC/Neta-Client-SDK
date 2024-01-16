@@ -53,4 +53,4 @@ async function onEndpointsFetched(Callback){
   }
 }
  
-export { onEndpointsFetched, FetchEndpointsFromKV };
+export { onEndpointsFetched, FetchEndpointsFromKV,FetchedEndpoints };
