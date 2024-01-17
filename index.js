@@ -9,7 +9,7 @@ import * as fetchFromKV from "./utils/KV.js";
 import * as PfpBuilder from "./User Based/PfpBuilder.js";
 import * as Invites from "./User Based/Invites.js";
 import * as Firebase from "./User Based/LoginToFirebase.js";
-import { onEndpointsFetched } from "./utils/Endpoints.js";
+import { onEndpointsFetched, setEndpoints } from "./utils/Endpoints.js";
 
 export {
   Analytics,
@@ -24,4 +24,5 @@ export {
   PfpBuilder,
   Firebase,
   onEndpointsFetched,
+  setEndpoints
 };
