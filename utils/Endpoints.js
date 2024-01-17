@@ -1,14 +1,21 @@
 import { _fetch } from "./KV.js";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 var FetchedEndpoints;
 
-const setEndpoints = (endpoints) => {
-  FetchedEndpoints = endpoints
+const setEndpoints = async (endpoints) => {
+  FetchedEndpoints = endpoints;
+  // Store the endpoints in AsyncStorage for global access
+  await AsyncStorage.setItem('endpoints', JSON.stringify(endpoints));
 }
 
 
-const FetchEndpointsFromKV = () => {
-   return FetchedEndpoints;
+const FetchEndpointsFromKV = async () => {
+  // If FetchedEndpoints is not defined, try to get it from AsyncStorage
+  if (!FetchedEndpoints) {
+    FetchedEndpoints = JSON.parse(await AsyncStorage.getItem('endpoints'));
+  }
+  return FetchedEndpoints;
 }
  
 var Callbacks = [];
