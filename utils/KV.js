@@ -8,7 +8,7 @@ async function _fetch(key) {
         });
         
         // Fetch values from Firebase
-        await remoteConfig().fetch(10); // 10 seconds cache duration
+        await remoteConfig().fetch(1 * 60 * 6); // 10 seconds cache duration
         await remoteConfig().activate();
 
         // Fetch value for the key(s)
